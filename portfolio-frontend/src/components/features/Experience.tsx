@@ -1,7 +1,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Experience } from '@/types';
-import { Briefcase, Calendar, MapPin, Zap, ChevronDown } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, Zap, ChevronDown, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 interface ExperienceTimelineProps {
@@ -41,6 +41,26 @@ function groupByDomain(bullets: string[]): Array<{ domain: string; items: string
 function splitVerb(text: string): { verb: string; body: string } {
   const words = text.split(' ');
   return { verb: words[0], body: words.slice(1).join(' ') };
+}
+
+function calculateTenure(startDate: string, endDate?: string, isCurrent?: boolean): string {
+  const parse = (s: string) => {
+    const d = new Date(s.trim());
+    return isNaN(d.getTime()) ? new Date() : d;
+  };
+  const start = parse(startDate);
+  const end = (isCurrent || !endDate) ? new Date() : parse(endDate);
+  let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+  if (months < 0) months = 0;
+  const yrs = Math.floor(months / 12);
+  const mos = months % 12;
+  if (yrs === 0) return `${mos} mo`;
+  if (mos === 0) return `${yrs} yr${yrs > 1 ? 's' : ''}`;
+  return `${yrs} yr${yrs > 1 ? 's' : ''} · ${mos} mo`;
+}
+
+function normalizeCompany(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 export default function ExperienceTimeline({ experience }: ExperienceTimelineProps) {
@@ -92,173 +112,220 @@ export default function ExperienceTimeline({ experience }: ExperienceTimelinePro
               background: 'linear-gradient(to bottom, rgb(var(--color-primary)) 0%, rgba(var(--color-primary),0.4) 60%, rgba(var(--color-primary),0.08) 100%)',
             }} />
 
-            <div className="space-y-10">
+            <div className="space-y-0">
               {sortedExp.map((exp, index) => {
                 const hasHighlights = exp.highlights && exp.highlights.length > 0;
+                const hasImpact = exp.impact && exp.impact.length > 0;
                 const groups = groupByDomain(exp.description);
                 const isExpanded = expandedIds.has(exp._id);
+                const tenure = calculateTenure(exp.startDate, exp.endDate, exp.isCurrent);
+
+                // Check if the NEXT card in the list is at the same company (they were promoted from it)
+                const nextExp = sortedExp[index + 1];
+                const isPromotionAbove = nextExp && normalizeCompany(exp.company) === normalizeCompany(nextExp.company);
 
                 return (
-                  <div key={exp._id} style={{ position: 'relative' }}>
+                  <div key={exp._id}>
+                    <div style={{ position: 'relative', paddingBottom: isPromotionAbove ? '0' : '40px' }}>
 
-                    {/* Timeline dot */}
-                    <div style={{
-                      position: 'absolute', left: '-42px', top: '24px',
-                      width: '18px', height: '18px', borderRadius: '50%', zIndex: 2,
-                      background: exp.isCurrent ? 'rgb(var(--color-primary))' : 'rgba(var(--color-primary),0.35)',
-                      boxShadow: exp.isCurrent
-                        ? '0 0 0 5px rgba(var(--color-primary),0.15), 0 0 16px rgba(var(--color-primary),0.4)'
-                        : '0 0 0 4px rgba(var(--color-primary),0.10)',
-                    }}>
-                      <div style={{ position: 'absolute', inset: '4px', borderRadius: '50%', background: exp.isCurrent ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)' }} />
-                      {exp.isCurrent && (
-                        <div className="animate-ping" style={{ position: 'absolute', inset: '-4px', borderRadius: '50%', background: 'rgba(var(--color-primary),0.2)' }} />
-                      )}
-                    </div>
+                      {/* Timeline dot */}
+                      <div style={{
+                        position: 'absolute', left: '-42px', top: '24px',
+                        width: '18px', height: '18px', borderRadius: '50%', zIndex: 2,
+                        background: exp.isCurrent ? 'rgb(var(--color-primary))' : 'rgba(var(--color-primary),0.35)',
+                        boxShadow: exp.isCurrent
+                          ? '0 0 0 5px rgba(var(--color-primary),0.15), 0 0 16px rgba(var(--color-primary),0.4)'
+                          : '0 0 0 4px rgba(var(--color-primary),0.10)',
+                      }}>
+                        <div style={{ position: 'absolute', inset: '4px', borderRadius: '50%', background: exp.isCurrent ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)' }} />
+                        {exp.isCurrent && (
+                          <div className="animate-ping" style={{ position: 'absolute', inset: '-4px', borderRadius: '50%', background: 'rgba(var(--color-primary),0.2)' }} />
+                        )}
+                      </div>
 
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1, duration: 0.5 }}
-                    >
-                      <div className="premium-card overflow-hidden">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1, duration: 0.5 }}
+                      >
+                        <div className="premium-card overflow-hidden">
 
-                        {/* Role header */}
-                        <div className="p-7 pb-5" style={{ borderBottom: '1px solid var(--card-border)' }}>
-                          <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
-                            <div>
-                              <h4 className="text-2xl font-extrabold text-slate-900 dark:text-white leading-tight mb-1">
-                                {exp.role}
-                              </h4>
-                              <div className="flex items-center gap-2 font-semibold"
-                                style={{ color: 'rgb(var(--color-primary))' }}>
-                                <Briefcase size={14} className="shrink-0" />
-                                {exp.company}
+                          {/* Role header */}
+                          <div className="p-7 pb-5" style={{ borderBottom: '1px solid var(--card-border)' }}>
+                            <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
+                              <div>
+                                <h4 className="text-2xl font-extrabold text-slate-900 dark:text-white leading-tight mb-1">
+                                  {exp.role}
+                                </h4>
+                                <div className="flex items-center gap-2 font-semibold"
+                                  style={{ color: 'rgb(var(--color-primary))' }}>
+                                  <Briefcase size={14} className="shrink-0" />
+                                  {exp.company}
+                                </div>
+                              </div>
+                              {exp.isCurrent && (
+                                <span className="px-3 py-1 rounded-full text-xs font-bold border border-green-500/20 bg-green-500/8 text-green-600 dark:text-green-400 flex items-center gap-1.5 shrink-0">
+                                  <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inset-0 rounded-full bg-green-400 opacity-75" />
+                                    <span className="relative rounded-full h-2 w-2 bg-green-500" />
+                                  </span>
+                                  Current
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">
+                              <span className="flex items-center gap-1.5">
+                                <Calendar size={13} style={{ color: 'rgb(var(--color-primary))' }} />
+                                {exp.startDate} – {exp.endDate || 'Present'}
+                              </span>
+                              {exp.location && (
+                                <span className="flex items-center gap-1.5">
+                                  <MapPin size={13} style={{ color: 'rgb(var(--color-primary))' }} />
+                                  {exp.location}
+                                </span>
+                              )}
+                              {/* Tenure badge */}
+                              <span className="flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-bold"
+                                style={{ background: 'rgba(var(--color-primary),0.08)', color: 'rgb(var(--color-primary))' }}>
+                                {tenure}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Impact chips */}
+                          {hasImpact && (
+                            <div className="px-7 pt-5 pb-0 flex flex-wrap gap-2">
+                              {exp.impact.map((chip, i) => (
+                                <span key={i}
+                                  className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wide"
+                                  style={{
+                                    background: 'rgba(var(--color-primary),0.07)',
+                                    border: '1px solid rgba(var(--color-primary),0.18)',
+                                    color: 'rgb(var(--color-primary))',
+                                  }}>
+                                  {chip}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Highlights — 2-col grid of what was OWNED */}
+                          {hasHighlights && (
+                            <div className="p-7 pb-5" style={{ borderBottom: '1px solid var(--card-border)' }}>
+                              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500 mb-4">
+                                Key Responsibilities
+                              </p>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {exp.highlights.map((h, i) => (
+                                  <div key={i}
+                                    className="flex gap-3 items-start p-4 rounded-xl"
+                                    style={{ background: 'rgba(var(--color-primary),0.04)', border: '1px solid rgba(var(--color-primary),0.10)' }}>
+                                    <div className="mt-[6px] shrink-0 w-1.5 h-1.5 rounded-full"
+                                      style={{ background: 'rgb(var(--color-primary))' }} />
+                                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200 leading-snug">
+                                      {h}
+                                    </p>
+                                  </div>
+                                ))}
                               </div>
                             </div>
-                            {exp.isCurrent && (
-                              <span className="px-3 py-1 rounded-full text-xs font-bold border border-green-500/20 bg-green-500/8 text-green-600 dark:text-green-400 flex items-center gap-1.5 shrink-0">
-                                <span className="relative flex h-2 w-2">
-                                  <span className="animate-ping absolute inset-0 rounded-full bg-green-400 opacity-75" />
-                                  <span className="relative rounded-full h-2 w-2 bg-green-500" />
+                          )}
+
+                          {/* Full scope — collapsible domain-grouped bullets */}
+                          {groups.length > 0 && (
+                            <div className="px-7 pt-4 pb-2">
+                              <button
+                                onClick={() => toggle(exp._id)}
+                                className="flex items-center gap-2 text-sm font-semibold mb-4 transition-opacity hover:opacity-70"
+                                style={{ color: 'rgb(var(--color-primary))' }}
+                              >
+                                <ChevronDown
+                                  size={15}
+                                  className="transition-transform duration-200"
+                                  style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                />
+                                {isExpanded ? 'Hide full scope' : 'See full scope'}
+                              </button>
+
+                              <AnimatePresence initial={false}>
+                                {isExpanded && (
+                                  <motion.div
+                                    key="scope"
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                    style={{ overflow: 'hidden' }}
+                                  >
+                                    <div className="pb-5 space-y-7">
+                                      {groups.map(({ domain, items }) => (
+                                        <div key={domain}>
+                                          <div className="flex items-center gap-3 mb-3">
+                                            <div className="h-px flex-1" style={{ background: 'var(--card-border)' }} />
+                                            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500 shrink-0">
+                                              {domain}
+                                            </span>
+                                            <div className="h-px flex-1" style={{ background: 'var(--card-border)' }} />
+                                          </div>
+                                          <div className="space-y-2.5">
+                                            {items.map((point, i) => {
+                                              const { verb, body } = splitVerb(point);
+                                              return (
+                                                <div key={i} className="flex gap-3 items-start">
+                                                  <div className="w-0.5 shrink-0 mt-[7px] rounded-full self-stretch"
+                                                    style={{ background: 'rgba(var(--color-primary),0.3)', minHeight: '6px' }} />
+                                                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                                                    <span className="font-bold text-slate-900 dark:text-white">{verb}</span>{' '}{body}
+                                                  </p>
+                                                </div>
+                                              );
+                                            })}
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          )}
+
+                          {/* Tech stack */}
+                          <div className="px-7 pb-6">
+                            <div className="pt-5 flex flex-wrap gap-2 items-center" style={{ borderTop: '1px solid var(--card-border)' }}>
+                              <Zap size={12} style={{ color: 'rgb(var(--color-primary))' }} className="shrink-0" />
+                              {exp.technologies.map(tech => (
+                                <span key={tech}
+                                  className="px-2.5 py-1 rounded-lg text-xs font-semibold"
+                                  style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'var(--muted)' }}>
+                                  {tech}
                                 </span>
-                                Current
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">
-                            <span className="flex items-center gap-1.5">
-                              <Calendar size={13} style={{ color: 'rgb(var(--color-primary))' }} />
-                              {exp.startDate} – {exp.endDate || 'Present'}
-                            </span>
-                            {exp.location && (
-                              <span className="flex items-center gap-1.5">
-                                <MapPin size={13} style={{ color: 'rgb(var(--color-primary))' }} />
-                                {exp.location}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Highlights — 2-col grid of what was OWNED */}
-                        {hasHighlights && (
-                          <div className="p-7 pb-5" style={{ borderBottom: '1px solid var(--card-border)' }}>
-                            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500 mb-4">
-                              Key Responsibilities
-                            </p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              {exp.highlights.map((h, i) => (
-                                <div key={i}
-                                  className="flex gap-3 items-start p-4 rounded-xl"
-                                  style={{ background: 'rgba(var(--color-primary),0.04)', border: '1px solid rgba(var(--color-primary),0.10)' }}>
-                                  <div className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full"
-                                    style={{ background: 'rgb(var(--color-primary))' }} />
-                                  <p className="text-sm font-medium text-slate-700 dark:text-slate-200 leading-snug">
-                                    {h}
-                                  </p>
-                                </div>
                               ))}
                             </div>
                           </div>
-                        )}
 
-                        {/* Full scope — collapsible domain-grouped bullets */}
-                        {groups.length > 0 && (
-                          <div className="px-7 pt-4 pb-2">
-                            <button
-                              onClick={() => toggle(exp._id)}
-                              className="flex items-center gap-2 text-sm font-semibold mb-4 transition-opacity hover:opacity-70"
-                              style={{ color: 'rgb(var(--color-primary))' }}
-                            >
-                              <ChevronDown
-                                size={15}
-                                className="transition-transform duration-200"
-                                style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                              />
-                              {isExpanded ? 'Hide full scope' : 'See full scope'}
-                            </button>
-
-                            <AnimatePresence initial={false}>
-                              {isExpanded && (
-                                <motion.div
-                                  key="scope"
-                                  initial={{ opacity: 0, height: 0 }}
-                                  animate={{ opacity: 1, height: 'auto' }}
-                                  exit={{ opacity: 0, height: 0 }}
-                                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                                  style={{ overflow: 'hidden' }}
-                                >
-                                  <div className="pb-5 space-y-7">
-                                    {groups.map(({ domain, items }) => (
-                                      <div key={domain}>
-                                        <div className="flex items-center gap-3 mb-3">
-                                          <div className="h-px flex-1" style={{ background: 'var(--card-border)' }} />
-                                          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500 shrink-0">
-                                            {domain}
-                                          </span>
-                                          <div className="h-px flex-1" style={{ background: 'var(--card-border)' }} />
-                                        </div>
-                                        <div className="space-y-2.5">
-                                          {items.map((point, i) => {
-                                            const { verb, body } = splitVerb(point);
-                                            return (
-                                              <div key={i} className="flex gap-3 items-start">
-                                                <div className="w-0.5 shrink-0 mt-[7px] rounded-full self-stretch"
-                                                  style={{ background: 'rgba(var(--color-primary),0.3)', minHeight: '6px' }} />
-                                                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                                                  <span className="font-bold text-slate-900 dark:text-white">{verb}</span>{' '}{body}
-                                                </p>
-                                              </div>
-                                            );
-                                          })}
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        )}
-
-                        {/* Tech stack */}
-                        <div className="px-7 pb-6">
-                          <div className="pt-5 flex flex-wrap gap-2 items-center" style={{ borderTop: '1px solid var(--card-border)' }}>
-                            <Zap size={12} style={{ color: 'rgb(var(--color-primary))' }} className="shrink-0" />
-                            {exp.technologies.map(tech => (
-                              <span key={tech}
-                                className="px-2.5 py-1 rounded-lg text-xs font-semibold"
-                                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'var(--muted)' }}>
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
                         </div>
+                      </motion.div>
+                    </div>
 
+                    {/* Promotion connector — appears between two cards at the same company */}
+                    {isPromotionAbove && (
+                      <div className="relative flex items-center gap-3 py-3 mb-10">
+                        <div className="h-px flex-1 opacity-40" style={{ background: 'rgb(var(--color-primary))' }} />
+                        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold shrink-0"
+                          style={{
+                            background: 'rgba(var(--color-primary),0.08)',
+                            border: '1px solid rgba(var(--color-primary),0.25)',
+                            color: 'rgb(var(--color-primary))',
+                          }}>
+                          <TrendingUp size={12} />
+                          Internal Promotion · {exp.company}
+                        </div>
+                        <div className="h-px flex-1 opacity-40" style={{ background: 'rgb(var(--color-primary))' }} />
                       </div>
-                    </motion.div>
+                    )}
                   </div>
                 );
               })}

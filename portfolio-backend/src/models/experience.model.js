@@ -8,6 +8,7 @@ const experienceSchema = new mongoose.Schema({
   endDate: { type: String },
   isCurrent: { type: Boolean, default: false },
   highlights: [{ type: String }],
+  impact: [{ type: String }],
   description: [{ type: String }],
   technologies: [{ type: String }],
   order: { type: Number, default: 0 },

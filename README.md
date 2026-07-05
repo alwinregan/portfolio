@@ -35,7 +35,6 @@ portfolio/
 │   │   ├── pages/
 │   │   └── lib/
 │   └── .env.production     # Production API URL
-├── deploy.sh               # One-command deployment script
 └── README.md
 ```
 
@@ -153,14 +152,27 @@ pm2 startup    # auto-start on server reboot
 
 ---
 
-### Future deployments (code updates)
+### Updating the server (after pushing new code)
 
 ```bash
 cd portfolio
-bash deploy.sh
-```
 
-`deploy.sh` does: git pull → npm install → frontend build → pm2 restart.
+# Pull latest code
+git pull origin main
+
+# Install any new backend dependencies
+cd portfolio-backend
+npm install --omit=dev
+
+# Rebuild the frontend
+cd ../portfolio-frontend
+npm install
+npm run build
+
+# Restart the backend
+cd ../portfolio-backend
+pm2 restart portfolio
+```
 
 ---
 

@@ -14,12 +14,17 @@ interface HeroProps {
 }
 
 const TERM_LINES = [
-  { type: 'cmd',  text: 'node server.js' },
-  { type: 'ok',   text: 'MongoDB connected' },
-  { type: 'ok',   text: 'PostgreSQL pool ready' },
-  { type: 'ok',   text: 'Redis cache online' },
-  { type: 'ok',   text: 'Server running :4000' },
-  { type: 'info', text: '10,000+ customers served' },
+  { type: 'cmd',  text: 'deploy --env production --zero-downtime' },
+  { type: 'ok',   text: 'Architecture validated — microservices ready' },
+  { type: 'ok',   text: 'SSO + JWT auth layers secured' },
+  { type: 'ok',   text: 'Node.js · Laravel · Go services online' },
+  { type: 'ok',   text: 'MongoDB · MySQL · MSSQL · PostgreSQL ready' },
+  { type: 'ok',   text: 'Redis cache hit rate: 94.2%' },
+  { type: 'ok',   text: 'Bull queue workers: 8 active' },
+  { type: 'ok',   text: 'WebSocket events synced · latency 12ms' },
+  { type: 'ok',   text: 'Load balancer: 3 nodes registered' },
+  { type: 'ok',   text: 'GitHub Actions CI/CD pipeline passed' },
+  { type: 'info', text: 'Uptime 99.9% · Serving users worldwide 🚀' },
   { type: 'cursor' },
 ];
 
@@ -38,7 +43,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
 
   useEffect(() => {
     const timers = TERM_LINES.map((_, i) =>
-      setTimeout(() => setTermVisible(i + 1), 600 + i * 420)
+      setTimeout(() => setTermVisible(i + 1), 500 + i * 280)
     );
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -111,6 +116,24 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
             >
               {t(profile?.summary) || "I engineer scalable web architectures with 6+ years of technical excellence."}
             </motion.p>
+
+            {/* Philosophy Quote */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.78 }}
+              className="flex items-start gap-3"
+            >
+              <div className="shrink-0 w-0.5 h-10 rounded-full mt-0.5" style={{ background: '#7c3aed' }} />
+              <div>
+                <p className="text-sm italic text-slate-500 dark:text-slate-400">
+                  "Make it work. Make it right. Make it fast."
+                </p>
+                <span className="text-[10px] uppercase tracking-widest font-semibold text-slate-400 mt-0.5 block">
+                  — Kent Beck
+                </span>
+              </div>
+            </motion.div>
 
             {/* CTA Buttons */}
             <motion.div
@@ -202,7 +225,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
                     <span className="ml-auto text-[11px] text-slate-600 font-mono tracking-wide">alwin@portfolio ~ node</span>
                   </div>
                   {/* Lines */}
-                  <div className="p-5 font-mono text-[13px] leading-relaxed space-y-1.5 min-h-[220px]">
+                  <div className="p-5 font-mono text-[13px] leading-relaxed space-y-1.5 min-h-[300px]">
                     {TERM_LINES.map((line, i) => (
                       <div key={i}
                         className="flex items-center gap-2.5 transition-opacity duration-300"

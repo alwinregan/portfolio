@@ -584,8 +584,8 @@ export default function SettingsAdminPage() {
             )}
 
             <div className="text-xs text-slate-500 space-y-1">
-              <p><strong>Export</strong> downloads Profile, Skills, Experience, Projects, Certifications &amp; Settings as one JSON file.</p>
-              <p><strong>Import</strong> upserts all data. Images (avatars, project images) are excluded — upload them separately via the admin panel.</p>
+              <p><strong>Export</strong> downloads Profile, Skills, Experience, Projects, Certifications, Settings, Blog posts, Apps &amp; Blocks as one JSON file.</p>
+              <p><strong>Import</strong> upserts all data. Images (avatars, project covers, etc.) are excluded — upload them separately via the admin panel.</p>
             </div>
           </Card>
 
@@ -782,6 +782,34 @@ export default function SettingsAdminPage() {
                 { key: 'enableBlog',        label: 'Blog',               desc: 'Enable blog feature' },
                 { key: 'showAboutStats',    label: 'About Stats',        desc: 'Show stat numbers in About section' },
                 { key: 'showProjectsStats', label: 'Projects Stats',     desc: 'Show stats footer in Projects section' },
+              ].map(({ key, label, desc }) => (
+                <FeatureToggle key={key} label={label} description={desc}
+                  active={toggles[key] !== false} onChange={v => handleToggle(key, v)} />
+              ))}
+            </div>
+          </Card>
+
+          <Card title="About Stats Cards" subtitle="Control each individual card in the About section" icon={<BarChart3 size={20} />}>
+            <div className="space-y-3">
+              {[
+                { key: 'aboutStat_years',    label: 'Years Experience', desc: 'Show years of experience card' },
+                { key: 'aboutStat_projects', label: 'Projects Count',   desc: 'Show total projects card' },
+                { key: 'aboutStat_tech',     label: 'Technologies',     desc: 'Show technologies count card' },
+                { key: 'aboutStat_custom',   label: 'Custom Stat',      desc: 'Show the custom/collected stat card' },
+              ].map(({ key, label, desc }) => (
+                <FeatureToggle key={key} label={label} description={desc}
+                  active={toggles[key] !== false} onChange={v => handleToggle(key, v)} />
+              ))}
+            </div>
+          </Card>
+
+          <Card title="Projects Stats Cards" subtitle="Control each individual card in the Projects section" icon={<BarChart3 size={20} />}>
+            <div className="space-y-3">
+              {[
+                { key: 'projectsStat_count',   label: 'Featured Projects', desc: 'Show featured projects count card' },
+                { key: 'projectsStat_tech',    label: 'Technologies',      desc: 'Show technologies count card' },
+                { key: 'projectsStat_years',   label: 'Years Active',      desc: 'Show years active card' },
+                { key: 'projectsStat_clients', label: 'Clients',           desc: 'Show clients count card' },
               ].map(({ key, label, desc }) => (
                 <FeatureToggle key={key} label={label} description={desc}
                   active={toggles[key] !== false} onChange={v => handleToggle(key, v)} />

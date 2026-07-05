@@ -76,14 +76,17 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
     <main className="min-h-screen">
 
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <div ref={heroRef} className="relative h-[90vh] min-h-[640px] overflow-hidden flex flex-col justify-end">
+      <div ref={heroRef} className="relative h-[90vh] min-h-[640px] overflow-hidden flex flex-col justify-end" style={{ background: '#0c1229' }}>
         <motion.div style={{ scale: heroScale }} className="absolute inset-0">
-          {project.imageUrl
-            ? <img src={imgUrl(project.imageUrl)} alt="" className="w-full h-full object-cover opacity-20" />
-            : <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-primary), 0.25) 0%, transparent 70%)' }} />
-          }
-          {/* fade overlay — rgba only, no page-bg dependency so it works in any theme */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 50%, transparent 100%)' }} />
+          {project.imageUrl && (
+            <img src={imgUrl(project.imageUrl)} alt=""
+              className="w-full h-full object-cover"
+              style={{ filter: 'blur(2px) brightness(0.28)', transform: 'scale(1.05)' }} />
+          )}
+          {/* Dark base so any image looks consistent */}
+          <div className="absolute inset-0 bg-[#0c1229]/50" />
+          {/* Gradient — heavy at bottom for text, softens toward top */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.42) 70%, rgba(0,0,0,0.20) 100%)' }} />
         </motion.div>
 
         <div className="absolute inset-0 opacity-[0.03]"
@@ -97,24 +100,26 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
 
         <motion.div style={{ opacity: heroOpacity }} className="relative z-10 px-8 md:px-16 pb-16 max-w-5xl">
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
-            className="text-white/40 text-xs font-mono uppercase tracking-[0.2em] mb-6">
+            className="text-xs font-mono uppercase tracking-[0.2em] mb-6" style={{ color: 'rgba(167,139,250,0.9)' }}>
             {cs.subtitle}
           </motion.p>
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-[0.9] mb-6">
-            {title}<span className="text-primary">.</span>
+            {title}<span style={{ color: '#a78bfa' }}>.</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32 }}
-            className="text-white/60 text-lg max-w-2xl leading-relaxed mb-8 font-light">
+            className="text-white/85 text-lg max-w-2xl leading-relaxed mb-8 font-light">
             {cs.tagline}
           </motion.p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42 }}
             className="flex flex-wrap items-center gap-3 mb-10">
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-primary/20 text-primary border border-primary/30">
+            <span className="px-3 py-1 rounded-full text-xs font-bold"
+              style={{ background: 'rgba(167,139,250,0.22)', color: '#c4b5fd', border: '1px solid rgba(167,139,250,0.45)' }}>
               {cs.meta?.developer}
             </span>
             {cs.meta?.stackHighlight?.map((s: string) => (
-              <span key={s} className="px-3 py-1 rounded-full text-xs font-mono text-white/50 border border-white/10">{s}</span>
+              <span key={s} className="px-3 py-1 rounded-full text-xs font-mono"
+                style={{ color: 'rgba(255,255,255,0.80)', border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}>{s}</span>
             ))}
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
@@ -129,14 +134,14 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
             {project.pdfUrl && (
               <a href={imgUrl(project.pdfUrl)} target="_blank" download rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-lg text-sm transition-all"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', color: 'var(--foreground)' }}>
+                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', color: '#f8fafc' }}>
                 <Download size={15} /> Case Study PDF
               </a>
             )}
             {project.githubUrl && (
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-lg text-sm transition-all"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', color: 'var(--foreground)' }}>
+                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', color: '#f8fafc' }}>
                 <Github size={15} /> Source
               </a>
             )}
@@ -403,13 +408,15 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
 
   return (
     <main className="min-h-screen">
-      <div ref={heroRef} className="relative h-[80vh] min-h-[560px] overflow-hidden flex flex-col justify-end">
+      <div ref={heroRef} className="relative h-[80vh] min-h-[560px] overflow-hidden flex flex-col justify-end" style={{ background: '#0c1229' }}>
         <motion.div style={{ scale: heroScale }} className="absolute inset-0">
-          {project.imageUrl
-            ? <img src={imgUrl(project.imageUrl)} alt="" className="w-full h-full object-cover opacity-20" />
-            : <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-primary), 0.2) 0%, transparent 70%)' }} />
-          }
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 50%, transparent 100%)' }} />
+          {project.imageUrl && (
+            <img src={imgUrl(project.imageUrl)} alt=""
+              className="w-full h-full object-cover"
+              style={{ filter: 'blur(2px) brightness(0.28)', transform: 'scale(1.05)' }} />
+          )}
+          <div className="absolute inset-0 bg-[#0c1229]/50" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.42) 70%, rgba(0,0,0,0.20) 100%)' }} />
         </motion.div>
         <motion.div style={{ opacity: heroOpacity }} className="absolute top-8 left-8 md:left-16 z-20">
           <Link to="/projects" className="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm font-medium group transition-colors">
@@ -418,12 +425,17 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
         </motion.div>
         <motion.div style={{ opacity: heroOpacity }} className="relative z-10 px-8 md:px-16 pb-14 max-w-5xl">
           <div className="flex flex-wrap gap-2 mb-5">
-            {tags.map(tag => <span key={tag} className="px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full border border-white/20 text-white/60">{tag}</span>)}
+            {tags.map(tag => (
+              <span key={tag} className="px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full"
+                style={{ color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.30)', background: 'rgba(255,255,255,0.08)' }}>
+                {tag}
+              </span>
+            ))}
           </div>
           <h1 className="text-6xl md:text-7xl font-black text-white tracking-tight leading-[0.95] mb-5">
-            {title}<span className="text-primary">.</span>
+            {title}<span style={{ color: '#a78bfa' }}>.</span>
           </h1>
-          <p className="text-white/60 text-lg max-w-2xl leading-relaxed mb-8 font-light">{description}</p>
+          <p className="text-lg max-w-2xl leading-relaxed mb-8 font-light" style={{ color: 'rgba(255,255,255,0.85)' }}>{description}</p>
           <div className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
@@ -434,14 +446,14 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
             {project.githubUrl && (
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-lg text-sm transition-all"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', color: 'var(--foreground)' }}>
+                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', color: '#f8fafc' }}>
                 <Github size={15} /> Source
               </a>
             )}
             {project.pdfUrl && (
               <a href={imgUrl(project.pdfUrl)} target="_blank" download
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-lg text-sm transition-all"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', color: 'var(--foreground)' }}>
+                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', color: '#f8fafc' }}>
                 <Download size={15} /> Case Study PDF
               </a>
             )}

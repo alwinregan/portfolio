@@ -109,11 +109,6 @@ export default function Footer({ profileName }: FooterProps) {
                   linkedin.com/in/alwinregan
                 </a>
               </li>
-              <li>
-                <Link to="/admin/login" className="text-sm text-muted hover:text-foreground transition-colors font-medium">
-                  Admin Panel
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

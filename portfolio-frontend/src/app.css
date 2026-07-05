@@ -10,47 +10,82 @@
   --color-brand:        198 97 63;    /* terracotta  */
 
   /* Page background — hex, updated by applyTheme() */
-  --page-bg-light: #fafafa;
+  --page-bg-light: #ffffff;
   --page-bg-dark:  #09090b;
   --page-bg:       var(--page-bg-light);
 
-  /* Glow strengths — separate per mode so applyTheme() doesn't conflict with .dark override */
-  --glow-p-l: 0.12;   /* primary  — light mode */
-  --glow-a-l: 0.07;   /* accent   — light mode */
+  /* Glow strengths — near-zero in light mode for clean white feel */
+  --glow-p-l: 0.04;   /* primary  — light mode (very subtle) */
+  --glow-a-l: 0.02;   /* accent   — light mode (barely visible) */
   --glow-p-d: 0.22;   /* primary  — dark  mode */
   --glow-a-d: 0.13;   /* accent   — dark  mode */
 
-  /* Card glass surface */
-  --card-bg:     rgba(255, 255, 255, 0.80);
-  --card-border: rgba(0, 0, 0, 0.08);
+  /* Card — solid white, slate-200 border, multi-layer elevation */
+  --card-bg:     #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow:
+    0 1px 2px  rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.07),
+    0 20px 40px rgba(15, 23, 42, 0.05);
 
-  --foreground: #09090b;
-  --muted:      #71717a;
+  --foreground:     #0f172a;
+  --muted:          #475569;
+  /* Alternating section gradient — violet ↔ white ↔ indigo wash */
+  --section-alt-bg: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.07)  0%,
+    #ffffff                   45%,
+    rgba(99, 102, 241, 0.06) 100%
+  );
+
+  /* Ghost / outline buttons — clearly visible on white */
+  --ghost-bg:     rgba(var(--color-primary), 0.06);
+  --ghost-border: rgba(var(--color-primary), 0.25);
 }
 
 .dark {
-  --page-bg:     var(--page-bg-dark);
-  --card-bg:     rgba(24, 24, 27, 0.68);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --foreground:  #fafafa;
-  --muted:       #a1a1aa;
+  --page-bg:        var(--page-bg-dark);
+  --card-bg:        rgba(24, 24, 27, 0.68);
+  --card-border:    rgba(255, 255, 255, 0.08);
+  --card-shadow:    none;
+  --foreground:     #fafafa;
+  --muted:          #a1a1aa;
+  --section-alt-bg: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.10)  0%,
+    rgba(255, 255, 255, 0.01) 50%,
+    rgba(99,  102, 241, 0.08) 100%
+  );
+  --ghost-bg:       rgba(255, 255, 255, 0.07);
+  --ghost-border:   rgba(255, 255, 255, 0.16);
 }
 
-/* ── Full-page gradient on html — background-attachment:fixed keeps it pinned while scrolling.
-   Putting gradient on html directly avoids z-index/stacking issues that body::before has. ── */
+/* Dark section block — used on Contact. Overrides CSS vars so premium-card
+   and other token-based components render correctly on dark background. */
+.dark-section {
+  background: #0c1229;
+  color: #f8fafc;
+  --card-bg:     rgba(255, 255, 255, 0.07);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --card-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+  --foreground:  #f8fafc;
+  --muted:       #94a3b8;
+  --ghost-bg:    rgba(255, 255, 255, 0.09);
+  --ghost-border:rgba(255, 255, 255, 0.20);
+}
+
+/* ── Full-page gradient on html ── */
 html {
   background:
     radial-gradient(ellipse 180% 100% at -15% -20%,
       rgba(var(--color-primary), var(--glow-p-l)) 0%, transparent 58%),
     radial-gradient(ellipse 120% 90%  at 115%  112%,
       rgba(var(--color-accent),  var(--glow-a-l))  0%, transparent 58%),
-    radial-gradient(ellipse  80%  60% at  50%   50%,
-      rgba(var(--color-brand),  calc(var(--glow-a-l) * 0.5)) 0%, transparent 65%),
     var(--page-bg);
   background-attachment: fixed;
 }
 
-/* Dark mode: stronger glows, dark base — .dark has specificity (0,1,0) > html (0,0,1) so it wins */
+/* Dark mode: stronger glows, dark base */
 .dark {
   background:
     radial-gradient(ellipse 180% 100% at -15% -20%,
@@ -72,6 +107,11 @@ body {
   line-height: 1.6;
 }
 
+::selection {
+  background: rgba(var(--color-primary), 0.15);
+  color: rgb(var(--color-primary));
+}
+
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
   font-weight: 700;
@@ -84,20 +124,39 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 2rem;
 }
 
-/* Glass card — semi-transparent so gradient shows through.
-   Placed AFTER @tailwind utilities so it wins over inline bg-* classes */
+/* Premium card — solid white, visible border, multi-layer elevation */
 .premium-card {
   background: var(--card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--card-border);
   border-radius: 1rem;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: var(--card-shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
+/* Light mode — lift with primary-tinted shadow */
 .premium-card:hover {
-  border-color: rgba(var(--color-primary), 0.35);
-  box-shadow: 0 8px 40px rgba(var(--color-primary), 0.12);
+  border-color: rgba(var(--color-primary), 0.45);
+  box-shadow:
+    0 2px 4px  rgba(15, 23, 42, 0.06),
+    0 8px 24px rgba(15, 23, 42, 0.08),
+    0 24px 64px rgba(var(--color-primary), 0.12);
+  transform: translateY(-2px);
+}
+
+/* Dark mode — skip lift, stronger glow */
+.dark .premium-card {
+  box-shadow: none;
+}
+.dark .premium-card:hover {
+  transform: none;
+  box-shadow: 0 8px 40px rgba(var(--color-primary), 0.18), 0 0 0 1px rgba(var(--color-primary), 0.15);
+}
+
+/* Section divider — thin primary-tinted top edge inside card for visual interest */
+.premium-card > * + * {
+  border-top-color: var(--card-border);
 }
 
 .text-gradient {
@@ -127,6 +186,7 @@ h1, h2, h3, h4, h5, h6 {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
 }
 
 /* ── Case study typography ────────────────────────────────── */

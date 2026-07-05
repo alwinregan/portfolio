@@ -12,7 +12,7 @@ import {
 
 /* ── Preset themes ──────────────────────────────────── */
 const PRESETS: { name: string; colors: ThemeColors }[] = [
-  { name: 'Violet',  colors: { primary: '#7c3aed', primaryDark: '#6d28d9', accent: '#f59e0b', brand: '#c6613f', bgLight: '#fafafa', bgDark: '#09090b' } },
+  { name: 'Violet',  colors: { primary: '#7c3aed', primaryDark: '#6d28d9', accent: '#f59e0b', brand: '#c6613f', bgLight: '#ffffff', bgDark: '#09090b', glowPrimary: 0.04, glowAccent: 0.02, glowPrimaryDark: 0.22, glowAccentDark: 0.13 } },
   { name: 'Ocean',   colors: { primary: '#2563eb', primaryDark: '#1d4ed8', accent: '#06b6d4', brand: '#0891b2', bgLight: '#f8faff', bgDark: '#050d1a' } },
   { name: 'Forest',  colors: { primary: '#16a34a', primaryDark: '#15803d', accent: '#eab308', brand: '#84cc16', bgLight: '#f8faf8', bgDark: '#05100a' } },
   { name: 'Rose',    colors: { primary: '#e11d48', primaryDark: '#be123c', accent: '#f97316', brand: '#ec4899', bgLight: '#fff8f8', bgDark: '#130508' } },

@@ -36,7 +36,7 @@ export default function SkillsShowcase({ initialSkills }: SkillsProps) {
   );
 
   return (
-    <section id="skills" className="py-32 relative overflow-hidden">
+    <section id="skills" className="py-32 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
 

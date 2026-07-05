@@ -95,8 +95,8 @@ export default function Navbar({ resumeUrl }: { resumeUrl?: string | null }) {
             <div className="flex items-center gap-3">
               {resumeUrl && (
                 <a href={resumeUrl} target="_blank" rel="noopener noreferrer" download
-                  className="hidden lg:flex items-center gap-2 px-4 py-2.5 hover:border-primary text-muted hover:text-primary font-bold rounded-lg transition-all text-sm"
-                  style={{ border: '1px solid var(--card-border)' }}>
+                  className="hidden lg:flex items-center gap-2 px-4 py-2.5 font-bold rounded-lg transition-all text-sm hover:scale-105"
+                  style={{ background: 'rgba(124,58,237,0.08)', border: '1px solid #7c3aed', color: '#6d28d9' }}>
                   <Download size={15} /> Resume
                 </a>
               )}
@@ -188,8 +188,8 @@ export default function Navbar({ resumeUrl }: { resumeUrl?: string | null }) {
                   </a>
                   {resumeUrl && (
                     <a href={resumeUrl} target="_blank" rel="noopener noreferrer" download
-                      className="flex items-center justify-center gap-2 w-full px-6 py-3 font-bold rounded-lg transition-all hover:border-primary"
-                      style={{ background: 'var(--card-bg)', border: '2px solid var(--card-border)' }}>
+                      className="flex items-center justify-center gap-2 w-full px-6 py-3 font-bold rounded-lg transition-all hover:scale-105"
+                      style={{ background: 'rgba(124,58,237,0.08)', border: '2px solid #7c3aed', color: '#6d28d9' }}>
                       <Download size={16} /> Download Resume
                     </a>
                   )}

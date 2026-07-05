@@ -15,12 +15,16 @@ export interface ThemeColors {
 }
 
 export const DEFAULT_THEME: ThemeColors = {
-  primary:     '#7c3aed',
-  primaryDark: '#6d28d9',
-  accent:      '#f59e0b',
-  brand:       '#c6613f',
-  bgLight:     '#fafafa',
-  bgDark:      '#09090b',
+  primary:          '#7c3aed',
+  primaryDark:      '#6d28d9',
+  accent:           '#f59e0b',
+  brand:            '#c6613f',
+  bgLight:          '#ffffff',
+  bgDark:           '#09090b',
+  glowPrimary:      0.04,
+  glowAccent:       0.02,
+  glowPrimaryDark:  0.22,
+  glowAccentDark:   0.13,
 };
 
 function hexToRgbTriplet(hex: string): string {

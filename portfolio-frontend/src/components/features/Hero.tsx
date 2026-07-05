@@ -121,7 +121,8 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
             >
               <Link
                 to="projects"
-                className="group px-8 py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/25 flex items-center gap-2"
+                className="group px-8 py-4 text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                style={{ background: '#7c3aed', boxShadow: '0 8px 24px rgba(124,58,237,0.30)' }}
               >
                 View My Work
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -135,7 +136,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
                     : profile.resumeUrl}
                   download
                   className="group px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-                  style={{ background: 'var(--card-bg)', border: '2px solid var(--card-border)', backdropFilter: 'blur(16px)' }}
+                  style={{ background: 'rgba(124,58,237,0.08)', border: '2px solid #7c3aed', color: '#6d28d9' }}
                 >
                   <Download size={18} />
                   Download Resume
@@ -144,8 +145,8 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
                 <a
                   href="#contact"
                   onClick={e => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
-                  className="group px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 opacity-70"
-                  style={{ background: 'var(--card-bg)', border: '2px solid var(--card-border)', backdropFilter: 'blur(16px)' }}
+                  className="group px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                  style={{ background: 'rgba(124,58,237,0.08)', border: '2px solid #7c3aed', color: '#6d28d9' }}
                 >
                   <Download size={18} />
                   Resume

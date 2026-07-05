@@ -151,17 +151,11 @@ export default function Projects({ projects, showStats = true }: ProjectsProps) 
                     )}
 
                     {/* Footer Link */}
-                    <div className="pt-4 border-t border-[var(--card-border)] mt-auto flex items-center justify-between gap-2">
+                    <div className="pt-4 border-t border-[var(--card-border)] mt-auto">
                       <div className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all group/link">
                         {project.caseStudy ? 'Read Case Study' : 'View Details'}
                         <ArrowUpRight size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
                       </div>
-                      {project.caseStudy && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded"
-                          style={{ background: 'rgba(var(--color-primary),0.08)', color: 'rgb(var(--color-primary))', border: '1px solid rgba(var(--color-primary),0.2)' }}>
-                          Case Study
-                        </span>
-                      )}
                     </div>
                   </div>
                 </Link>

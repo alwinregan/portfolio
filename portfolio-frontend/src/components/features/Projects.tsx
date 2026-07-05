@@ -5,18 +5,27 @@ import { ExternalLink, Github, ArrowUpRight, Folder, Star, Code } from 'lucide-r
 import { Link } from 'react-router-dom';
 import { t } from '@/lib/utils';
 
+interface StatVisibility {
+  count?: boolean;
+  tech?: boolean;
+  years?: boolean;
+  clients?: boolean;
+}
+
 interface ProjectsProps {
   projects: any[];
   showStats?: boolean;
   limit?: number;
+  statVisibility?: StatVisibility;
 }
 
 const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 
-export default function Projects({ projects, showStats = true, limit }: ProjectsProps) {
+export default function Projects({ projects, showStats = true, limit, statVisibility }: ProjectsProps) {
   const allProjects = projects.length > 0 ? projects : [];
   const displayProjects = limit ? allProjects.slice(0, limit) : allProjects;
   const hasMore = limit ? allProjects.length > limit : false;
+  const sv = statVisibility ?? { count: true, tech: true, years: true, clients: true };
 
   return (
     <section id="projects" className="py-32 relative overflow-hidden">
@@ -176,28 +185,36 @@ export default function Projects({ projects, showStats = true, limit }: Projects
             className="max-w-4xl mx-auto mt-20 pt-12 border-t-2 border-[var(--card-border)]"
           >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div>
-                <div className="text-4xl font-bold text-primary mb-2">{allProjects.length}</div>
-                <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Featured Projects</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-primary mb-2">
-                  {new Set(allProjects.flatMap(p => p.techStack || [])).size}+
+              {sv.count !== false && (
+                <div>
+                  <div className="text-4xl font-bold text-primary mb-2">{allProjects.length}</div>
+                  <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Featured Projects</div>
                 </div>
-                <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Technologies</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-primary mb-2">
-                  {new Set(allProjects.map(p => p.year).filter(Boolean)).size}
+              )}
+              {sv.tech !== false && (
+                <div>
+                  <div className="text-4xl font-bold text-primary mb-2">
+                    {new Set(allProjects.flatMap(p => p.techStack || [])).size}+
+                  </div>
+                  <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Technologies</div>
                 </div>
-                <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Years Active</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-primary mb-2">
-                  {new Set(allProjects.map(p => p.client).filter(Boolean)).size}+
+              )}
+              {sv.years !== false && (
+                <div>
+                  <div className="text-4xl font-bold text-primary mb-2">
+                    {new Set(allProjects.map(p => p.year).filter(Boolean)).size}
+                  </div>
+                  <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Years Active</div>
                 </div>
-                <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Clients</div>
-              </div>
+              )}
+              {sv.clients !== false && (
+                <div>
+                  <div className="text-4xl font-bold text-primary mb-2">
+                    {new Set(allProjects.map(p => p.client).filter(Boolean)).size}+
+                  </div>
+                  <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Clients</div>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

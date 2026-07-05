@@ -789,6 +789,34 @@ export default function SettingsAdminPage() {
             </div>
           </Card>
 
+          <Card title="About Stats Cards" subtitle="Control each individual card in the About section" icon={<BarChart3 size={20} />}>
+            <div className="space-y-3">
+              {[
+                { key: 'aboutStat_years',    label: 'Years Experience', desc: 'Show years of experience card' },
+                { key: 'aboutStat_projects', label: 'Projects Count',   desc: 'Show total projects card' },
+                { key: 'aboutStat_tech',     label: 'Technologies',     desc: 'Show technologies count card' },
+                { key: 'aboutStat_custom',   label: 'Custom Stat',      desc: 'Show the custom/collected stat card' },
+              ].map(({ key, label, desc }) => (
+                <FeatureToggle key={key} label={label} description={desc}
+                  active={toggles[key] !== false} onChange={v => handleToggle(key, v)} />
+              ))}
+            </div>
+          </Card>
+
+          <Card title="Projects Stats Cards" subtitle="Control each individual card in the Projects section" icon={<BarChart3 size={20} />}>
+            <div className="space-y-3">
+              {[
+                { key: 'projectsStat_count',   label: 'Featured Projects', desc: 'Show featured projects count card' },
+                { key: 'projectsStat_tech',    label: 'Technologies',      desc: 'Show technologies count card' },
+                { key: 'projectsStat_years',   label: 'Years Active',      desc: 'Show years active card' },
+                { key: 'projectsStat_clients', label: 'Clients',           desc: 'Show clients count card' },
+              ].map(({ key, label, desc }) => (
+                <FeatureToggle key={key} label={label} description={desc}
+                  active={toggles[key] !== false} onChange={v => handleToggle(key, v)} />
+              ))}
+            </div>
+          </Card>
+
           <div className="p-5 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl border border-primary/20">
             <div className="flex items-center gap-2 text-primary font-bold text-sm mb-2">
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />

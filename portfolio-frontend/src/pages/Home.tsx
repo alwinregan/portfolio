@@ -131,11 +131,13 @@ export default function HomePage() {
                   {settings?.featureToggles?.showAboutStats !== false && (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
                       {[
-                        { value: settings?.metadata?.aboutStats?.yearsValue || '06+', label: 'Years' },
-                        { value: `${projects?.length || 0}+`, label: 'Projects' },
-                        { value: `${skills?.length || 0}+`, label: 'Technologies' },
-                        { value: settings?.metadata?.aboutStats?.stat4Value || '₹50Cr+', label: settings?.metadata?.aboutStats?.stat4Label || 'Collected' },
-                      ].map(({ value, label }) => (
+                        { key: 'aboutStat_years',    value: settings?.metadata?.aboutStats?.yearsValue || '06+',                                                         label: 'Years' },
+                        { key: 'aboutStat_projects', value: `${projects?.length || 0}+`,                                                                                  label: 'Projects' },
+                        { key: 'aboutStat_tech',     value: `${skills?.length || 0}+`,                                                                                    label: 'Technologies' },
+                        { key: 'aboutStat_custom',   value: settings?.metadata?.aboutStats?.stat4Value || '₹50Cr+', label: settings?.metadata?.aboutStats?.stat4Label || 'Collected' },
+                      ]
+                      .filter(({ key }) => settings?.featureToggles?.[key] !== false)
+                      .map(({ value, label }) => (
                         <div key={label} className="premium-card p-5 text-center">
                           <div className="text-3xl font-black text-slate-900 dark:text-white mb-1">{value}</div>
                           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">{label}</div>
@@ -173,7 +175,13 @@ export default function HomePage() {
         );
 
       case 'projects':
-        return <Projects key="projects" projects={projects || []} showStats={settings?.featureToggles?.showProjectsStats !== false} limit={3} />;
+        return <Projects key="projects" projects={projects || []} showStats={settings?.featureToggles?.showProjectsStats !== false} limit={3}
+          statVisibility={{
+            count:   settings?.featureToggles?.projectsStat_count   !== false,
+            tech:    settings?.featureToggles?.projectsStat_tech    !== false,
+            years:   settings?.featureToggles?.projectsStat_years   !== false,
+            clients: settings?.featureToggles?.projectsStat_clients !== false,
+          }} />;
 
       case 'skills':
         return <SkillsShowcase key="skills" initialSkills={skills || []} />;

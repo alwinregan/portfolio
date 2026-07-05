@@ -70,10 +70,10 @@ export function Button({
   className = ''
 }: ButtonProps) {
   const variants = {
-    primary: 'bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/25',
-    secondary: 'bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white',
-    danger: 'bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/25',
-    success: 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/25',
+    primary: 'bg-[#7c3aed] hover:bg-[#6d28d9] text-white shadow-lg shadow-purple-900/40',
+    secondary: 'bg-slate-700 hover:bg-slate-600 text-white border border-slate-600',
+    danger: 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-900/40',
+    success: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-900/40',
   };
 
   const sizes = {

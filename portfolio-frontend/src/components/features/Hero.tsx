@@ -10,6 +10,7 @@ interface HeroProps {
   profile: any;
   projectCount?: number;
   skillCount?: number;
+  yearsValue?: string;
 }
 
 const TERM_LINES = [
@@ -22,7 +23,7 @@ const TERM_LINES = [
   { type: 'cursor' },
 ];
 
-export default function Hero({ profile, projectCount = 0, skillCount = 0 }: HeroProps) {
+export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsValue = '5+' }: HeroProps) {
   const [activeTitleIdx, setActiveTitleIdx] = useState(0);
   const [termVisible, setTermVisible] = useState(0);
   const titles = profile?.titles || [];
@@ -140,7 +141,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0 }: Hero
               {profile?.resumeUrl ? (
                 <a
                   href={profile.resumeUrl.startsWith('/')
-                    ? `${(import.meta.env.VITE_API_URL || 'http://127.0.0.1:3001/api').replace('/api', '')}${profile.resumeUrl}`
+                    ? `${(import.meta.env.VITE_API_URL || '/api').replace('/api', '')}${profile.resumeUrl}`
                     : profile.resumeUrl}
                   download
                   className="group px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
@@ -176,7 +177,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0 }: Hero
               </div>
               <div className="w-px h-12 bg-slate-200 dark:bg-slate-800" />
               <div>
-                <div className="text-3xl font-bold text-slate-900 dark:text-white">06+</div>
+                <div className="text-3xl font-bold text-slate-900 dark:text-white">{yearsValue}</div>
                 <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Years Exp</div>
               </div>
               <div className="w-px h-12 bg-slate-200 dark:bg-slate-800" />

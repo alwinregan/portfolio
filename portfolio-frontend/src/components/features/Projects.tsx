@@ -9,6 +9,8 @@ interface ProjectsProps {
   projects: any[];
 }
 
+const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
+
 export default function Projects({ projects }: ProjectsProps) {
   const displayProjects = projects.length > 0 ? projects : [];
 
@@ -69,7 +71,7 @@ export default function Projects({ projects }: ProjectsProps) {
                 <Link to={`/projects/${project.slug}`} className="block relative">
                   <div className="relative aspect-[16/9] overflow-hidden" style={{ background: 'var(--card-bg)' }}>
                     <img
-                      src={project.imageUrl?.startsWith('/') ? `${import.meta.env.VITE_API_URL || 'http://127.0.0.1:4000'}${project.imageUrl}` : (project.imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97')}
+                      src={project.imageUrl?.startsWith('/') ? `${API_BASE}${project.imageUrl}` : (project.imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97')}
                       alt={typeof project.title === 'object' ? project.title.en : project.title}
                       className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
                     />

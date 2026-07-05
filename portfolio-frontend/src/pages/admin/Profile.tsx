@@ -273,7 +273,7 @@ export default function ProfileAdminPage() {
                 {formData.avatarUrl && (
                   <div className="relative w-24 h-24 rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-800">
                     <img 
-                      src={formData.avatarUrl?.startsWith('/') ? `http://127.0.0.1:3001${formData.avatarUrl}` : formData.avatarUrl} 
+                      src={formData.avatarUrl?.startsWith('/') ? `${(import.meta.env.VITE_API_URL || '/api').replace('/api', '')}${formData.avatarUrl}` : formData.avatarUrl} 
                       alt="Avatar" 
                       className="w-full h-full object-cover"
                     />

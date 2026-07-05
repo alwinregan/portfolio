@@ -76,6 +76,7 @@ export default function HomePage() {
             profile={profile}
             projectCount={projects?.length || 0}
             skillCount={skills?.length || 0}
+            yearsValue={settings?.metadata?.aboutStats?.yearsValue || '5+'}
           />
         );
 

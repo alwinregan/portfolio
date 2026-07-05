@@ -8,12 +8,15 @@ import { t } from '@/lib/utils';
 interface ProjectsProps {
   projects: any[];
   showStats?: boolean;
+  limit?: number;
 }
 
 const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 
-export default function Projects({ projects, showStats = true }: ProjectsProps) {
-  const displayProjects = projects.length > 0 ? projects : [];
+export default function Projects({ projects, showStats = true, limit }: ProjectsProps) {
+  const allProjects = projects.length > 0 ? projects : [];
+  const displayProjects = limit ? allProjects.slice(0, limit) : allProjects;
+  const hasMore = limit ? allProjects.length > limit : false;
 
   return (
     <section id="projects" className="py-32 relative overflow-hidden">
@@ -174,28 +177,47 @@ export default function Projects({ projects, showStats = true }: ProjectsProps) 
           >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div>
-                <div className="text-4xl font-bold text-primary mb-2">{displayProjects.length}</div>
+                <div className="text-4xl font-bold text-primary mb-2">{allProjects.length}</div>
                 <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Featured Projects</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-primary mb-2">
-                  {new Set(displayProjects.flatMap(p => p.techStack || [])).size}+
+                  {new Set(allProjects.flatMap(p => p.techStack || [])).size}+
                 </div>
                 <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Technologies</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-primary mb-2">
-                  {new Set(displayProjects.map(p => p.year).filter(Boolean)).size}
+                  {new Set(allProjects.map(p => p.year).filter(Boolean)).size}
                 </div>
                 <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Years Active</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-primary mb-2">
-                  {new Set(displayProjects.map(p => p.client).filter(Boolean)).size}+
+                  {new Set(allProjects.map(p => p.client).filter(Boolean)).size}+
                 </div>
                 <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">Clients</div>
               </div>
             </div>
+          </motion.div>
+        )}
+
+        {/* View All button */}
+        {hasMore && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-14"
+          >
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-3 px-8 py-4 font-bold rounded-xl transition-all hover:scale-105"
+              style={{ background: 'rgba(124,58,237,0.08)', border: '2px solid #7c3aed', color: '#6d28d9' }}
+            >
+              View All Projects
+              <ArrowUpRight size={18} />
+            </Link>
           </motion.div>
         )}
       </div>

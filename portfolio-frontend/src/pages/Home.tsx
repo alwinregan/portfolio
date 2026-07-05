@@ -104,15 +104,6 @@ export default function HomePage() {
                           <span className="text-9xl font-bold" style={{ color: 'rgba(var(--color-primary), 0.2)' }}>{profile?.name?.charAt(0)}</span>
                         </div>
                       )}
-                      <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl" style={{ background: 'var(--card-bg)', backdropFilter: 'blur(16px)', border: '1px solid var(--card-border)' }}>
-                        <div className="flex items-center gap-3">
-                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                          <div>
-                            <div className="text-sm font-bold text-slate-900 dark:text-white">Available for Work</div>
-                            <div className="text-xs text-slate-500">Open to opportunities</div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>

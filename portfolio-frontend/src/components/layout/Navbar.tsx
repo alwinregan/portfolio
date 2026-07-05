@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, Code2, Sparkles, Download } from 'lucide-react';
+import { Menu, X, Code2, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSettings } from '@/context/SettingsContext';
 
@@ -67,9 +67,6 @@ export default function Navbar({ resumeUrl }: { resumeUrl?: string | null }) {
               <div className="relative">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all group-hover:scale-110">
                   <Code2 size={20} className="text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-3 h-3">
-                  <Sparkles size={12} className="text-accent animate-pulse" />
                 </div>
               </div>
               <div className="hidden md:block">

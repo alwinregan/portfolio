@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Mail, Sparkles } from 'lucide-react';
+import { ArrowRight, Download, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 ;
 import { t } from '@/lib/utils';
@@ -60,16 +60,6 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
             className="space-y-8"
           >
             {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 text-primary"
-            >
-              <Sparkles size={16} className="animate-pulse" />
-              <span className="text-sm font-bold">Available for Opportunities</span>
-            </motion.div>
-
             {/* Main Headline */}
             <div>
               <motion.h1 

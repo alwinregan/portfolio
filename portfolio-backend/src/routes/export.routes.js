@@ -121,7 +121,7 @@ router.post('/admin/import', auth, async (req, res, next) => {
 
     /* ─ Full snapshot import (no type) ─ */
     const { profile, skills, experience, projects, certifications, settings } = req.body;
-    const results: Record<string, string> = {};
+    const results = {};
 
     if (profile) {
       const { _id, __v, createdAt, updatedAt, avatarUrl, resumeUrl, ...data } = profile;

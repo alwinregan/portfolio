@@ -154,25 +154,26 @@ pm2 startup    # auto-start on server reboot
 
 ### Updating the server (after pushing new code)
 
+The built frontend (`portfolio-frontend/dist/`) is committed to git, so the server never needs to build.
+
+**On your local machine** (after making changes):
+```bash
+cd portfolio-frontend
+npm run build
+cd ..
+git add portfolio-frontend/dist/
+git commit -m "your message"
+git push origin main
+```
+
+**On the server** (every deployment):
 ```bash
 cd portfolio
-
-# Pull latest code
 git pull origin main
-
-# Install any new backend dependencies
-cd portfolio-backend
-npm install --omit=dev
-
-# Rebuild the frontend
-cd ../portfolio-frontend
-npm install
-npm run build
-
-# Restart the backend
-cd ../portfolio-backend
 pm2 restart portfolio
 ```
+
+Only run `npm install` on the server if you add new backend npm packages.
 
 ---
 

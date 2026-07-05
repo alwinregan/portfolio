@@ -33,5 +33,4 @@ Thumbs.db
 # Vite cache
 .vite/
 portfolio-frontend/.env.production
-.env.production
 portfolio-frontend/.env.production

@@ -76,14 +76,17 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
     <main className="min-h-screen">
 
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <div ref={heroRef} className="relative h-[90vh] min-h-[640px] overflow-hidden flex flex-col justify-end">
+      <div ref={heroRef} className="relative h-[90vh] min-h-[640px] overflow-hidden flex flex-col justify-end" style={{ background: '#0c1229' }}>
         <motion.div style={{ scale: heroScale }} className="absolute inset-0">
-          {project.imageUrl
-            ? <img src={imgUrl(project.imageUrl)} alt="" className="w-full h-full object-cover opacity-20" />
-            : <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-primary), 0.25) 0%, transparent 70%)' }} />
-          }
-          {/* fade overlay — rgba only, no page-bg dependency so it works in any theme */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 50%, transparent 100%)' }} />
+          {project.imageUrl && (
+            <img src={imgUrl(project.imageUrl)} alt=""
+              className="w-full h-full object-cover"
+              style={{ filter: 'blur(2px) brightness(0.28)', transform: 'scale(1.05)' }} />
+          )}
+          {/* Dark base so any image looks consistent */}
+          <div className="absolute inset-0 bg-[#0c1229]/50" />
+          {/* Gradient — heavy at bottom for text, softens toward top */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.42) 70%, rgba(0,0,0,0.20) 100%)' }} />
         </motion.div>
 
         <div className="absolute inset-0 opacity-[0.03]"
@@ -129,14 +132,14 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
             {project.pdfUrl && (
               <a href={imgUrl(project.pdfUrl)} target="_blank" download rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-lg text-sm transition-all"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', color: 'var(--foreground)' }}>
+                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', color: '#f8fafc' }}>
                 <Download size={15} /> Case Study PDF
               </a>
             )}
             {project.githubUrl && (
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-lg text-sm transition-all"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', color: 'var(--foreground)' }}>
+                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', color: '#f8fafc' }}>
                 <Github size={15} /> Source
               </a>
             )}
@@ -403,13 +406,15 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
 
   return (
     <main className="min-h-screen">
-      <div ref={heroRef} className="relative h-[80vh] min-h-[560px] overflow-hidden flex flex-col justify-end">
+      <div ref={heroRef} className="relative h-[80vh] min-h-[560px] overflow-hidden flex flex-col justify-end" style={{ background: '#0c1229' }}>
         <motion.div style={{ scale: heroScale }} className="absolute inset-0">
-          {project.imageUrl
-            ? <img src={imgUrl(project.imageUrl)} alt="" className="w-full h-full object-cover opacity-20" />
-            : <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--color-primary), 0.2) 0%, transparent 70%)' }} />
-          }
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 50%, transparent 100%)' }} />
+          {project.imageUrl && (
+            <img src={imgUrl(project.imageUrl)} alt=""
+              className="w-full h-full object-cover"
+              style={{ filter: 'blur(2px) brightness(0.28)', transform: 'scale(1.05)' }} />
+          )}
+          <div className="absolute inset-0 bg-[#0c1229]/50" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.42) 70%, rgba(0,0,0,0.20) 100%)' }} />
         </motion.div>
         <motion.div style={{ opacity: heroOpacity }} className="absolute top-8 left-8 md:left-16 z-20">
           <Link to="/projects" className="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm font-medium group transition-colors">
@@ -434,14 +439,14 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
             {project.githubUrl && (
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-lg text-sm transition-all"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', color: 'var(--foreground)' }}>
+                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', color: '#f8fafc' }}>
                 <Github size={15} /> Source
               </a>
             )}
             {project.pdfUrl && (
               <a href={imgUrl(project.pdfUrl)} target="_blank" download
                 className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-lg text-sm transition-all"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', color: 'var(--foreground)' }}>
+                style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', color: '#f8fafc' }}>
                 <Download size={15} /> Case Study PDF
               </a>
             )}

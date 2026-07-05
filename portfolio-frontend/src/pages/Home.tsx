@@ -153,14 +153,15 @@ export default function HomePage() {
                       className="flex flex-wrap gap-4 pt-2"
                     >
                       <a href={resumeHref} target="_blank" rel="noopener noreferrer" download
-                        className="group inline-flex items-center gap-3 px-8 py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/25">
+                        className="group inline-flex items-center gap-3 px-8 py-4 text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95"
+                        style={{ background: '#7c3aed', boxShadow: '0 8px 24px rgba(124,58,237,0.30)' }}>
                         <Download size={20} />
                         Download Resume
                         <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                       </a>
                       <Link to="projects"
                         className="inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95"
-                        style={{ background: 'var(--ghost-bg)', border: '2px solid var(--ghost-border)', backdropFilter: 'blur(16px)' }}>
+                        style={{ background: 'rgba(124,58,237,0.08)', border: '2px solid #7c3aed', color: '#6d28d9' }}>
                         View Projects
                       </Link>
                     </motion.div>

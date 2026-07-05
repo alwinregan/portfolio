@@ -6,8 +6,7 @@ node_modules/
 .env.local
 .env.*.local
 
-# Build outputs
-dist/
+# Build outputs (frontend dist is committed so server only needs git pull)
 build/
 .next/
 out/

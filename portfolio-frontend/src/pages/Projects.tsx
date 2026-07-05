@@ -60,7 +60,7 @@ export default function ProjectsPage() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="pt-32 pb-24 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
+      <section className="pt-28 pb-16 md:pt-32 md:pb-24 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
         <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(circle at 1.5px 1.5px, currentColor 1px, transparent 0)', backgroundSize: '32px 32px' }} />
 
@@ -73,13 +73,13 @@ export default function ProjectsPage() {
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="text-6xl md:text-7xl font-extrabold tracking-tight mb-6">
+            className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
             My <span className="text-gradient">Projects</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-            className="text-xl text-slate-500 max-w-2xl font-medium mb-14">
+            className="text-base sm:text-xl text-slate-500 max-w-2xl font-medium mb-8 md:mb-14">
             Production-grade applications built with modern technologies, engineered for scale and exceptional user experience.
           </motion.p>
 
@@ -103,7 +103,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto px-6 py-20 space-y-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-20 space-y-16 md:space-y-24">
 
         {/* ── Featured ── */}
         {featuredProjects.length > 0 && (
@@ -200,7 +200,7 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
       </Link>
 
       {/* Content */}
-      <div className="lg:col-span-3 p-8 lg:p-10 flex flex-col justify-between gap-6">
+      <div className="lg:col-span-3 p-5 md:p-8 lg:p-10 flex flex-col justify-between gap-6">
         <div>
           {/* Top row */}
           <div className="flex items-start justify-between gap-4 mb-4">

@@ -98,13 +98,13 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
           </Link>
         </motion.div>
 
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 px-8 md:px-16 pb-16 max-w-5xl">
+        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 px-5 md:px-16 pb-10 md:pb-16 max-w-5xl">
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
             className="text-xs font-mono uppercase tracking-[0.2em] mb-6" style={{ color: 'rgba(167,139,250,0.9)' }}>
             {cs.subtitle}
           </motion.p>
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-            className="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-[0.9] mb-6">
+            className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tight leading-[0.95] mb-6">
             {title}<span style={{ color: '#a78bfa' }}>.</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32 }}
@@ -126,7 +126,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
             className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark transition-all text-sm">
+                className="group inline-flex items-center gap-2 px-6 py-3 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-lg transition-all text-sm">
                 <Globe size={15} /> View Live
                 <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
@@ -162,7 +162,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
       {project.pdfUrl && (
         <div className="py-24">
           <div className="max-w-5xl mx-auto px-8 md:px-16">
-            <div className="premium-card p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="premium-card p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
               <div>
                 <p className="text-xs font-mono uppercase tracking-[0.2em] text-primary mb-3">Case Study</p>
                 <h3 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-3">
@@ -171,7 +171,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
                 <p className="text-muted max-w-md">Architecture decisions, trade-offs, and lessons from building {title} end to end.</p>
               </div>
               <a href={imgUrl(project.pdfUrl)} target="_blank" download rel="noopener noreferrer"
-                className="shrink-0 inline-flex items-center gap-3 px-10 py-5 bg-primary text-white font-black text-base rounded-xl hover:bg-primary-dark transition-all shadow-2xl shadow-primary/25">
+                className="shrink-0 inline-flex items-center gap-3 px-10 py-5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-black text-base rounded-xl transition-all shadow-2xl shadow-primary/25">
                 <Download size={20} /> Download PDF
               </a>
             </div>
@@ -187,7 +187,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
           </Link>
           {project.liveUrl && (
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-dark transition-colors">
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-sm font-bold rounded-lg transition-colors">
               <Globe size={14} /> View Live Project
             </a>
           )}
@@ -383,7 +383,7 @@ function ImpactSection({ s, base, project }: any) {
                 <p className="text-muted text-sm">Live deployment — a real gym using this every day.</p>
               </div>
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                className="shrink-0 inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors text-sm group">
+                className="shrink-0 inline-flex items-center gap-2 px-7 py-3.5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl transition-colors text-sm group">
                 <Globe size={16} /> Visit FitCore
                 <ExternalLink size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
@@ -432,14 +432,14 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
               </span>
             ))}
           </div>
-          <h1 className="text-6xl md:text-7xl font-black text-white tracking-tight leading-[0.95] mb-5">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white tracking-tight leading-[0.95] mb-5">
             {title}<span style={{ color: '#a78bfa' }}>.</span>
           </h1>
           <p className="text-lg max-w-2xl leading-relaxed mb-8 font-light" style={{ color: 'rgba(255,255,255,0.85)' }}>{description}</p>
           <div className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-lg text-sm hover:bg-primary-dark transition-all">
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-lg text-sm transition-all">
                 <Globe size={15} /> View Live
               </a>
             )}
@@ -501,7 +501,7 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
           </Link>
           {project.liveUrl && (
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-dark transition-colors">
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-sm font-bold rounded-lg transition-colors">
               <Globe size={14} /> Live Project
             </a>
           )}

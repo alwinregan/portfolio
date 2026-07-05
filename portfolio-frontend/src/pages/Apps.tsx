@@ -82,8 +82,8 @@ export default function AppsPage() {
           </div>
           {allTags.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              <button onClick={() => handleTag(null)} className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${selectedTag === null ? 'bg-primary text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200'}`}>All ({apps.length})</button>
-              {allTags.map(tag => <button key={tag} onClick={() => handleTag(tag)} className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all capitalize ${selectedTag === tag ? 'bg-primary text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200'}`}>{tag} ({apps.filter(a => a.tags?.includes(tag)).length})</button>)}
+              <button onClick={() => handleTag(null)} className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${selectedTag === null ? 'bg-[#7c3aed] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200'}`}>All ({apps.length})</button>
+              {allTags.map(tag => <button key={tag} onClick={() => handleTag(tag)} className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all capitalize ${selectedTag === tag ? 'bg-[#7c3aed] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200'}`}>{tag} ({apps.filter(a => a.tags?.includes(tag)).length})</button>)}
             </div>
           )}
           <div className="text-sm text-slate-600 dark:text-slate-400">Showing {filteredApps.length} of {apps.length} apps</div>

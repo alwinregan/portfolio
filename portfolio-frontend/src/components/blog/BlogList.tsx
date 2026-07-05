@@ -124,7 +124,7 @@ export default function BlogList({ initialBlogs }: BlogListProps) {
                                </div>
                            )}
                            {featured.featured && (
-                               <div className="px-4 py-2 bg-primary/95 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+                               <div className="px-4 py-2 bg-[#7c3aed] backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg">
                                  Featured
                                </div>
                            )}

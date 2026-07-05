@@ -28,7 +28,7 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
   const sv = statVisibility ?? { count: true, tech: true, years: true, clients: true };
 
   return (
-    <section id="projects" className="py-32 relative overflow-hidden">
+    <section id="projects" className="py-20 md:py-32 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
         <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '48px 48px' }} />
@@ -108,7 +108,7 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 hover:bg-primary hover:text-white transition-all hover:scale-110"
+                      className="p-2.5 hover:bg-[#7c3aed] hover:text-white transition-all hover:scale-110"
                       title="View Live Demo"
                     >
                       <ExternalLink size={16} />

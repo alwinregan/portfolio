@@ -77,7 +77,7 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
     });
 
   return (
-    <section id="experience" className="py-32 relative overflow-hidden">
+    <section id="experience" className="py-20 md:py-32 relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03] pointer-events-none">
         <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(135deg, currentColor 1px, transparent 1px), linear-gradient(225deg, currentColor 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
       </div>

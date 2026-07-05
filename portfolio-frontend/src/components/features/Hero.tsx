@@ -49,7 +49,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20 pb-24 overflow-hidden"
+    <section className="relative min-h-screen flex items-center pt-20 pb-16 md:pb-24 overflow-hidden"
       >
       {/* Subtle dot grid — body::before handles the gradient glow */}
       <div className="absolute inset-0 opacity-[0.025] dark:opacity-[0.04] pointer-events-none"
@@ -182,22 +182,22 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1 }}
-              className="flex items-center gap-8 pt-6"
+              className="flex items-center gap-5 md:gap-8 pt-6"
               style={{ borderTop: '1px solid var(--card-border)' }}
             >
               <div>
-                <div className="text-3xl font-bold text-slate-900 dark:text-white">{projectCount}+</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Projects</div>
+                <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">{projectCount}+</div>
+                <div className="text-xs md:text-sm font-semibold text-slate-500 uppercase tracking-wider">Projects</div>
               </div>
-              <div className="w-px h-12 bg-slate-200 dark:bg-slate-800" />
+              <div className="hidden sm:block w-px h-10 bg-slate-200 dark:bg-slate-800" />
               <div>
-                <div className="text-3xl font-bold text-slate-900 dark:text-white">{yearsValue}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Years Exp</div>
+                <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">{yearsValue}</div>
+                <div className="text-xs md:text-sm font-semibold text-slate-500 uppercase tracking-wider">Years Exp</div>
               </div>
-              <div className="w-px h-12 bg-slate-200 dark:bg-slate-800" />
+              <div className="hidden sm:block w-px h-10 bg-slate-200 dark:bg-slate-800" />
               <div>
-                <div className="text-3xl font-bold text-slate-900 dark:text-white">{skillCount}+</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Technologies</div>
+                <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">{skillCount}+</div>
+                <div className="text-xs md:text-sm font-semibold text-slate-500 uppercase tracking-wider">Skills</div>
               </div>
             </motion.div>
           </motion.div>

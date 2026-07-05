@@ -38,7 +38,7 @@ export default function ContactForm({ profileEmail }: ContactFormProps) {
   };
 
   return (
-    <section id="contact" className="dark-section py-32 relative overflow-hidden">
+    <section id="contact" className="dark-section py-20 md:py-32 relative overflow-hidden">
       {/* Subtle dot grid overlay */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)', backgroundSize: '32px 32px' }} />

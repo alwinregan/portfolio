@@ -38,6 +38,11 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
   const location = useLocation(); const pathname = location.pathname;
 
   useEffect(() => {
+    document.documentElement.classList.add('dark');
+    return () => document.documentElement.classList.remove('dark');
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/admin/login');
@@ -72,7 +77,7 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
   };
 
   if (loading) return (
-    <div className="dark min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 to-slate-900">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 to-slate-900">
       <div className="text-center">
         <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center animate-pulse">
           <Code2 size={32} className="text-white" />
@@ -97,7 +102,7 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
   ];
 
   return (
-    <div className="dark min-h-screen flex bg-gradient-to-br from-slate-950 to-slate-900">
+    <div className="min-h-screen flex bg-gradient-to-br from-slate-950 to-slate-900">
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}

@@ -12,8 +12,19 @@ interface HeroProps {
   skillCount?: number;
 }
 
+const TERM_LINES = [
+  { type: 'cmd',  text: 'node server.js' },
+  { type: 'ok',   text: 'MongoDB connected' },
+  { type: 'ok',   text: 'PostgreSQL pool ready' },
+  { type: 'ok',   text: 'Redis cache online' },
+  { type: 'ok',   text: 'Server running :4000' },
+  { type: 'info', text: '10,000+ customers served' },
+  { type: 'cursor' },
+];
+
 export default function Hero({ profile, projectCount = 0, skillCount = 0 }: HeroProps) {
   const [activeTitleIdx, setActiveTitleIdx] = useState(0);
+  const [termVisible, setTermVisible] = useState(0);
   const titles = profile?.titles || [];
 
   useEffect(() => {
@@ -23,6 +34,13 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0 }: Hero
     }, 3500);
     return () => clearInterval(interval);
   }, [titles]);
+
+  useEffect(() => {
+    const timers = TERM_LINES.map((_, i) =>
+      setTimeout(() => setTermVisible(i + 1), 600 + i * 420)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 pb-24 overflow-hidden"
@@ -180,30 +198,33 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0 }: Hero
               {/* Decorative Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/10 to-transparent rounded-3xl blur-3xl" />
               
-              {/* Main Image Container */}
+              {/* Terminal */}
               <div className="relative">
-                <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl"
-                  style={{ border: '3px solid rgba(var(--color-primary), 0.3)', boxShadow: '0 0 60px rgba(var(--color-primary), 0.15), 0 25px 50px -12px rgba(0,0,0,0.4)', background: 'var(--card-bg)' }}>
-                  {profile?.avatarUrl ? (
-                    <img 
-                      src={(() => {
-                        const url = profile.avatarUrl;
-                        if (url.startsWith('http')) return url;
-                        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
-                        const host = baseUrl.replace('/api', '');
-                        const cleanUrl = url.startsWith('/') ? url : `/${url}`;
-                        return `${host}${cleanUrl}`;
-                      })()}
-                      alt={profile.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-9xl font-bold text-slate-300 dark:text-slate-700">
-                        {profile?.name?.charAt(0)}
-                      </span>
-                    </div>
-                  )}
+                <div className="rounded-2xl overflow-hidden shadow-2xl"
+                  style={{ border: '1px solid rgba(var(--color-primary), 0.25)', boxShadow: '0 0 60px rgba(var(--color-primary), 0.12), 0 25px 50px -12px rgba(0,0,0,0.5)', background: '#0d0d10' }}>
+                  {/* Title bar */}
+                  <div className="flex items-center gap-2 px-4 py-3" style={{ background: '#161618', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+                    <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
+                    <span className="w-3 h-3 rounded-full bg-[#28c840]" />
+                    <span className="ml-auto text-[11px] text-slate-600 font-mono tracking-wide">alwin@portfolio ~ node</span>
+                  </div>
+                  {/* Lines */}
+                  <div className="p-5 font-mono text-[13px] leading-relaxed space-y-1.5 min-h-[220px]">
+                    {TERM_LINES.map((line, i) => (
+                      <div key={i}
+                        className="flex items-center gap-2.5 transition-opacity duration-300"
+                        style={{ opacity: termVisible > i ? 1 : 0 }}>
+                        {line.type === 'cmd'    && <><span className="text-violet-400 select-none">$</span><span className="text-slate-200">{line.text}</span></>}
+                        {line.type === 'ok'     && <><span className="text-emerald-400">✓</span><span className="text-slate-300">{line.text}</span></>}
+                        {line.type === 'info'   && <><span className="text-amber-400">→</span><span className="text-slate-300">{line.text}</span></>}
+                        {line.type === 'cursor' && (
+                          <><span className="text-violet-400 select-none">$</span>
+                          <span className="inline-block w-2 h-4 bg-violet-400 align-middle animate-pulse rounded-[2px]" /></>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Floating Info Card */}

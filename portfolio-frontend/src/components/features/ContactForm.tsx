@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Send, CheckCircle, User, MessageSquare, Briefcase } from 'lucide-react';
+import { Mail, Send, CheckCircle, User, MessageSquare, Briefcase, Github, Linkedin } from 'lucide-react';
 import { sendContactMessage } from '@/lib/api';
 
 interface ContactFormProps {
@@ -75,6 +75,32 @@ export default function ContactForm({ profileEmail }: ContactFormProps) {
                       <a href={`mailto:${profileEmail || 'alwinregancse98@gmail.com'}`}
                         className="text-white font-semibold hover:text-primary transition-colors break-words text-sm">
                         {profileEmail || 'alwinregancse98@gmail.com'}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: 'rgba(var(--color-primary),0.18)' }}>
+                      <Github size={20} className="text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--muted)' }}>GitHub</div>
+                      <a href="https://github.com/alwinregan" target="_blank" rel="noopener noreferrer"
+                        className="text-white font-semibold hover:text-primary transition-colors break-words text-sm">
+                        github.com/alwinregan
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: 'rgba(var(--color-primary),0.18)' }}>
+                      <Linkedin size={20} className="text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--muted)' }}>LinkedIn</div>
+                      <a href="https://linkedin.com/in/alwinregan" target="_blank" rel="noopener noreferrer"
+                        className="text-white font-semibold hover:text-primary transition-colors break-words text-sm">
+                        linkedin.com/in/alwinregan
                       </a>
                     </div>
                   </div>

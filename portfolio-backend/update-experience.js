@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio';
+const uri = process.argv[2] || process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio';
 
 const experienceSchema = new mongoose.Schema({
   company:      { type: String, required: true },

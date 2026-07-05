@@ -54,6 +54,7 @@ export default function ProfileAdminPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadingResume, setUploadingResume] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState('');
@@ -127,6 +128,20 @@ export default function ProfileAdminPage() {
       alert("Upload failed");
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingResume(true);
+    try {
+      const res = await uploadImage(file);
+      setFormData(prev => ({ ...prev, resumeUrl: res.url }));
+    } catch (err) {
+      alert("Resume upload failed");
+    } finally {
+      setUploadingResume(false);
     }
   };
 
@@ -296,15 +311,48 @@ export default function ProfileAdminPage() {
               <p className="text-xs text-slate-500 mt-2">JPG, PNG, WEBP (Max 5MB)</p>
             </div>
 
-            {/* Resume URL */}
-            <InputField
-              label="Resume URL"
-              name="resumeUrl"
-              value={formData.resumeUrl}
-              onChange={(e) => setFormData({...formData, resumeUrl: e.target.value})}
-              placeholder="/uploads/resume.pdf or https://..."
-              icon={<FileText size={18} />}
-            />
+            {/* Resume Upload */}
+            <div>
+              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                Resume (PDF)
+              </label>
+              <div className="flex flex-col gap-2">
+                {formData.resumeUrl && (
+                  <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl">
+                    <FileText size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <a
+                      href={formData.resumeUrl.startsWith('/') ? `${(import.meta.env.VITE_API_URL || '/api').replace('/api', '')}${formData.resumeUrl}` : formData.resumeUrl}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex-1 text-sm font-medium text-emerald-700 dark:text-emerald-400 truncate hover:underline"
+                    >
+                      {formData.resumeUrl.split('/').pop() || 'resume.pdf'}
+                    </a>
+                    <button type="button" onClick={() => setFormData({ ...formData, resumeUrl: '' })}
+                      className="p-1 text-slate-400 hover:text-red-500 transition-colors">
+                      <X size={14} />
+                    </button>
+                  </div>
+                )}
+                <div className="flex gap-2">
+                  <label className="flex-1 flex items-center gap-2 px-4 py-3 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl cursor-pointer hover:border-primary hover:bg-primary/5 transition-all">
+                    {uploadingResume ? (
+                      <><Upload size={18} className="text-primary animate-pulse" /><span className="text-sm font-semibold text-primary">Uploading…</span></>
+                    ) : (
+                      <><Upload size={18} className="text-slate-400" /><span className="text-sm font-semibold text-slate-600 dark:text-slate-400">Upload PDF</span></>
+                    )}
+                    <input type="file" accept=".pdf,application/pdf" className="hidden" onChange={handleResumeUpload} disabled={uploadingResume} />
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.resumeUrl}
+                    onChange={(e) => setFormData({ ...formData, resumeUrl: e.target.value })}
+                    placeholder="or paste URL…"
+                    className="flex-1 px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  />
+                </div>
+                <p className="text-xs text-slate-500">Upload a PDF or paste an external URL (Google Drive, Dropbox, etc.)</p>
+              </div>
+            </div>
           </div>
         </Card>
 

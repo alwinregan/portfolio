@@ -26,30 +26,17 @@ interface Project {
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [allTags, setAllTags] = useState<string[]>([]);
 
   useEffect(() => {
     document.title = 'Projects | Portfolio';
     getProjects().then((data: any) => {
-      const d = data || [];
-      setProjects(d);
-      const tags = new Set<string>();
-      d.forEach((p: Project) => p.tags?.forEach(t => tags.add(t)));
-      setAllTags(Array.from(tags).sort());
-      setFilteredProjects(d);
+      setProjects(data || []);
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
-  const handleTagFilter = (tag: string | null) => {
-    setSelectedTag(tag);
-    setFilteredProjects(tag === null ? projects : projects.filter(p => p.tags?.includes(tag)));
-  };
-
-  const featuredProjects = filteredProjects.filter(p => p.featured);
-  const otherProjects = filteredProjects.filter(p => !p.featured);
+  const featuredProjects = projects.filter(p => p.featured);
+  const otherProjects = projects.filter(p => !p.featured);
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" /></div>;
 
@@ -64,22 +51,6 @@ export default function ProjectsPage() {
       </section>
 
       <div className="max-w-6xl mx-auto px-6 py-16">
-        {allTags.length > 0 && (
-          <div className="mb-12">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Filter by Technology:</h3>
-            <div className="flex flex-wrap gap-3">
-              <button onClick={() => handleTagFilter(null)} className={`px-4 py-2 rounded-lg font-semibold transition-all ${selectedTag === null ? 'bg-primary text-white' : 'text-muted hover:text-primary hover:border-primary/50 transition-colors'}`}>
-                All Projects ({projects.length})
-              </button>
-              {allTags.map(tag => (
-                <button key={tag} onClick={() => handleTagFilter(tag)} className={`px-4 py-2 rounded-lg font-semibold transition-all ${selectedTag === tag ? 'bg-primary text-white' : 'text-muted hover:text-primary hover:border-primary/50 transition-colors'}`}>
-                  {tag} ({projects.filter(p => p.tags?.includes(tag)).length})
-                </button>
-              ))}
-            </div>
-            <div className="mt-4 text-sm text-slate-600 dark:text-slate-400">Showing {filteredProjects.length} of {projects.length} projects</div>
-          </div>
-        )}
 
         {featuredProjects.length > 0 && (
           <section className="mb-20">
@@ -90,8 +61,8 @@ export default function ProjectsPage() {
 
         <section>
           {featuredProjects.length > 0 && <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8">All Projects</h2>}
-          {filteredProjects.length === 0
-            ? <div className="text-center py-16"><p className="text-xl text-slate-600 dark:text-slate-400">No projects found with the selected filters.</p></div>
+          {otherProjects.length === 0 && featuredProjects.length === 0
+            ? <div className="text-center py-16"><p className="text-xl text-slate-600 dark:text-slate-400">No projects yet.</p></div>
             : <div className="grid grid-cols-1 md:grid-cols-2 gap-8">{otherProjects.map(p => <ProjectCard key={p._id} project={p} />)}</div>
           }
         </section>

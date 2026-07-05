@@ -7,11 +7,12 @@ import { t } from '@/lib/utils';
 
 interface ProjectsProps {
   projects: any[];
+  showStats?: boolean;
 }
 
 const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 
-export default function Projects({ projects }: ProjectsProps) {
+export default function Projects({ projects, showStats = true }: ProjectsProps) {
   const displayProjects = projects.length > 0 ? projects : [];
 
   return (
@@ -170,7 +171,7 @@ export default function Projects({ projects }: ProjectsProps) {
         </div>
 
         {/* Project Stats */}
-        {displayProjects.length > 0 && (
+        {showStats && displayProjects.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

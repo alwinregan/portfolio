@@ -313,18 +313,19 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
 
                     {/* Promotion connector — appears between two cards at the same company */}
                     {isPromotionAbove && (
-                      <div className="relative flex items-center gap-3 py-3 mb-10">
-                        <div className="h-px flex-1 opacity-40" style={{ background: 'rgb(var(--color-primary))' }} />
-                        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold shrink-0"
+                      <div className="relative flex items-center gap-2 py-3 mb-10 min-w-0">
+                        <div className="h-px flex-1 opacity-40 shrink" style={{ background: 'rgb(var(--color-primary))' }} />
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shrink-0"
                           style={{
                             background: 'rgba(var(--color-primary),0.08)',
                             border: '1px solid rgba(var(--color-primary),0.25)',
                             color: 'rgb(var(--color-primary))',
                           }}>
-                          <TrendingUp size={12} />
-                          Internal Promotion · {exp.company}
+                          <TrendingUp size={12} className="shrink-0" />
+                          <span>Internal Promotion</span>
+                          <span className="hidden sm:inline">· {exp.company}</span>
                         </div>
-                        <div className="h-px flex-1 opacity-40" style={{ background: 'rgb(var(--color-primary))' }} />
+                        <div className="h-px flex-1 opacity-40 shrink" style={{ background: 'rgb(var(--color-primary))' }} />
                       </div>
                     )}
                   </div>

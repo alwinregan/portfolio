@@ -774,15 +774,17 @@ export default function SettingsAdminPage() {
           <Card title="Feature Toggles" subtitle="Show / hide sections" icon={<Zap size={20} />}>
             <div className="space-y-3">
               {[
-                { key: 'showProjects',      label: 'Projects',       desc: 'Display projects section' },
-                { key: 'showSkills',        label: 'Skills',         desc: 'Display skills section' },
-                { key: 'showExperience',    label: 'Experience',     desc: 'Display work experience' },
-                { key: 'showCertifications',label: 'Certifications', desc: 'Display certifications' },
-                { key: 'showContactForm',   label: 'Contact Form',   desc: 'Display contact form' },
-                { key: 'enableBlog',        label: 'Blog',           desc: 'Enable blog feature' },
+                { key: 'showProjects',      label: 'Projects',           desc: 'Display projects section' },
+                { key: 'showSkills',        label: 'Skills',             desc: 'Display skills section' },
+                { key: 'showExperience',    label: 'Experience',         desc: 'Display work experience' },
+                { key: 'showCertifications',label: 'Certifications',     desc: 'Display certifications' },
+                { key: 'showContactForm',   label: 'Contact Form',       desc: 'Display contact form' },
+                { key: 'enableBlog',        label: 'Blog',               desc: 'Enable blog feature' },
+                { key: 'showAboutStats',    label: 'About Stats',        desc: 'Show stat numbers in About section' },
+                { key: 'showProjectsStats', label: 'Projects Stats',     desc: 'Show stats footer in Projects section' },
               ].map(({ key, label, desc }) => (
                 <FeatureToggle key={key} label={label} description={desc}
-                  active={toggles[key]} onChange={v => handleToggle(key, v)} />
+                  active={toggles[key] !== false} onChange={v => handleToggle(key, v)} />
               ))}
             </div>
           </Card>

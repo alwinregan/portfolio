@@ -124,8 +124,6 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0 }: Hero
                   href={profile.resumeUrl.startsWith('/')
                     ? `${(import.meta.env.VITE_API_URL || 'http://127.0.0.1:3001/api').replace('/api', '')}${profile.resumeUrl}`
                     : profile.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   download
                   className="group px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
                   style={{ background: 'var(--card-bg)', border: '2px solid var(--card-border)', backdropFilter: 'blur(16px)' }}
@@ -246,10 +244,11 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0 }: Hero
                     { svg: 'linkedin', href: profile?.socialLinks?.linkedin,  label: 'LinkedIn' },
                     { svg: 'mail',     href: `mailto:${profile?.email}`,      label: 'Email' },
                   ].map((social, i) => social.href && (
-                    <Link
+                    <a
                       key={i}
-                      to={social.href}
+                      href={social.href}
                       target="_blank"
+                      rel="noopener noreferrer"
                       title={social.label}
                       className="w-14 h-14 flex items-center justify-center shadow-xl rounded-xl hover:scale-110 hover:border-primary transition-all group"
                       style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)', ['--hover-bg' as any]: 'rgb(var(--color-primary))' }}
@@ -265,7 +264,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0 }: Hero
                         </svg>
                       )}
                       {social.svg === 'mail' && <Mail size={22} className="group-hover:text-white transition-colors" />}
-                    </Link>
+                    </a>
                   ))}
                 </motion.div>
               </div>

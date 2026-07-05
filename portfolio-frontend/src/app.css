@@ -30,7 +30,7 @@
 
   --foreground:     #0f172a;
   --muted:          #475569;
-  --section-alt-bg: #f4f6fb;   /* slightly tinted surface for alternating sections */
+  --section-alt-bg: #f0edff;   /* violet-50 tint — clearly visible section separation */
 
   /* Ghost / outline buttons — clearly visible on white */
   --ghost-bg:     rgba(var(--color-primary), 0.06);
@@ -44,9 +44,23 @@
   --card-shadow:    none;
   --foreground:     #fafafa;
   --muted:          #a1a1aa;
-  --section-alt-bg: rgba(255, 255, 255, 0.025);
+  --section-alt-bg: rgba(124, 58, 237, 0.06);
   --ghost-bg:       rgba(255, 255, 255, 0.07);
   --ghost-border:   rgba(255, 255, 255, 0.16);
+}
+
+/* Dark section block — used on Contact. Overrides CSS vars so premium-card
+   and other token-based components render correctly on dark background. */
+.dark-section {
+  background: #0c1229;
+  color: #f8fafc;
+  --card-bg:     rgba(255, 255, 255, 0.07);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --card-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+  --foreground:  #f8fafc;
+  --muted:       #94a3b8;
+  --ghost-bg:    rgba(255, 255, 255, 0.09);
+  --ghost-border:rgba(255, 255, 255, 0.20);
 }
 
 /* ── Full-page gradient on html ── */

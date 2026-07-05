@@ -70,11 +70,11 @@ export default function Footer({ profileName }: FooterProps) {
             </h4>
             <ul className="space-y-3">
               {[
-                { to: '#about',      label: 'About' },
-                { to: 'projects',   label: 'Projects' },
-                { to: '#skills',     label: 'Skills' },
-                { to: '#experience', label: 'Experience' },
-                { to: '#contact',    label: 'Contact' },
+                { to: '/#about',      label: 'About' },
+                { to: '/projects',    label: 'Projects' },
+                { to: '/#skills',     label: 'Skills' },
+                { to: '/#experience', label: 'Experience' },
+                { to: '/#contact',    label: 'Contact' },
               ].map(({ to, label }) => (
                 <li key={to}>
                   <Link to={to} className="text-sm text-muted hover:text-foreground transition-colors font-medium">

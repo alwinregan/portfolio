@@ -158,7 +158,7 @@ export default function SkillsShowcase({ initialSkills }: SkillsProps) {
               { value: `${displaySkills.length}`, label: 'Total Skills' },
               { value: `${displaySkills.filter(s => s.level >= 90).length}`, label: 'Expert Level' },
               { value: `${orderedCategories.length}`, label: 'Domains' },
-              { value: `${Math.round(displaySkills.reduce((a, s) => a + s.level, 0) / displaySkills.length)}%`, label: 'Avg Proficiency' },
+              { value: displaySkills.length ? `${Math.round(displaySkills.reduce((a, s) => a + s.level, 0) / displaySkills.length)}%` : '—', label: 'Avg Proficiency' },
             ].map(({ value, label }) => (
               <div key={label}>
                 <div className="text-4xl font-black mb-2 text-slate-900 dark:text-white">{value}</div>

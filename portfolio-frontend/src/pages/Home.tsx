@@ -138,10 +138,10 @@ export default function HomePage() {
                   {/* stats — neutral numbers, no color noise */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
                     {[
-                      { value: '06+', label: 'Years' },
+                      { value: settings?.metadata?.aboutStats?.yearsValue || '06+', label: 'Years' },
                       { value: `${projects?.length || 0}+`, label: 'Projects' },
                       { value: `${skills?.length || 0}+`, label: 'Technologies' },
-                      { value: '₹50Cr+', label: 'Collected' },
+                      { value: settings?.metadata?.aboutStats?.stat4Value || '₹50Cr+', label: settings?.metadata?.aboutStats?.stat4Label || 'Collected' },
                     ].map(({ value, label }) => (
                       <div key={label} className="premium-card p-5 text-center">
                         <div className="text-3xl font-black text-slate-900 dark:text-white mb-1">{value}</div>

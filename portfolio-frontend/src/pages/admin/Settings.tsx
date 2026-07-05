@@ -72,6 +72,14 @@ export default function SettingsAdminPage() {
   const [editingSection, setEditingSection] = useState<any>(null);
   const [sectionForm, setSectionForm] = useState(EMPTY_SECTION_FORM);
 
+  // About stats (editable numbers shown in the About section)
+  const [aboutStats, setAboutStats] = useState({
+    yearsValue: '06+',
+    stat4Value: '₹50Cr+',
+    stat4Label: 'Collected',
+  });
+  const [savingStats, setSavingStats] = useState(false);
+
   // Export / Import
   const importAllRef = useRef<HTMLInputElement>(null);
   const [exportingAll, setExportingAll] = useState(false);
@@ -91,6 +99,9 @@ export default function SettingsAdminPage() {
       setMeta({ siteName: data.siteName || '', metaTitle: data.metaTitle || '', metaDescription: data.metaDescription || '', gaId: data.gaId || '' });
       const savedTheme = data.metadata?.theme;
       if (savedTheme) setTheme({ ...DEFAULT_THEME, ...savedTheme });
+
+      const savedStats = data.metadata?.aboutStats;
+      if (savedStats) setAboutStats(prev => ({ ...prev, ...savedStats }));
 
       const savedSections: any[] = data.metadata?.pageLayout?.sections ?? [];
       const savedMap = Object.fromEntries(savedSections.map((s: any) => [s.id, s]));
@@ -130,6 +141,17 @@ export default function SettingsAdminPage() {
     try { await updateSettings(meta); showToast('Site settings saved!'); }
     catch { alert('Error saving settings'); }
     finally { setSaving(false); }
+  };
+
+  const handleSaveStats = async () => {
+    setSavingStats(true);
+    try {
+      const updated = { ...settingsData, metadata: { ...(settingsData?.metadata || {}), aboutStats } };
+      await updateSettings(updated);
+      setSettingsData(updated);
+      showToast('Stats saved!');
+    } catch { showToast('Failed to save stats.'); }
+    finally { setSavingStats(false); }
   };
 
   /* ── theme ── */
@@ -477,6 +499,68 @@ export default function SettingsAdminPage() {
                 <Plus size={16} /> Add Custom Section
               </button>
             )}
+          </Card>
+
+          {/* ── About Stats ── */}
+          <Card title="About Section Stats" subtitle="Numbers shown in the About section below your bio" icon={<BarChart3 size={20} />}>
+            <p className="text-xs text-slate-500 mb-5">
+              Projects and Technologies counts are automatic (pulled from your data). Edit the two custom stats below.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              {/* Auto stats — read-only display */}
+              <div className="p-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40">
+                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Auto — Projects</div>
+                <div className="text-2xl font-black text-slate-400">N+</div>
+                <div className="text-xs text-slate-400">from your projects list</div>
+              </div>
+              <div className="p-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40">
+                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Auto — Technologies</div>
+                <div className="text-2xl font-black text-slate-400">N+</div>
+                <div className="text-xs text-slate-400">from your skills list</div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+              {/* Editable stat 1 — Years */}
+              <div className="p-4 rounded-xl border-2 border-primary/20 bg-primary/4">
+                <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: 'rgb(var(--color-primary))' }}>
+                  Stat 1 — Years of Experience
+                </div>
+                <InputField
+                  label="Value"
+                  name="yearsValue"
+                  value={aboutStats.yearsValue}
+                  onChange={e => setAboutStats(p => ({ ...p, yearsValue: e.target.value }))}
+                  placeholder="06+"
+                />
+                <p className="text-xs text-slate-400 mt-1">Label is fixed as "Years"</p>
+              </div>
+              {/* Editable stat 4 — Custom */}
+              <div className="p-4 rounded-xl border-2 border-primary/20 bg-primary/4">
+                <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: 'rgb(var(--color-primary))' }}>
+                  Stat 4 — Custom
+                </div>
+                <div className="space-y-3">
+                  <InputField
+                    label="Value"
+                    name="stat4Value"
+                    value={aboutStats.stat4Value}
+                    onChange={e => setAboutStats(p => ({ ...p, stat4Value: e.target.value }))}
+                    placeholder="₹50Cr+"
+                  />
+                  <InputField
+                    label="Label"
+                    name="stat4Label"
+                    value={aboutStats.stat4Label}
+                    onChange={e => setAboutStats(p => ({ ...p, stat4Label: e.target.value }))}
+                    placeholder="Collected"
+                  />
+                </div>
+              </div>
+            </div>
+            <button type="button" onClick={handleSaveStats} disabled={savingStats}
+              className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl text-sm hover:bg-primary-dark transition-all disabled:opacity-60 shadow-lg shadow-primary/25">
+              <Save size={15} /> {savingStats ? 'Saving…' : 'Save Stats'}
+            </button>
           </Card>
 
           {/* ── Export / Import ── */}

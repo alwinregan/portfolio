@@ -100,24 +100,26 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
 
         <motion.div style={{ opacity: heroOpacity }} className="relative z-10 px-8 md:px-16 pb-16 max-w-5xl">
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
-            className="text-white/40 text-xs font-mono uppercase tracking-[0.2em] mb-6">
+            className="text-xs font-mono uppercase tracking-[0.2em] mb-6" style={{ color: 'rgba(167,139,250,0.9)' }}>
             {cs.subtitle}
           </motion.p>
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-[0.9] mb-6">
-            {title}<span className="text-primary">.</span>
+            {title}<span style={{ color: '#a78bfa' }}>.</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32 }}
-            className="text-white/60 text-lg max-w-2xl leading-relaxed mb-8 font-light">
+            className="text-white/85 text-lg max-w-2xl leading-relaxed mb-8 font-light">
             {cs.tagline}
           </motion.p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42 }}
             className="flex flex-wrap items-center gap-3 mb-10">
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-primary/20 text-primary border border-primary/30">
+            <span className="px-3 py-1 rounded-full text-xs font-bold"
+              style={{ background: 'rgba(167,139,250,0.22)', color: '#c4b5fd', border: '1px solid rgba(167,139,250,0.45)' }}>
               {cs.meta?.developer}
             </span>
             {cs.meta?.stackHighlight?.map((s: string) => (
-              <span key={s} className="px-3 py-1 rounded-full text-xs font-mono text-white/50 border border-white/10">{s}</span>
+              <span key={s} className="px-3 py-1 rounded-full text-xs font-mono"
+                style={{ color: 'rgba(255,255,255,0.80)', border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}>{s}</span>
             ))}
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
@@ -423,12 +425,17 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
         </motion.div>
         <motion.div style={{ opacity: heroOpacity }} className="relative z-10 px-8 md:px-16 pb-14 max-w-5xl">
           <div className="flex flex-wrap gap-2 mb-5">
-            {tags.map(tag => <span key={tag} className="px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full border border-white/20 text-white/60">{tag}</span>)}
+            {tags.map(tag => (
+              <span key={tag} className="px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full"
+                style={{ color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.30)', background: 'rgba(255,255,255,0.08)' }}>
+                {tag}
+              </span>
+            ))}
           </div>
           <h1 className="text-6xl md:text-7xl font-black text-white tracking-tight leading-[0.95] mb-5">
-            {title}<span className="text-primary">.</span>
+            {title}<span style={{ color: '#a78bfa' }}>.</span>
           </h1>
-          <p className="text-white/60 text-lg max-w-2xl leading-relaxed mb-8 font-light">{description}</p>
+          <p className="text-lg max-w-2xl leading-relaxed mb-8 font-light" style={{ color: 'rgba(255,255,255,0.85)' }}>{description}</p>
           <div className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"

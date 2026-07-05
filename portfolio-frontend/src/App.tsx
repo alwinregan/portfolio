@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { SettingsProvider } from './context/SettingsContext';
 import { ToastProvider } from './components/ui/Toast';
+import PageProgressBar from './components/ui/PageProgressBar';
 
 // Public pages
 import HomePage from './pages/Home';
@@ -33,6 +34,7 @@ export default function App() {
       <ThemeProvider>
         <SettingsProvider>
           <ToastProvider>
+            <PageProgressBar />
             <Routes>
               {/* Public */}
               <Route path="/" element={<HomePage />} />

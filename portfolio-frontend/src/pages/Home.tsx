@@ -173,7 +173,7 @@ export default function HomePage() {
         );
 
       case 'projects':
-        return <Projects key="projects" projects={projects || []} showStats={settings?.featureToggles?.showProjectsStats !== false} />;
+        return <Projects key="projects" projects={projects || []} showStats={settings?.featureToggles?.showProjectsStats !== false} limit={3} />;
 
       case 'skills':
         return <SkillsShowcase key="skills" initialSkills={skills || []} />;

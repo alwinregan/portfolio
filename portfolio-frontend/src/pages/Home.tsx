@@ -127,6 +127,22 @@ export default function HomePage() {
                     )) || <p className="text-slate-700 dark:text-slate-300">Full-stack engineer building high-performance digital products.</p>}
                   </div>
 
+                  {/* Philosophy Quote */}
+                  <motion.blockquote
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    className="pl-4 py-0.5"
+                    style={{ borderLeft: '2px solid rgba(124,58,237,0.5)' }}
+                  >
+                    <p className="text-base italic text-slate-600 dark:text-slate-400 leading-relaxed">
+                      "Make it work. Make it right. Make it fast."
+                    </p>
+                    <cite className="not-italic text-[10px] uppercase tracking-widest font-semibold text-slate-400 mt-1 block">
+                      — Kent Beck
+                    </cite>
+                  </motion.blockquote>
+
                   {/* stats — neutral numbers, no color noise */}
                   {settings?.featureToggles?.showAboutStats !== false && (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">

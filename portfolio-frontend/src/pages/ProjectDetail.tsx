@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, Download, Github, Globe, ExternalLink } from 'lucide-react';
 import { getProjectBySlug } from '@/lib/api';
 import { t } from '@/lib/utils';
+import Footer from '@/components/layout/Footer';
 
 const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace('/api', '');
 const imgUrl = (p?: string) => !p ? '' : p.startsWith('http') ? p : `${API_BASE}${p}`;
@@ -187,6 +188,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
           )}
         </div>
       </div>
+      <Footer />
     </main>
   );
 }
@@ -493,6 +495,7 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
           )}
         </div>
       </div>
+      <Footer />
     </main>
   );
 }

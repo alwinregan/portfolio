@@ -1,31 +1,35 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AdminLayout from '@/components/layout/AdminLayout';
-import { 
-  getAdminExperiences, 
-  createExperience, 
-  updateExperience, 
-  deleteExperience 
+import {
+  getAdminExperiences,
+  createExperience,
+  updateExperience,
+  deleteExperience,
+  exportModule,
+  importModule,
 } from '@/lib/api';
-import { 
-  Button, 
-  InputField, 
+import {
+  Button,
+  InputField,
   TextareaField,
   Card,
   Badge,
   LoadingSpinner,
   EmptyState
 } from '@/components/admin/AdminUI';
-import { 
-  Plus, 
-  Trash2, 
-  Edit2, 
+import {
+  Plus,
+  Trash2,
+  Edit2,
   Briefcase,
   Calendar,
   MapPin,
   X,
   Code2,
-  CheckCircle
+  CheckCircle,
+  Download,
+  Upload,
 } from 'lucide-react';
 
 export default function ExperienceAdminPage() {
@@ -33,6 +37,9 @@ export default function ExperienceAdminPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState('');
+  const importRef = useRef<HTMLInputElement>(null);
   const [newExp, setNewExp] = useState({
     company: '',
     role: '',
@@ -49,6 +56,33 @@ export default function ExperienceAdminPage() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleExport = async () => {
+    const data = await exportModule('experience');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url;
+    a.download = `experience-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; if (!file) return;
+    setImporting(true); setImportResult('');
+    try {
+      const json = JSON.parse(await file.text());
+      const arr = Array.isArray(json) ? json : (json.experience ?? []);
+      const result = await importModule('experience', arr);
+      const msg = Object.entries(result).map(([k, v]) => `${k}: ${v}`).join(' · ');
+      setImportResult(`✓ ${msg}`);
+      fetchData();
+    } catch (err: any) {
+      setImportResult(`✗ ${err?.response?.data?.message || err.message}`);
+    } finally {
+      setImporting(false);
+      if (importRef.current) importRef.current.value = '';
+    }
+  };
 
   const fetchData = async () => {
     const data = await getAdminExperiences();
@@ -138,18 +172,30 @@ export default function ExperienceAdminPage() {
     >
       <div className="space-y-8">
         {/* Header Actions */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-wrap justify-between items-center gap-3">
           <div className="text-sm font-bold text-slate-500 uppercase tracking-wider">
             Total Positions: <span className="text-primary">{experiences.length}</span>
           </div>
-          <Button
-            onClick={() => setShowForm(!showForm)}
-            variant="primary"
-            icon={showForm ? <X size={18} /> : <Plus size={18} />}
-          >
-            {showForm ? 'Cancel' : 'Add Experience'}
-          </Button>
+          <div className="flex items-center gap-2">
+            <button onClick={handleExport}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary transition-all">
+              <Download size={14} /> Export
+            </button>
+            <button onClick={() => importRef.current?.click()} disabled={importing}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary transition-all disabled:opacity-50">
+              <Upload size={14} /> {importing ? 'Importing…' : 'Import'}
+            </button>
+            <input ref={importRef} type="file" accept=".json" className="hidden" onChange={handleImportFile} />
+            <Button onClick={() => setShowForm(!showForm)} variant="primary" icon={showForm ? <X size={18} /> : <Plus size={18} />}>
+              {showForm ? 'Cancel' : 'Add Experience'}
+            </Button>
+          </div>
         </div>
+        {importResult && (
+          <div className={`text-sm px-4 py-2.5 rounded-xl font-medium ${importResult.startsWith('✓') ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'}`}>
+            {importResult}
+          </div>
+        )}
 
         {/* Form */}
         {showForm && (

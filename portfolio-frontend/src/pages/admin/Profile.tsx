@@ -1,7 +1,7 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AdminLayout from '@/components/layout/AdminLayout';
-import { getProfile, updateProfile, uploadImage } from '@/lib/api';
+import { getProfile, updateProfile, uploadImage, exportModule, importModule } from '@/lib/api';
 import { 
   Button, 
   InputField, 
@@ -10,21 +10,22 @@ import {
   LoadingSpinner
 } from '@/components/admin/AdminUI';
 import { 
-  Save, 
-  User as UserIcon, 
-  MapPin, 
-  Mail, 
-  Github, 
-  Linkedin, 
-  Twitter, 
-  Globe, 
+  Save,
+  User as UserIcon,
+  MapPin,
+  Mail,
+  Github,
+  Linkedin,
+  Twitter,
+  Globe,
   Camera,
   Plus,
   Trash2,
   FileText,
   Briefcase,
   Upload,
-  X
+  X,
+  Download,
 } from 'lucide-react';
 
 export default function ProfileAdminPage() {
@@ -54,6 +55,35 @@ export default function ProfileAdminPage() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [newTitle, setNewTitle] = useState('');
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState('');
+  const importRef = useRef<HTMLInputElement>(null);
+
+  const handleExport = async () => {
+    const data = await exportModule('profile');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url;
+    a.download = `profile-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; if (!file) return;
+    setImporting(true); setImportResult('');
+    try {
+      const json = JSON.parse(await file.text());
+      const profileData = json.profile ?? json;
+      const result = await importModule('profile', profileData);
+      const msg = Object.entries(result).map(([k, v]) => `${k}: ${v}`).join(' · ');
+      setImportResult(`✓ ${msg} — refresh the page to see updated data`);
+    } catch (err: any) {
+      setImportResult(`✗ ${err?.response?.data?.message || err.message}`);
+    } finally {
+      setImporting(false);
+      if (importRef.current) importRef.current.value = '';
+    }
+  };
 
   useEffect(() => {
     getProfile().then(data => {
@@ -151,6 +181,25 @@ export default function ProfileAdminPage() {
       title="Profile" 
       subtitle="Manage your professional identity and information"
     >
+      {/* Export / Import toolbar */}
+      <div className="flex flex-wrap items-center gap-2 mb-6 max-w-5xl">
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-500 mr-2">Profile data:</span>
+        <button onClick={handleExport}
+          className="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary transition-all">
+          <Download size={14} /> Export JSON
+        </button>
+        <button onClick={() => importRef.current?.click()} disabled={importing}
+          className="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary transition-all disabled:opacity-50">
+          <Upload size={14} /> {importing ? 'Importing…' : 'Import JSON'}
+        </button>
+        <input ref={importRef} type="file" accept=".json" className="hidden" onChange={handleImportFile} />
+        {importResult && (
+          <span className={`text-sm font-medium px-3 py-1.5 rounded-lg ${importResult.startsWith('✓') ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'}`}>
+            {importResult}
+          </span>
+        )}
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-8 max-w-5xl">
         {/* Basic Information */}
         <Card title="Basic Information" subtitle="Your core identity" icon={<UserIcon size={20} />}>

@@ -584,8 +584,8 @@ export default function SettingsAdminPage() {
             )}
 
             <div className="text-xs text-slate-500 space-y-1">
-              <p><strong>Export</strong> downloads Profile, Skills, Experience, Projects, Certifications &amp; Settings as one JSON file.</p>
-              <p><strong>Import</strong> upserts all data. Images (avatars, project images) are excluded — upload them separately via the admin panel.</p>
+              <p><strong>Export</strong> downloads Profile, Skills, Experience, Projects, Certifications, Settings, Blog posts, Apps &amp; Blocks as one JSON file.</p>
+              <p><strong>Import</strong> upserts all data. Images (avatars, project covers, etc.) are excluded — upload them separately via the admin panel.</p>
             </div>
           </Card>
 

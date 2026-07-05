@@ -63,7 +63,7 @@ export default function BlogDetailPage() {
               <span className="font-bold tracking-wide uppercase text-sm">Back to Journal</span>
             </Link>
             <div className="flex flex-wrap items-center gap-4 mb-6 text-sm font-bold text-white/80">
-              {blog.category && <span className="px-3 py-1 bg-primary text-white rounded-lg uppercase tracking-wider text-xs">{blog.category}</span>}
+              {blog.category && <span className="px-3 py-1 bg-[#7c3aed] text-white rounded-lg uppercase tracking-wider text-xs">{blog.category}</span>}
               <span className="flex items-center gap-2"><Calendar size={14} />{new Date(blog.publishedAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
               <span className="flex items-center gap-2"><Clock size={14} />{blog.readTime} min read</span>
             </div>

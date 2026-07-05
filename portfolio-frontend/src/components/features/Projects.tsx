@@ -108,7 +108,7 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 hover:bg-primary hover:text-white transition-all hover:scale-110"
+                      className="p-2.5 hover:bg-[#7c3aed] hover:text-white transition-all hover:scale-110"
                       title="View Live Demo"
                     >
                       <ExternalLink size={16} />

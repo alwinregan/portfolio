@@ -126,7 +126,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
             className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark transition-all text-sm">
+                className="group inline-flex items-center gap-2 px-6 py-3 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-lg transition-all text-sm">
                 <Globe size={15} /> View Live
                 <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
@@ -171,7 +171,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
                 <p className="text-muted max-w-md">Architecture decisions, trade-offs, and lessons from building {title} end to end.</p>
               </div>
               <a href={imgUrl(project.pdfUrl)} target="_blank" download rel="noopener noreferrer"
-                className="shrink-0 inline-flex items-center gap-3 px-10 py-5 bg-primary text-white font-black text-base rounded-xl hover:bg-primary-dark transition-all shadow-2xl shadow-primary/25">
+                className="shrink-0 inline-flex items-center gap-3 px-10 py-5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-black text-base rounded-xl transition-all shadow-2xl shadow-primary/25">
                 <Download size={20} /> Download PDF
               </a>
             </div>
@@ -187,7 +187,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
           </Link>
           {project.liveUrl && (
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-dark transition-colors">
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-sm font-bold rounded-lg transition-colors">
               <Globe size={14} /> View Live Project
             </a>
           )}
@@ -383,7 +383,7 @@ function ImpactSection({ s, base, project }: any) {
                 <p className="text-muted text-sm">Live deployment — a real gym using this every day.</p>
               </div>
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                className="shrink-0 inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors text-sm group">
+                className="shrink-0 inline-flex items-center gap-2 px-7 py-3.5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl transition-colors text-sm group">
                 <Globe size={16} /> Visit FitCore
                 <ExternalLink size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
@@ -439,7 +439,7 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
           <div className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-lg text-sm hover:bg-primary-dark transition-all">
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-lg text-sm transition-all">
                 <Globe size={15} /> View Live
               </a>
             )}
@@ -501,7 +501,7 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
           </Link>
           {project.liveUrl && (
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-dark transition-colors">
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-sm font-bold rounded-lg transition-colors">
               <Globe size={14} /> Live Project
             </a>
           )}

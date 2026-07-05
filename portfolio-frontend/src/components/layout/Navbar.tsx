@@ -103,7 +103,7 @@ export default function Navbar({ resumeUrl }: { resumeUrl?: string | null }) {
               <a
                 href="/#contact"
                 onClick={(e) => handleNavClick(e, '/#contact')}
-                className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/25"
+                className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/25"
               >
                 Let's Talk
               </a>
@@ -182,7 +182,7 @@ export default function Navbar({ resumeUrl }: { resumeUrl?: string | null }) {
                   <a
                     href="/#contact"
                     onClick={(e) => handleNavClick(e, '/#contact')}
-                    className="block w-full px-6 py-3 bg-primary hover:bg-primary-dark text-white text-center font-bold rounded-lg transition-all shadow-lg shadow-primary/25"
+                    className="block w-full px-6 py-3 bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-center font-bold rounded-lg transition-all"
                   >
                     Get In Touch
                   </a>

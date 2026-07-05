@@ -14,15 +14,17 @@ interface HeroProps {
 }
 
 const TERM_LINES = [
-  { type: 'cmd',  text: 'build --project fintech-platform' },
-  { type: 'ok',   text: 'Go microservice compiled & ready' },
-  { type: 'ok',   text: 'Laravel + Node.js APIs scaffolded' },
-  { type: 'ok',   text: 'React + TypeScript frontend built' },
-  { type: 'ok',   text: 'MongoDB + PostgreSQL connected' },
-  { type: 'ok',   text: 'SSO + JWT auth middleware active' },
-  { type: 'ok',   text: 'Redis cache + queue workers ready' },
-  { type: 'ok',   text: 'CI/CD pipeline configured' },
-  { type: 'info', text: 'Deployment successful 🚀' },
+  { type: 'cmd',  text: 'deploy --env production --zero-downtime' },
+  { type: 'ok',   text: 'Architecture validated — microservices ready' },
+  { type: 'ok',   text: 'SSO + JWT auth layers secured' },
+  { type: 'ok',   text: 'Node.js · Laravel · Go services online' },
+  { type: 'ok',   text: 'MongoDB · MySQL · MSSQL · PostgreSQL ready' },
+  { type: 'ok',   text: 'Redis cache hit rate: 94.2%' },
+  { type: 'ok',   text: 'Bull queue workers: 8 active' },
+  { type: 'ok',   text: 'WebSocket events synced · latency 12ms' },
+  { type: 'ok',   text: 'Load balancer: 3 nodes registered' },
+  { type: 'ok',   text: 'GitHub Actions CI/CD pipeline passed' },
+  { type: 'info', text: 'Uptime 99.9% · Serving users worldwide 🚀' },
   { type: 'cursor' },
 ];
 
@@ -41,7 +43,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
 
   useEffect(() => {
     const timers = TERM_LINES.map((_, i) =>
-      setTimeout(() => setTermVisible(i + 1), 600 + i * 420)
+      setTimeout(() => setTermVisible(i + 1), 500 + i * 280)
     );
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -223,7 +225,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
                     <span className="ml-auto text-[11px] text-slate-600 font-mono tracking-wide">alwin@portfolio ~ node</span>
                   </div>
                   {/* Lines */}
-                  <div className="p-5 font-mono text-[13px] leading-relaxed space-y-1.5 min-h-[290px]">
+                  <div className="p-5 font-mono text-[13px] leading-relaxed space-y-1.5 min-h-[300px]">
                     {TERM_LINES.map((line, i) => (
                       <div key={i}
                         className="flex items-center gap-2.5 transition-opacity duration-300"

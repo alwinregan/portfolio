@@ -129,23 +129,23 @@ export default function HomePage() {
                     <div className="w-20 h-1 bg-primary rounded-full mb-8" />
                   </div>
 
-                  <div className="text-lg leading-relaxed space-y-4">
+                  <div className="text-lg leading-relaxed space-y-5">
                     {t(profile?.about)?.split('\n\n').map((para: string, i: number) => (
-                      <p key={i} className="text-slate-700 dark:text-slate-300">{para}</p>
+                      <p key={i} className="text-slate-700 dark:text-slate-300 leading-[1.8]">{para}</p>
                     )) || <p className="text-slate-700 dark:text-slate-300">Full-stack engineer building high-performance digital products.</p>}
                   </div>
 
-                  {/* stats */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
+                  {/* stats — neutral numbers, no color noise */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
                     {[
-                      { value: '06+', label: 'Years Experience' },
-                      { value: `${projects?.length || 0}+`, label: 'Projects Delivered' },
-                      { value: `${skills?.length || 0}+`, label: 'Tech Skills' },
-                      { value: '100%', label: 'Client Satisfaction' },
+                      { value: '06+', label: 'Years' },
+                      { value: `${projects?.length || 0}+`, label: 'Projects' },
+                      { value: `${skills?.length || 0}+`, label: 'Technologies' },
+                      { value: '₹50Cr+', label: 'Collected' },
                     ].map(({ value, label }) => (
-                      <div key={label} className="premium-card p-6 text-center hover:border-primary/30 transition-all">
-                        <div className="text-4xl font-bold text-primary mb-2">{value}</div>
-                        <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">{label}</div>
+                      <div key={label} className="premium-card p-5 text-center">
+                        <div className="text-3xl font-black text-slate-900 dark:text-white mb-1">{value}</div>
+                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">{label}</div>
                       </div>
                     ))}
                   </div>

@@ -121,29 +121,26 @@ export default function Projects({ projects }: ProjectsProps) {
                     </h4>
 
                     {/* Description */}
-                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-2 flex-grow">
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-3 flex-grow">
                       {typeof project.description === 'object' ? project.description.en : project.description}
                     </p>
 
                     {/* Tech Stack */}
                     {project.techStack && project.techStack.length > 0 && (
                       <div className="mb-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Code size={14} className="text-primary" />
-                          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tech Stack</span>
-                        </div>
                         <div className="flex flex-wrap gap-1.5">
-                          {project.techStack.slice(0, 4).map((tech: string) => (
+                          {project.techStack.slice(0, 5).map((tech: string) => (
                             <span
                               key={tech}
-                              className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light rounded-md border border-primary/30"
+                              className="px-2 py-1 text-[10px] font-semibold rounded-md"
+                              style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'var(--muted)' }}
                             >
                               {tech}
                             </span>
                           ))}
-                          {project.techStack.length > 4 && (
-                            <span className="px-2 py-1 text-[10px] font-bold text-slate-500">
-                              +{project.techStack.length - 4}
+                          {project.techStack.length > 5 && (
+                            <span className="px-2 py-1 text-[10px] font-semibold text-slate-400">
+                              +{project.techStack.length - 5}
                             </span>
                           )}
                         </div>
@@ -151,11 +148,17 @@ export default function Projects({ projects }: ProjectsProps) {
                     )}
 
                     {/* Footer Link */}
-                    <div className="pt-4 border-t border-[var(--card-border)] mt-auto">
+                    <div className="pt-4 border-t border-[var(--card-border)] mt-auto flex items-center justify-between gap-2">
                       <div className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all group/link">
-                        View Details
+                        {project.caseStudy ? 'Read Case Study' : 'View Details'}
                         <ArrowUpRight size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
                       </div>
+                      {project.caseStudy && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded"
+                          style={{ background: 'rgba(var(--color-primary),0.08)', color: 'rgb(var(--color-primary))', border: '1px solid rgba(var(--color-primary),0.2)' }}>
+                          Case Study
+                        </span>
+                      )}
                     </div>
                   </div>
                 </Link>

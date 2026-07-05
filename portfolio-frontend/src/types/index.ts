@@ -76,6 +76,7 @@ export interface Experience {
   startDate: string;
   endDate?: string;
   isCurrent: boolean;
+  highlights: string[];
   description: string[];
   technologies: string[];
   order: number;

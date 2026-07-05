@@ -1,14 +1,13 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Experience } from '@/types';
-import { Briefcase, Calendar, MapPin, TrendingUp, Zap, ChevronDown } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, Zap, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
 interface ExperienceTimelineProps {
   experience: Experience[];
 }
 
-// Maps each bullet to a domain group by keyword match
 const DOMAIN_MAP: Array<{ keywords: string[]; label: string }> = [
   { keywords: ['UPI platform', 'microservice', 'HDFC Bank', 'onboarding, transactions', 'UPI transaction'], label: 'UPI Platform' },
   { keywords: ['BBPS', 'bill payment', 'BillDesk', 'PayU', 'biller', 'omnichannel'], label: 'BBPS' },
@@ -39,7 +38,6 @@ function groupByDomain(bullets: string[]): Array<{ domain: string; items: string
   return Array.from(map.entries()).map(([domain, items]) => ({ domain, items }));
 }
 
-// Strip leading verb for cleaner display (verb shown separately)
 function splitVerb(text: string): { verb: string; body: string } {
   const words = text.split(' ');
   return { verb: words[0], body: words.slice(1).join(' ') };
@@ -81,7 +79,7 @@ export default function ExperienceTimeline({ experience }: ExperienceTimelinePro
             <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               className="text-lg text-slate-500 dark:text-slate-400">
-              {sortedExp.length} positions · {new Set(sortedExp.map(e => e.company)).size} companies · 6+ years
+              {sortedExp.length} positions · {new Set(sortedExp.map(e => e.company)).size} companies · 5+ years
             </motion.p>
           </div>
 
@@ -96,11 +94,9 @@ export default function ExperienceTimeline({ experience }: ExperienceTimelinePro
 
             <div className="space-y-10">
               {sortedExp.map((exp, index) => {
+                const hasHighlights = exp.highlights && exp.highlights.length > 0;
                 const groups = groupByDomain(exp.description);
                 const isExpanded = expandedIds.has(exp._id);
-                const PREVIEW_GROUPS = 2;
-                const hasMore = groups.length > PREVIEW_GROUPS;
-                const visibleGroups = isExpanded ? groups : groups.slice(0, PREVIEW_GROUPS);
 
                 return (
                   <div key={exp._id} style={{ position: 'relative' }}>
@@ -166,51 +162,86 @@ export default function ExperienceTimeline({ experience }: ExperienceTimelinePro
                           </div>
                         </div>
 
-                        {/* Domain-grouped contributions */}
-                        <div className="p-7 pt-6 space-y-7">
-                          {visibleGroups.map(({ domain, items }) => (
-                            <div key={domain}>
-                              {/* Domain label */}
-                              <div className="flex items-center gap-3 mb-3">
-                                <div className="h-px flex-1" style={{ background: 'var(--card-border)' }} />
-                                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500 shrink-0">
-                                  {domain}
-                                </span>
-                                <div className="h-px flex-1" style={{ background: 'var(--card-border)' }} />
-                              </div>
-
-                              {/* Bullets */}
-                              <div className="space-y-2.5">
-                                {items.map((point, i) => {
-                                  const { verb, body } = splitVerb(point);
-                                  return (
-                                    <div key={i} className="flex gap-3 items-start">
-                                      <div className="w-1 shrink-0 mt-[7px] rounded-full self-stretch"
-                                        style={{ background: 'rgba(var(--color-primary),0.35)', minHeight: '6px', maxWidth: '2px' }} />
-                                      <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                                        <span className="font-bold text-slate-900 dark:text-white">{verb}</span>{' '}{body}
-                                      </p>
-                                    </div>
-                                  );
-                                })}
-                              </div>
+                        {/* Highlights — 2-col grid of what was OWNED */}
+                        {hasHighlights && (
+                          <div className="p-7 pb-5" style={{ borderBottom: '1px solid var(--card-border)' }}>
+                            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500 mb-4">
+                              Key Responsibilities
+                            </p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              {exp.highlights.map((h, i) => (
+                                <div key={i}
+                                  className="flex gap-3 items-start p-4 rounded-xl"
+                                  style={{ background: 'rgba(var(--color-primary),0.04)', border: '1px solid rgba(var(--color-primary),0.10)' }}>
+                                  <div className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full"
+                                    style={{ background: 'rgb(var(--color-primary))' }} />
+                                  <p className="text-sm font-medium text-slate-700 dark:text-slate-200 leading-snug">
+                                    {h}
+                                  </p>
+                                </div>
+                              ))}
                             </div>
-                          ))}
+                          </div>
+                        )}
 
-                          {/* Expand / collapse */}
-                          {hasMore && (
+                        {/* Full scope — collapsible domain-grouped bullets */}
+                        {groups.length > 0 && (
+                          <div className="px-7 pt-4 pb-2">
                             <button
                               onClick={() => toggle(exp._id)}
-                              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-75"
-                              style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'rgb(var(--color-primary))' }}
+                              className="flex items-center gap-2 text-sm font-semibold mb-4 transition-opacity hover:opacity-70"
+                              style={{ color: 'rgb(var(--color-primary))' }}
                             >
-                              {isExpanded
-                                ? <>Show less <ChevronDown size={14} className="rotate-180 transition-transform" /></>
-                                : <>{groups.length - PREVIEW_GROUPS} more areas <ChevronDown size={14} /></>
-                              }
+                              <ChevronDown
+                                size={15}
+                                className="transition-transform duration-200"
+                                style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                              />
+                              {isExpanded ? 'Hide full scope' : 'See full scope'}
                             </button>
-                          )}
-                        </div>
+
+                            <AnimatePresence initial={false}>
+                              {isExpanded && (
+                                <motion.div
+                                  key="scope"
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: 'auto' }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                  style={{ overflow: 'hidden' }}
+                                >
+                                  <div className="pb-5 space-y-7">
+                                    {groups.map(({ domain, items }) => (
+                                      <div key={domain}>
+                                        <div className="flex items-center gap-3 mb-3">
+                                          <div className="h-px flex-1" style={{ background: 'var(--card-border)' }} />
+                                          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500 shrink-0">
+                                            {domain}
+                                          </span>
+                                          <div className="h-px flex-1" style={{ background: 'var(--card-border)' }} />
+                                        </div>
+                                        <div className="space-y-2.5">
+                                          {items.map((point, i) => {
+                                            const { verb, body } = splitVerb(point);
+                                            return (
+                                              <div key={i} className="flex gap-3 items-start">
+                                                <div className="w-0.5 shrink-0 mt-[7px] rounded-full self-stretch"
+                                                  style={{ background: 'rgba(var(--color-primary),0.3)', minHeight: '6px' }} />
+                                                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                                                  <span className="font-bold text-slate-900 dark:text-white">{verb}</span>{' '}{body}
+                                                </p>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        )}
 
                         {/* Tech stack */}
                         <div className="px-7 pb-6">
@@ -218,7 +249,7 @@ export default function ExperienceTimeline({ experience }: ExperienceTimelinePro
                             <Zap size={12} style={{ color: 'rgb(var(--color-primary))' }} className="shrink-0" />
                             {exp.technologies.map(tech => (
                               <span key={tech}
-                                className="px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors"
+                                className="px-2.5 py-1 rounded-lg text-xs font-semibold"
                                 style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'var(--muted)' }}>
                                 {tech}
                               </span>
@@ -242,7 +273,7 @@ export default function ExperienceTimeline({ experience }: ExperienceTimelinePro
               { value: `${sortedExp.length}`,                                              label: 'Positions' },
               { value: `${new Set(sortedExp.map(e => e.company)).size}`,                   label: 'Companies' },
               { value: `${new Set(sortedExp.flatMap(e => e.technologies)).size}+`,         label: 'Technologies' },
-              { value: '6+',                                                               label: 'Years' },
+              { value: '5+',                                                               label: 'Years' },
             ].map(({ value, label }) => (
               <div key={label}>
                 <div className="text-4xl font-black mb-2 text-slate-900 dark:text-white">{value}</div>

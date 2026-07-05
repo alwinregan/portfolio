@@ -24,7 +24,22 @@ router.get('/settings', async (req, res, next) => {
 // Admin
 router.put('/admin/settings', auth, async (req, res, next) => {
   try {
-    const settings = await Settings.findOneAndUpdate({}, req.body, { new: true, upsert: true });
+    // Strip read-only Mongoose fields; handle metadata with dot notation
+    // so each subkey is written atomically without overwriting siblings
+    const { _id, __v, createdAt, updatedAt, metadata, ...rest } = req.body;
+    const setDoc = { ...rest };
+
+    if (metadata && typeof metadata === 'object') {
+      Object.entries(metadata).forEach(([k, v]) => {
+        setDoc[`metadata.${k}`] = v;
+      });
+    }
+
+    const settings = await Settings.findOneAndUpdate(
+      {},
+      { $set: setDoc },
+      { new: true, upsert: true }
+    );
     res.json({ success: true, message: 'Settings updated successfully', data: settings });
   } catch (err) { next(err); }
 });

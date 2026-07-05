@@ -150,7 +150,7 @@ export default function SettingsAdminPage() {
       await updateSettings(updated);
       setSettingsData(updated);
       showToast('Stats saved!');
-    } catch { showToast('Failed to save stats.'); }
+    } catch (err) { console.error('Save stats error:', err); showToast('Failed to save stats.'); }
     finally { setSavingStats(false); }
   };
 

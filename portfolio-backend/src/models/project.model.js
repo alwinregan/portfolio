@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 
 const projectSchema = new mongoose.Schema({
   title: { type: Object, required: true },
-  slug: { type: String, unique: true, index: true },
+  slug: { type: String, unique: true },
   description: { type: Object, required: true },
   longDescription: { type: Object },
   summary: { type: String },
   client: { type: String },
   role: { type: String },
   year: { type: Number },
-  techStack: [{ type: String, index: true }],
-  tags: [{ type: String, index: true }],
+  techStack: [{ type: String }],
+  tags: [{ type: String }],
   body: { type: String },
   imageUrl: { type: String },
   images: [String],

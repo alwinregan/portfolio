@@ -98,13 +98,13 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
           </Link>
         </motion.div>
 
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 px-8 md:px-16 pb-16 max-w-5xl">
+        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 px-5 md:px-16 pb-10 md:pb-16 max-w-5xl">
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
             className="text-xs font-mono uppercase tracking-[0.2em] mb-6" style={{ color: 'rgba(167,139,250,0.9)' }}>
             {cs.subtitle}
           </motion.p>
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-            className="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-[0.9] mb-6">
+            className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tight leading-[0.95] mb-6">
             {title}<span style={{ color: '#a78bfa' }}>.</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32 }}
@@ -162,7 +162,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
       {project.pdfUrl && (
         <div className="py-24">
           <div className="max-w-5xl mx-auto px-8 md:px-16">
-            <div className="premium-card p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="premium-card p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
               <div>
                 <p className="text-xs font-mono uppercase tracking-[0.2em] text-primary mb-3">Case Study</p>
                 <h3 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-3">
@@ -432,7 +432,7 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
               </span>
             ))}
           </div>
-          <h1 className="text-6xl md:text-7xl font-black text-white tracking-tight leading-[0.95] mb-5">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white tracking-tight leading-[0.95] mb-5">
             {title}<span style={{ color: '#a78bfa' }}>.</span>
           </h1>
           <p className="text-lg max-w-2xl leading-relaxed mb-8 font-light" style={{ color: 'rgba(255,255,255,0.85)' }}>{description}</p>

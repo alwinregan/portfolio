@@ -82,7 +82,7 @@ export default function HomePage() {
 
       case 'about':
         return (
-          <section key="about" id="about" className="py-32 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
+          <section key="about" id="about" className="py-20 md:py-32 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
             <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
               <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(0 0 0) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
             </div>

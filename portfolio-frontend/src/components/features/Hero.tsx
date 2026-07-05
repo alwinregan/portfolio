@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Mail, Sparkles, Code2 } from 'lucide-react';
+import { ArrowRight, Download, Mail, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 ;
 import { t } from '@/lib/utils';
@@ -226,32 +226,6 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0 }: Hero
                     ))}
                   </div>
                 </div>
-
-                {/* Floating Info Card */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.2 }}
-                  className="absolute -bottom-6 -left-6 p-5 rounded-2xl shadow-2xl max-w-xs"
-                  style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', backdropFilter: 'blur(12px)' }}
-                >
-                  <div className="flex items-center gap-3 mb-3">
-                    <Code2 size={24} className="text-primary" />
-                    <div>
-                      <div className="font-bold text-slate-900 dark:text-white">
-                        {t(profile?.bannerTitle) || "Code Quality"}
-                      </div>
-                      <div className="text-sm text-slate-500">
-                        {t(profile?.bannerSubtitle) || "Production Ready"}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="w-full h-1.5 bg-primary rounded-full" />
-                    ))}
-                  </div>
-                </motion.div>
 
                 {/* Social Links - Floating */}
                 <motion.div

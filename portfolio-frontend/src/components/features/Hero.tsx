@@ -14,12 +14,15 @@ interface HeroProps {
 }
 
 const TERM_LINES = [
-  { type: 'cmd',  text: 'node server.js' },
-  { type: 'ok',   text: 'MongoDB connected' },
-  { type: 'ok',   text: 'PostgreSQL pool ready' },
-  { type: 'ok',   text: 'Redis cache online' },
-  { type: 'ok',   text: 'Server running :4000' },
-  { type: 'info', text: '10,000+ customers served' },
+  { type: 'cmd',  text: 'build --project fintech-platform' },
+  { type: 'ok',   text: 'Go microservice compiled & ready' },
+  { type: 'ok',   text: 'Laravel + Node.js APIs scaffolded' },
+  { type: 'ok',   text: 'React + TypeScript frontend built' },
+  { type: 'ok',   text: 'MongoDB + PostgreSQL connected' },
+  { type: 'ok',   text: 'SSO + JWT auth middleware active' },
+  { type: 'ok',   text: 'Redis cache + queue workers ready' },
+  { type: 'ok',   text: 'CI/CD pipeline configured' },
+  { type: 'info', text: 'Deployment successful 🚀' },
   { type: 'cursor' },
 ];
 
@@ -220,7 +223,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
                     <span className="ml-auto text-[11px] text-slate-600 font-mono tracking-wide">alwin@portfolio ~ node</span>
                   </div>
                   {/* Lines */}
-                  <div className="p-5 font-mono text-[13px] leading-relaxed space-y-1.5 min-h-[220px]">
+                  <div className="p-5 font-mono text-[13px] leading-relaxed space-y-1.5 min-h-[290px]">
                     {TERM_LINES.map((line, i) => (
                       <div key={i}
                         className="flex items-center gap-2.5 transition-opacity duration-300"

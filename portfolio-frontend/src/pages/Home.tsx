@@ -184,7 +184,7 @@ export default function HomePage() {
         return <SkillsShowcase key="skills" initialSkills={skills || []} />;
 
       case 'experience':
-        return <ExperienceTimeline key="experience" experience={experience || []} />;
+        return <ExperienceTimeline key="experience" experience={experience || []} yearsValue={settings?.metadata?.aboutStats?.yearsValue || '5+'} />;
 
       case 'certifications':
         return <Certifications key="certifications" certifications={certifications || []} />;

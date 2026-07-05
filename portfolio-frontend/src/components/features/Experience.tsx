@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 interface ExperienceTimelineProps {
   experience: Experience[];
+  yearsValue?: string;
 }
 
 const DOMAIN_MAP: Array<{ keywords: string[]; label: string }> = [
@@ -63,7 +64,7 @@ function normalizeCompany(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
-export default function ExperienceTimeline({ experience }: ExperienceTimelineProps) {
+export default function ExperienceTimeline({ experience, yearsValue = '5+' }: ExperienceTimelineProps) {
   if (!experience || experience.length === 0) return null;
   const sortedExp = [...experience].sort((a, b) => (a.order || 0) - (b.order || 0));
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
@@ -99,7 +100,7 @@ export default function ExperienceTimeline({ experience }: ExperienceTimelinePro
             <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               className="text-lg text-slate-500 dark:text-slate-400">
-              {sortedExp.length} positions · {new Set(sortedExp.map(e => e.company)).size} companies · 5+ years
+              {sortedExp.length} positions · {new Set(sortedExp.map(e => e.company)).size} companies · {yearsValue} years
             </motion.p>
           </div>
 
@@ -340,7 +341,7 @@ export default function ExperienceTimeline({ experience }: ExperienceTimelinePro
               { value: `${sortedExp.length}`,                                              label: 'Positions' },
               { value: `${new Set(sortedExp.map(e => e.company)).size}`,                   label: 'Companies' },
               { value: `${new Set(sortedExp.flatMap(e => e.technologies)).size}+`,         label: 'Technologies' },
-              { value: '5+',                                                               label: 'Years' },
+              { value: yearsValue,                                                          label: 'Years' },
             ].map(({ value, label }) => (
               <div key={label}>
                 <div className="text-4xl font-black mb-2 text-slate-900 dark:text-white">{value}</div>

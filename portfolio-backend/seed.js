@@ -249,6 +249,32 @@ async function seed() {
       showApps: false,
       enableBlog: false,
     },
+    metadata: {
+      pageLayout: {
+        sections: [
+          { id: 'hero',           label: 'Hero',           visible: true,  locked: true,  order: 0 },
+          { id: 'about',          label: 'About',          visible: true,  locked: false, order: 1 },
+          { id: 'projects',       label: 'Projects',       visible: true,  locked: false, order: 2 },
+          { id: 'skills',         label: 'Skills',         visible: true,  locked: false, order: 3 },
+          { id: 'experience',     label: 'Experience',     visible: true,  locked: false, order: 4 },
+          { id: 'certifications', label: 'Certifications', visible: true,  locked: false, order: 5 },
+          { id: 'contact',        label: 'Contact',        visible: true,  locked: false, order: 6 },
+        ],
+      },
+      theme: {
+        primary: '#7c3aed',
+        primaryDark: '#6d28d9',
+        accent: '#f59e0b',
+        brand: '#c6613f',
+        bgLight: '#fafafa',
+        bgDark: '#09090b',
+        glowPrimary: 0.12,
+        glowAccent: 0.07,
+        glowPrimaryDark: 0.22,
+        glowAccentDark: 0.13,
+      },
+      customSections: [],
+    },
   });
   console.log('✓ Settings');
 

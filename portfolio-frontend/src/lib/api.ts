@@ -94,6 +94,10 @@ export const createApp = (data: any): Promise<any> => api.post('/admin/apps', da
 export const updateApp = (id: string, data: any): Promise<any> => api.put(`/admin/apps/${id}`, data);
 export const deleteApp = (id: string): Promise<{ id: string }> => api.delete(`/admin/apps/${id}`);
 
+// Export / Import (bulk data transfer between environments)
+export const exportAll = (): Promise<any> => api.get('/admin/export');
+export const importAll = (data: any): Promise<any> => api.post('/admin/import', data);
+
 // Contact
 export const sendContactMessage = (data: Partial<Contact>): Promise<Contact> => api.post('/contact', data);
 export const getAdminContacts = (): Promise<Contact[]> => api.get('/admin/contact');

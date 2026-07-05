@@ -34,6 +34,7 @@ app.use(API, require('./routes/uploads.routes'));
 app.use(API, require('./routes/blog.routes'));
 app.use(API, require('./routes/apps.routes'));
 app.use(API, require('./routes/blocks.routes'));
+app.use(API, require('./routes/export.routes'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));

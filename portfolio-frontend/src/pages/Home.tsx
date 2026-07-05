@@ -47,10 +47,18 @@ export default function HomePage() {
   const { profile, projects, skills, experience, certifications, settings, apps } = data;
   const apiBase = (import.meta.env.VITE_API_URL || '/api').replace('/api', '');
 
-  /* Merge saved layout with defaults, sort by order */
+  /* Merge saved layout with defaults + custom sections, sort by order */
   const savedSections: any[] = settings?.metadata?.pageLayout?.sections ?? [];
+  const customSectionData: any[] = settings?.metadata?.customSections ?? [];
+  const customSectionMap = Object.fromEntries(customSectionData.map((s: any) => [s.id, s]));
   const savedMap = Object.fromEntries(savedSections.map((s: any) => [s.id, s]));
-  const sections = DEFAULT_SECTIONS
+
+  // Custom sections that appear in the saved layout
+  const customDefs = savedSections
+    .filter((s: any) => s.id.startsWith('custom_'))
+    .map((s: any) => ({ id: s.id, label: s.label || customSectionMap[s.id]?.title || 'Custom', visible: true, locked: false, order: s.order ?? 99 }));
+
+  const sections = [...DEFAULT_SECTIONS, ...customDefs]
     .map(def => ({ ...def, ...(savedMap[def.id] ?? {}) }))
     .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 
@@ -185,6 +193,30 @@ export default function HomePage() {
         return <ContactForm key="contact" profileEmail={profile?.email} />;
 
       default:
+        if (s.id.startsWith('custom_')) {
+          const custom = customSectionMap[s.id];
+          if (!custom) return null;
+          return (
+            <section key={s.id} id={s.id} className="py-24 relative overflow-hidden">
+              <div className="container mx-auto px-6 max-w-4xl">
+                <div className="mb-12">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
+                    {custom.subtitle || custom.title}
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+                    {custom.title}
+                  </h2>
+                  <div className="w-20 h-1 bg-primary rounded-full" />
+                </div>
+                <div className="premium-card p-8">
+                  {custom.content?.split('\n\n').map((para: string, i: number) => (
+                    <p key={i} className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4 last:mb-0">{para}</p>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+        }
         return null;
     }
   };

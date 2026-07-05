@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import AdminLayout from '@/components/layout/AdminLayout';
-import { getSettings, updateSettings, updateToggles } from '@/lib/api';
+import { getSettings, updateSettings, updateToggles, exportAll, importAll } from '@/lib/api';
 import { Button, InputField, TextareaField, Card, LoadingSpinner } from '@/components/admin/AdminUI';
 import { applyTheme, type ThemeColors } from '@/context/SettingsContext';
 import { DEFAULT_SECTIONS } from '@/pages/Home';
 import {
   Save, Settings as SettingsIcon, Zap, Globe, BarChart3,
   Palette, Check, GripVertical, Eye, EyeOff, Lock,
+  Download, Upload, Plus, Trash2, X, Edit3, FileJson,
 } from 'lucide-react';
 
 /* ── Preset themes ──────────────────────────────────── */
@@ -48,20 +49,34 @@ function hexToRgbParts(hex: string): string {
   return `${r}, ${g}, ${b}`;
 }
 
-/* Section type from Home defaults */
 type SectionLayout = typeof DEFAULT_SECTIONS[number] & { order: number };
+
+const EMPTY_SECTION_FORM = { title: '', subtitle: '', content: '' };
 
 export default function SettingsAdminPage() {
   const [loading, setLoading]         = useState(true);
   const [saving, setSaving]           = useState(false);
   const [savingTheme, setSavingTheme] = useState(false);
   const [savingLayout, setSavingLayout] = useState(false);
+  const [savingCustom, setSavingCustom] = useState(false);
   const [toggles, setToggles]         = useState<Record<string, boolean>>({});
   const [meta, setMeta]               = useState({ siteName: '', metaTitle: '', metaDescription: '', gaId: '' });
   const [theme, setTheme]             = useState<ThemeColors>(DEFAULT_THEME);
   const [layout, setLayout]           = useState<SectionLayout[]>([]);
   const [toast, setToast]             = useState('');
   const [settingsData, setSettingsData] = useState<any>(null);
+
+  // Custom sections
+  const [customSections, setCustomSections] = useState<any[]>([]);
+  const [showAddSection, setShowAddSection] = useState(false);
+  const [editingSection, setEditingSection] = useState<any>(null);
+  const [sectionForm, setSectionForm] = useState(EMPTY_SECTION_FORM);
+
+  // Export / Import
+  const importAllRef = useRef<HTMLInputElement>(null);
+  const [exportingAll, setExportingAll] = useState(false);
+  const [importingAll, setImportingAll] = useState(false);
+  const [importResult, setImportResult] = useState('');
 
   /* drag refs */
   const dragId   = useRef<string | null>(null);
@@ -77,10 +92,22 @@ export default function SettingsAdminPage() {
       const savedTheme = data.metadata?.theme;
       if (savedTheme) setTheme({ ...DEFAULT_THEME, ...savedTheme });
 
-      /* merge saved layout with defaults */
       const savedSections: any[] = data.metadata?.pageLayout?.sections ?? [];
       const savedMap = Object.fromEntries(savedSections.map((s: any) => [s.id, s]));
-      const merged = DEFAULT_SECTIONS
+      const savedCustom: any[] = data.metadata?.customSections ?? [];
+      setCustomSections(savedCustom);
+
+      // Custom section layout entries (if they exist in the saved layout)
+      const customLayoutDefs = savedCustom.map((cs: any) => {
+        const inLayout = savedMap[cs.id];
+        return {
+          id: cs.id, label: cs.title, visible: inLayout?.visible ?? true, locked: false,
+          order: inLayout?.order ?? DEFAULT_SECTIONS.length,
+        } as SectionLayout;
+      });
+
+      const allDefs = [...DEFAULT_SECTIONS, ...customLayoutDefs];
+      const merged = allDefs
         .map((def, i) => ({ ...def, ...(savedMap[def.id] ?? {}), order: savedMap[def.id]?.order ?? i }))
         .sort((a, b) => a.order - b.order) as SectionLayout[];
       setLayout(merged);
@@ -90,7 +117,7 @@ export default function SettingsAdminPage() {
   }, []);
 
   /* ── helpers ── */
-  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3500); };
 
   const handleToggle = async (key: string, value: boolean) => {
     const next = { ...toggles, [key]: value };
@@ -113,7 +140,9 @@ export default function SettingsAdminPage() {
   const handleSaveTheme = async () => {
     setSavingTheme(true);
     try {
-      await updateSettings({ ...settingsData, metadata: { ...(settingsData?.metadata || {}), theme } });
+      const updated = { ...settingsData, metadata: { ...(settingsData?.metadata || {}), theme } };
+      await updateSettings(updated);
+      setSettingsData(updated);
       showToast('Theme saved! All visitors will see the new colors.');
     } catch { showToast('Failed to save theme.'); }
     finally { setSavingTheme(false); }
@@ -139,7 +168,6 @@ export default function SettingsAdminPage() {
       const list = [...prev];
       const si = list.findIndex(s => s.id === src);
       const di = list.findIndex(s => s.id === dest);
-      /* hero is always index 0 — prevent moving anything above it */
       if (si === -1 || di === -1) return prev;
       const [moved] = list.splice(si, 1);
       list.splice(di, 0, moved);
@@ -154,18 +182,137 @@ export default function SettingsAdminPage() {
   const handleSaveLayout = async () => {
     setSavingLayout(true);
     try {
-      /* hero must always be order 0 and visible */
       const normalized = layout.map((s, i) => ({
-        id: s.id, label: s.label, visible: s.locked ? true : s.visible, order: i, locked: s.locked,
+        id: s.id, label: s.label, visible: s.locked ? true : s.visible, order: i, locked: s.locked ?? false,
       }));
-      await updateSettings({
+      const updated = {
         ...settingsData,
-        metadata: { ...(settingsData?.metadata || {}), pageLayout: { sections: normalized } },
-      });
-      setSettingsData((prev: any) => ({ ...prev, metadata: { ...(prev?.metadata || {}), pageLayout: { sections: normalized } } }));
-      showToast('Page layout saved! The homepage now reflects your order.');
+        metadata: {
+          ...(settingsData?.metadata || {}),
+          pageLayout: { sections: normalized },
+          customSections,
+        },
+      };
+      await updateSettings(updated);
+      setSettingsData(updated);
+      showToast('Page layout saved!');
     } catch { showToast('Failed to save layout.'); }
     finally { setSavingLayout(false); }
+  };
+
+  /* ── custom sections ── */
+  const persistCustomAndLayout = async (nextCustom: any[], nextLayout: SectionLayout[]) => {
+    const normalized = nextLayout.map((s, i) => ({
+      id: s.id, label: s.label, visible: s.locked ? true : s.visible, order: i, locked: s.locked ?? false,
+    }));
+    const updated = {
+      ...settingsData,
+      metadata: {
+        ...(settingsData?.metadata || {}),
+        pageLayout: { sections: normalized },
+        customSections: nextCustom,
+      },
+    };
+    await updateSettings(updated);
+    setSettingsData(updated);
+  };
+
+  const handleAddCustomSection = async () => {
+    if (!sectionForm.title.trim()) return;
+    setSavingCustom(true);
+    try {
+      const id = `custom_${Date.now()}`;
+      const cs = { id, title: sectionForm.title.trim(), subtitle: sectionForm.subtitle.trim(), content: sectionForm.content };
+      const nextCustom = [...customSections, cs];
+      const newEntry: SectionLayout = { id, label: cs.title, visible: true, locked: false, order: layout.length };
+      const nextLayout = [...layout, newEntry];
+      setCustomSections(nextCustom);
+      setLayout(nextLayout);
+      setShowAddSection(false);
+      setSectionForm(EMPTY_SECTION_FORM);
+      await persistCustomAndLayout(nextCustom, nextLayout);
+      showToast('Custom section added!');
+    } catch { showToast('Failed to save section.'); }
+    finally { setSavingCustom(false); }
+  };
+
+  const handleUpdateCustomSection = async () => {
+    if (!editingSection || !sectionForm.title.trim()) return;
+    setSavingCustom(true);
+    try {
+      const nextCustom = customSections.map(cs =>
+        cs.id === editingSection.id
+          ? { ...cs, title: sectionForm.title.trim(), subtitle: sectionForm.subtitle.trim(), content: sectionForm.content }
+          : cs
+      );
+      const nextLayout = layout.map(s =>
+        s.id === editingSection.id ? { ...s, label: sectionForm.title.trim() } : s
+      );
+      setCustomSections(nextCustom);
+      setLayout(nextLayout);
+      setEditingSection(null);
+      setSectionForm(EMPTY_SECTION_FORM);
+      await persistCustomAndLayout(nextCustom, nextLayout);
+      showToast('Section updated!');
+    } catch { showToast('Failed to update section.'); }
+    finally { setSavingCustom(false); }
+  };
+
+  const handleDeleteCustomSection = async (id: string) => {
+    if (!confirm('Delete this custom section? This cannot be undone.')) return;
+    setSavingCustom(true);
+    try {
+      const nextCustom = customSections.filter(cs => cs.id !== id);
+      const nextLayout = layout.filter(s => s.id !== id);
+      setCustomSections(nextCustom);
+      setLayout(nextLayout);
+      await persistCustomAndLayout(nextCustom, nextLayout);
+      showToast('Section deleted.');
+    } catch { showToast('Failed to delete section.'); }
+    finally { setSavingCustom(false); }
+  };
+
+  const openEdit = (cs: any) => {
+    setEditingSection(cs);
+    setSectionForm({ title: cs.title, subtitle: cs.subtitle || '', content: cs.content || '' });
+    setShowAddSection(false);
+  };
+
+  /* ── export / import ── */
+  const handleExportAll = async () => {
+    setExportingAll(true);
+    try {
+      const data = await exportAll();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `portfolio-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Export downloaded!');
+    } catch { showToast('Export failed.'); }
+    finally { setExportingAll(false); }
+  };
+
+  const handleImportAll = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImportingAll(true);
+    setImportResult('');
+    try {
+      const text = await file.text();
+      const json = JSON.parse(text);
+      const result = await importAll(json);
+      const parts = Object.entries(result).map(([k, v]) => `${k}: ${v}`);
+      setImportResult(`Done — ${parts.join(' · ')}`);
+      showToast('Import complete! Refresh admin pages to see updated data.');
+    } catch (err: any) {
+      setImportResult(`Failed: ${err?.response?.data?.message || err.message}`);
+    } finally {
+      setImportingAll(false);
+      if (importAllRef.current) importAllRef.current.value = '';
+    }
   };
 
   if (loading) return (
@@ -192,6 +339,7 @@ export default function SettingsAdminPage() {
                 const isDragging = dragActiveId === section.id;
                 const isOver     = dragOverId   === section.id && !isDragging;
                 const isHero     = section.locked;
+                const isCustom   = section.id.startsWith('custom_');
 
                 return (
                   <div
@@ -206,24 +354,21 @@ export default function SettingsAdminPage() {
                       ${isHero    ? 'opacity-80' : ''}
                     `}
                   >
-                    {/* grip / lock */}
                     <div className={`shrink-0 ${isHero ? 'text-slate-300 dark:text-slate-600 cursor-not-allowed' : 'text-slate-400 dark:text-slate-500 cursor-grab active:cursor-grabbing hover:text-slate-700 dark:hover:text-white'}`}>
                       {isHero ? <Lock size={15} /> : <GripVertical size={18} />}
                     </div>
 
-                    {/* order badge */}
                     <span className="w-6 text-xs font-mono text-slate-400 shrink-0 text-center">
                       {layout.indexOf(section) + 1}
                     </span>
 
-                    {/* label */}
                     <span className={`flex-1 font-bold text-sm ${section.visible || isHero ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-600 line-through'}`}>
                       {section.label}
+                      {isCustom && <span className="ml-2 text-xs font-normal text-primary/70 border border-primary/30 rounded px-1.5 py-0.5">custom</span>}
                     </span>
 
                     {isHero && <span className="text-xs text-slate-400 font-medium">Always visible</span>}
 
-                    {/* visibility toggle */}
                     {!isHero && (
                       <button type="button" onClick={() => toggleVisibility(section.id)}
                         className={`p-2 rounded-lg transition-all ${section.visible ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 hover:bg-emerald-200' : 'text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
@@ -241,7 +386,122 @@ export default function SettingsAdminPage() {
                 className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl text-sm hover:bg-primary-dark transition-all disabled:opacity-60 shadow-lg shadow-primary/25">
                 <Save size={15} /> {savingLayout ? 'Saving…' : 'Save Layout'}
               </button>
-              <p className="text-xs text-slate-500">Drag rows to reorder. Eye icon shows/hides each section on the homepage.</p>
+              <p className="text-xs text-slate-500">Drag rows to reorder. Eye icon shows/hides each section.</p>
+            </div>
+          </Card>
+
+          {/* ── Custom Sections ── */}
+          <Card title="Custom Sections" subtitle="Add extra content sections to your homepage" icon={<Plus size={20} />}>
+            {customSections.length === 0 && !showAddSection && !editingSection && (
+              <p className="text-sm text-slate-500 mb-4">No custom sections yet. Add one below — it will appear in Page Layout and on your homepage.</p>
+            )}
+
+            <div className="space-y-3 mb-4">
+              {customSections.map(cs => (
+                <div key={cs.id} className="flex items-start gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold text-sm text-slate-900 dark:text-white">{cs.title}</div>
+                    {cs.subtitle && <div className="text-xs text-slate-500 mt-0.5">{cs.subtitle}</div>}
+                    {cs.content && (
+                      <div className="text-xs text-slate-400 mt-1 truncate max-w-md">{cs.content.slice(0, 120)}{cs.content.length > 120 ? '…' : ''}</div>
+                    )}
+                  </div>
+                  <div className="flex gap-1.5 shrink-0">
+                    <button type="button" onClick={() => openEdit(cs)}
+                      className="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-primary/10 transition-all">
+                      <Edit3 size={15} />
+                    </button>
+                    <button type="button" onClick={() => handleDeleteCustomSection(cs.id)}
+                      disabled={savingCustom}
+                      className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all disabled:opacity-50">
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Inline form: add or edit */}
+            {(showAddSection || editingSection) && (
+              <div className="border-2 border-primary/30 rounded-xl p-5 bg-primary/5 space-y-4 mb-4">
+                <div className="flex items-center justify-between mb-1">
+                  <h4 className="font-bold text-sm text-slate-900 dark:text-white">
+                    {editingSection ? 'Edit Section' : 'New Section'}
+                  </h4>
+                  <button type="button" onClick={() => { setShowAddSection(false); setEditingSection(null); setSectionForm(EMPTY_SECTION_FORM); }}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <X size={16} />
+                  </button>
+                </div>
+                <InputField
+                  label="Section Title"
+                  name="title"
+                  value={sectionForm.title}
+                  onChange={e => setSectionForm(p => ({ ...p, title: e.target.value }))}
+                  placeholder="Open Source, Hobbies, Talks, etc."
+                />
+                <InputField
+                  label="Subtitle (optional)"
+                  name="subtitle"
+                  value={sectionForm.subtitle}
+                  onChange={e => setSectionForm(p => ({ ...p, subtitle: e.target.value }))}
+                  placeholder="A short tagline under the title"
+                />
+                <TextareaField
+                  label="Content"
+                  name="content"
+                  value={sectionForm.content}
+                  onChange={e => setSectionForm(p => ({ ...p, content: e.target.value }))}
+                  placeholder="Write your content here. Paragraphs separated by blank lines."
+                  rows={6}
+                />
+                <div className="flex gap-3">
+                  <button type="button"
+                    onClick={editingSection ? handleUpdateCustomSection : handleAddCustomSection}
+                    disabled={savingCustom || !sectionForm.title.trim()}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-xl text-sm hover:bg-primary-dark transition-all disabled:opacity-60">
+                    <Save size={14} /> {savingCustom ? 'Saving…' : editingSection ? 'Update' : 'Add Section'}
+                  </button>
+                  <button type="button"
+                    onClick={() => { setShowAddSection(false); setEditingSection(null); setSectionForm(EMPTY_SECTION_FORM); }}
+                    className="px-5 py-2.5 font-bold rounded-xl text-sm border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {!showAddSection && !editingSection && (
+              <button type="button" onClick={() => setShowAddSection(true)}
+                className="flex items-center gap-2 px-5 py-2.5 border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 hover:border-primary hover:text-primary font-bold text-sm rounded-xl transition-all w-full justify-center">
+                <Plus size={16} /> Add Custom Section
+              </button>
+            )}
+          </Card>
+
+          {/* ── Export / Import ── */}
+          <Card title="Data Export / Import" subtitle="Transfer all data between local dev and production" icon={<FileJson size={20} />}>
+            <div className="flex flex-wrap gap-3 mb-4">
+              <button type="button" onClick={handleExportAll} disabled={exportingAll}
+                className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl text-sm hover:opacity-90 transition-all disabled:opacity-60 shadow-md">
+                <Download size={15} /> {exportingAll ? 'Exporting…' : 'Export All Data'}
+              </button>
+              <button type="button" onClick={() => importAllRef.current?.click()} disabled={importingAll}
+                className="flex items-center gap-2 px-5 py-2.5 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-sm hover:border-primary hover:text-primary transition-all disabled:opacity-60">
+                <Upload size={15} /> {importingAll ? 'Importing…' : 'Import All Data'}
+              </button>
+              <input ref={importAllRef} type="file" accept=".json" className="hidden" onChange={handleImportAll} />
+            </div>
+
+            {importResult && (
+              <div className={`text-sm font-medium px-4 py-3 rounded-xl mb-4 ${importResult.startsWith('Failed') ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800' : 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'}`}>
+                {importResult}
+              </div>
+            )}
+
+            <div className="text-xs text-slate-500 space-y-1">
+              <p><strong>Export</strong> downloads Profile, Skills, Experience, Projects, Certifications &amp; Settings as one JSON file.</p>
+              <p><strong>Import</strong> upserts all data. Images (avatars, project images) are excluded — upload them separately via the admin panel.</p>
             </div>
           </Card>
 
@@ -310,24 +570,15 @@ export default function SettingsAdminPage() {
                   const applyGradientPreset = () => {
                     const next: ThemeColors = {
                       ...theme,
-                      bgDark: preset.bgDark,
-                      bgLight: preset.bgLight,
-                      glowPrimary: preset.glowPrimary,
-                      glowAccent: preset.glowAccent,
-                      glowPrimaryDark: preset.glowPrimaryDark,
-                      glowAccentDark: preset.glowAccentDark,
+                      bgDark: preset.bgDark, bgLight: preset.bgLight,
+                      glowPrimary: preset.glowPrimary, glowAccent: preset.glowAccent,
+                      glowPrimaryDark: preset.glowPrimaryDark, glowAccentDark: preset.glowAccentDark,
                     };
-                    setTheme(next);
-                    applyTheme(next);
+                    setTheme(next); applyTheme(next);
                   };
                   return (
-                    <button
-                      key={preset.id}
-                      type="button"
-                      onClick={applyGradientPreset}
-                      className={`group flex flex-col gap-2 p-2 rounded-xl border-2 transition-all text-left ${active ? 'border-primary shadow-lg shadow-primary/20' : 'border-slate-200 dark:border-slate-700 hover:border-primary/50'}`}
-                    >
-                      {/* gradient preview: top half dark, bottom half light */}
+                    <button key={preset.id} type="button" onClick={applyGradientPreset}
+                      className={`group flex flex-col gap-2 p-2 rounded-xl border-2 transition-all text-left ${active ? 'border-primary shadow-lg shadow-primary/20' : 'border-slate-200 dark:border-slate-700 hover:border-primary/50'}`}>
                       <div className="w-full h-16 rounded-lg overflow-hidden flex flex-col">
                         <div className="flex-1" style={{ background: darkGradient }} />
                         <div className="flex-1" style={{ background: lightGradient }} />
@@ -343,7 +594,6 @@ export default function SettingsAdminPage() {
                   );
                 })}
               </div>
-              {/* Fine-tune glow strength */}
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-semibold text-slate-600 dark:text-slate-400 block mb-1">
@@ -384,7 +634,6 @@ export default function SettingsAdminPage() {
               </div>
             </div>
 
-            {/* preview */}
             <div className="mt-6 p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
               <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Live Preview</p>
               <div className="flex flex-wrap items-center gap-3 mb-3">
@@ -392,11 +641,6 @@ export default function SettingsAdminPage() {
                 <button type="button" className="px-5 py-2.5 rounded-lg font-bold text-sm text-white" style={{ background: theme.accent }}>Accent</button>
                 <span className="px-3 py-1.5 rounded-full text-xs font-bold text-white" style={{ background: theme.brand }}>Brand</span>
                 <span className="text-sm font-bold" style={{ color: theme.primary }}>Primary text</span>
-                <div className="flex gap-1">
-                  {[theme.primary, theme.primaryDark, theme.accent, theme.brand].map((c, i) => (
-                    <div key={i} className="w-7 h-7 rounded-lg" style={{ background: c }} />
-                  ))}
-                </div>
               </div>
               <div className="grid grid-cols-2 gap-3 mt-3">
                 <div className="rounded-xl overflow-hidden border border-slate-700 h-16" style={{

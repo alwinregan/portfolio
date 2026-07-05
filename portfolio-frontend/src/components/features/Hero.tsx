@@ -135,7 +135,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
                     : profile.resumeUrl}
                   download
                   className="group px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-                  style={{ background: 'var(--card-bg)', border: '2px solid var(--card-border)', backdropFilter: 'blur(16px)' }}
+                  style={{ background: 'var(--ghost-bg)', border: '2px solid var(--ghost-border)', backdropFilter: 'blur(16px)' }}
                 >
                   <Download size={18} />
                   Download Resume
@@ -145,7 +145,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
                   href="#contact"
                   onClick={e => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
                   className="group px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 opacity-70"
-                  style={{ background: 'var(--card-bg)', border: '2px solid var(--card-border)', backdropFilter: 'blur(16px)' }}
+                  style={{ background: 'var(--ghost-bg)', border: '2px solid var(--ghost-border)', backdropFilter: 'blur(16px)' }}
                 >
                   <Download size={18} />
                   Resume

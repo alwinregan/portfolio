@@ -96,7 +96,7 @@ export default function Navbar({ resumeUrl }: { resumeUrl?: string | null }) {
               {resumeUrl && (
                 <a href={resumeUrl} target="_blank" rel="noopener noreferrer" download
                   className="hidden lg:flex items-center gap-2 px-4 py-2.5 hover:border-primary text-muted hover:text-primary font-bold rounded-lg transition-all text-sm"
-                  style={{ border: '1px solid var(--card-border)' }}>
+                  style={{ background: 'var(--ghost-bg)', border: '1px solid var(--ghost-border)' }}>
                   <Download size={15} /> Resume
                 </a>
               )}
@@ -189,7 +189,7 @@ export default function Navbar({ resumeUrl }: { resumeUrl?: string | null }) {
                   {resumeUrl && (
                     <a href={resumeUrl} target="_blank" rel="noopener noreferrer" download
                       className="flex items-center justify-center gap-2 w-full px-6 py-3 font-bold rounded-lg transition-all hover:border-primary"
-                      style={{ background: 'var(--card-bg)', border: '2px solid var(--card-border)' }}>
+                      style={{ background: 'var(--ghost-bg)', border: '2px solid var(--ghost-border)' }}>
                       <Download size={16} /> Download Resume
                     </a>
                   )}

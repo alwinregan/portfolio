@@ -38,7 +38,7 @@ export default function ContactForm({ profileEmail }: ContactFormProps) {
   };
 
   return (
-    <section id="contact" className="py-32 relative overflow-hidden">
+    <section id="contact" className="py-32 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
       <div className="container mx-auto px-6">
         <div className="max-w-5xl mx-auto">
           {/* Header */}

@@ -16,7 +16,7 @@ export default function Projects({ projects, showStats = true }: ProjectsProps) 
   const displayProjects = projects.length > 0 ? projects : [];
 
   return (
-    <section id="projects" className="py-32 relative overflow-hidden">
+    <section id="projects" className="py-32 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
         <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '48px 48px' }} />

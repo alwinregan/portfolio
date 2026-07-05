@@ -160,7 +160,7 @@ export default function HomePage() {
                       </a>
                       <Link to="projects"
                         className="inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95"
-                        style={{ background: 'var(--card-bg)', border: '2px solid var(--card-border)', backdropFilter: 'blur(16px)' }}>
+                        style={{ background: 'var(--ghost-bg)', border: '2px solid var(--ghost-border)', backdropFilter: 'blur(16px)' }}>
                         View Projects
                       </Link>
                     </motion.div>

@@ -21,18 +21,19 @@ interface ProjectsProps {
   sectionTitle?: string;
   sectionTitleAccent?: string;
   sectionSubtitle?: string;
+  sectionId?: string;
 }
 
 const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 
-export default function Projects({ projects, showStats = true, limit, statVisibility, sectionLabel, sectionTitle, sectionTitleAccent, sectionSubtitle }: ProjectsProps) {
+export default function Projects({ projects, showStats = true, limit, statVisibility, sectionLabel, sectionTitle, sectionTitleAccent, sectionSubtitle, sectionId = 'projects' }: ProjectsProps) {
   const allProjects = projects.length > 0 ? projects : [];
   const displayProjects = limit ? allProjects.slice(0, limit) : allProjects;
   const hasMore = limit ? allProjects.length > limit : false;
   const sv = statVisibility ?? { count: true, tech: true, years: true, clients: true };
 
   return (
-    <section id="projects" className="py-20 md:py-32 relative overflow-hidden">
+    <section id={sectionId} className="py-20 md:py-32 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
         <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '48px 48px' }} />

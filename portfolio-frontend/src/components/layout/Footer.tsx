@@ -85,7 +85,7 @@ export default function Footer({ profileName }: FooterProps) {
             <ul className="space-y-3">
               {[
                 { to: '/#about',      label: 'About' },
-                { to: '/projects',    label: 'Projects' },
+                { to: '/#projects',   label: 'Projects' },
                 { to: '/#skills',     label: 'Skills' },
                 { to: '/#experience', label: 'Experience' },
                 { to: '/#contact',    label: 'Contact' },

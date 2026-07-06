@@ -38,7 +38,7 @@ export default function App() {
             <Routes>
               {/* Public */}
               <Route path="/" element={<HomePage />} />
-              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects" element={<Navigate to="/" replace />} />
               <Route path="/projects/:slug" element={<ProjectDetailPage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/blog/:slug" element={<BlogDetailPage />} />

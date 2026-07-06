@@ -195,21 +195,23 @@ export default function HomePage() {
         return (
           <>
             {workProjects.length > 0 && (
-              <Projects key="work-projects" projects={workProjects} showStats={showStats} limit={3}
+              <Projects key="work-projects" projects={workProjects} showStats={showStats}
+                sectionId="projects"
                 sectionLabel="Professional Work"
                 sectionTitle="Client &" sectionTitleAccent="Production Projects"
                 sectionSubtitle="End-to-end systems built for real users, real scale, real business outcomes"
                 statVisibility={sv} />
             )}
             {personalProjects.length > 0 && (
-              <Projects key="personal-projects" projects={personalProjects} showStats={false} limit={3}
+              <Projects key="personal-projects" projects={personalProjects} showStats={false}
+                sectionId="personal-projects"
                 sectionLabel="Personal Interests"
                 sectionTitle="AI &" sectionTitleAccent="Side Projects"
                 sectionSubtitle="Tools, experiments and open-source work built out of curiosity and conviction"
                 statVisibility={sv} />
             )}
             {workProjects.length === 0 && personalProjects.length === 0 && (
-              <Projects key="projects" projects={[]} showStats={showStats} statVisibility={sv} />
+              <Projects key="projects" projects={[]} showStats={showStats} sectionId="projects" statVisibility={sv} />
             )}
           </>
         );

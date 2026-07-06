@@ -195,7 +195,7 @@ export default function HomePage() {
         return (
           <>
             {workProjects.length > 0 && (
-              <Projects key="work-projects" projects={workProjects} showStats={false}
+              <Projects key="work-projects" projects={workProjects} showStats={showStats}
                 sectionId="projects"
                 sectionLabel="Professional Work"
                 sectionTitle="Client &" sectionTitleAccent="Production Projects"

@@ -1,8 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
-;
+import { Download, Mail } from 'lucide-react';
 import { t } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
@@ -136,15 +134,6 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
               transition={{ delay: 0.8 }}
               className="flex flex-wrap gap-4"
             >
-              <Link
-                to="projects"
-                className="group px-8 py-4 text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-                style={{ background: '#7c3aed', boxShadow: '0 8px 24px rgba(124,58,237,0.30)' }}
-              >
-                View My Work
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-
               {/* Always show resume button — download if URL exists, else scroll to contact */}
               {profile?.resumeUrl ? (
                 <a

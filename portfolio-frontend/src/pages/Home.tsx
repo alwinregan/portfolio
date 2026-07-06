@@ -264,7 +264,7 @@ export default function HomePage() {
       <Navbar resumeUrl={resumeHref} />
       {sections.map(s => renderSection(s as any))}
       {apps?.length > 0 && <AppLauncher apps={apps} />}
-      <Footer profileName={profile?.name} />
+      <Footer />
     </main>
   );
 }

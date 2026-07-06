@@ -6,7 +6,7 @@ import { getProjectBySlug } from '@/lib/api';
 import { t } from '@/lib/utils';
 import Footer from '@/components/layout/Footer';
 
-const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace('/api', '');
+const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 const imgUrl = (p?: string) => !p ? '' : p.startsWith('http') ? p : `${API_BASE}${p}`;
 
 function FadeUp({ children, delay = 0, className = '' }: any) {

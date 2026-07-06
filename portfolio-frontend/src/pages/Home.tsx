@@ -45,7 +45,7 @@ export default function HomePage() {
   }, []);
 
   const { profile, projects, skills, experience, certifications, settings, apps } = data;
-  const apiBase = (import.meta.env.VITE_API_URL || '/api').replace('/api', '');
+  const apiBase = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 
   /* Merge saved layout with defaults + custom sections, sort by order */
   const savedSections: any[] = settings?.metadata?.pageLayout?.sections ?? [];

@@ -92,7 +92,7 @@ export default function MediaLibrary({ onSelect, selectionMode = false }: MediaL
      if (url.startsWith('http')) return url;
      
      const baseUrl = import.meta.env.VITE_API_URL || '/api';
-     const host = baseUrl.replace('/api', '');
+     const host = baseUrl.replace(/\/api$/, '');
      const cleanUrl = url.startsWith('/') ? url : `/${url}`;
      
      return `${host}${cleanUrl}`;

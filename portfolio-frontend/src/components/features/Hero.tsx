@@ -149,7 +149,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
               {profile?.resumeUrl ? (
                 <a
                   href={profile.resumeUrl.startsWith('/')
-                    ? `${(import.meta.env.VITE_API_URL || '/api').replace('/api', '')}${profile.resumeUrl}`
+                    ? `${(import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '')}${profile.resumeUrl}`
                     : profile.resumeUrl}
                   download
                   className="group px-8 py-4 font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2"

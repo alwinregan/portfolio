@@ -182,14 +182,38 @@ export default function HomePage() {
         );
       }
 
-      case 'projects':
-        return <Projects key="projects" projects={projects || []} showStats={settings?.featureToggles?.showProjectsStats !== false} limit={3}
-          statVisibility={{
-            count:   settings?.featureToggles?.projectsStat_count   !== false,
-            tech:    settings?.featureToggles?.projectsStat_tech    !== false,
-            years:   settings?.featureToggles?.projectsStat_years   !== false,
-            clients: settings?.featureToggles?.projectsStat_clients !== false,
-          }} />;
+      case 'projects': {
+        const sv = {
+          count:   settings?.featureToggles?.projectsStat_count   !== false,
+          tech:    settings?.featureToggles?.projectsStat_tech    !== false,
+          years:   settings?.featureToggles?.projectsStat_years   !== false,
+          clients: settings?.featureToggles?.projectsStat_clients !== false,
+        };
+        const showStats = settings?.featureToggles?.showProjectsStats !== false;
+        const workProjects = (projects || []).filter((p: any) => p.projectType !== 'personal');
+        const personalProjects = (projects || []).filter((p: any) => p.projectType === 'personal');
+        return (
+          <>
+            {workProjects.length > 0 && (
+              <Projects key="work-projects" projects={workProjects} showStats={showStats} limit={3}
+                sectionLabel="Professional Work"
+                sectionTitle="Client &" sectionTitleAccent="Production Projects"
+                sectionSubtitle="End-to-end systems built for real users, real scale, real business outcomes"
+                statVisibility={sv} />
+            )}
+            {personalProjects.length > 0 && (
+              <Projects key="personal-projects" projects={personalProjects} showStats={false} limit={3}
+                sectionLabel="Personal Interests"
+                sectionTitle="AI &" sectionTitleAccent="Side Projects"
+                sectionSubtitle="Tools, experiments and open-source work built out of curiosity and conviction"
+                statVisibility={sv} />
+            )}
+            {workProjects.length === 0 && personalProjects.length === 0 && (
+              <Projects key="projects" projects={[]} showStats={showStats} statVisibility={sv} />
+            )}
+          </>
+        );
+      }
 
       case 'skills':
         return <SkillsShowcase key="skills" initialSkills={skills || []} />;

@@ -17,11 +17,15 @@ interface ProjectsProps {
   showStats?: boolean;
   limit?: number;
   statVisibility?: StatVisibility;
+  sectionLabel?: string;
+  sectionTitle?: string;
+  sectionTitleAccent?: string;
+  sectionSubtitle?: string;
 }
 
 const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 
-export default function Projects({ projects, showStats = true, limit, statVisibility }: ProjectsProps) {
+export default function Projects({ projects, showStats = true, limit, statVisibility, sectionLabel, sectionTitle, sectionTitleAccent, sectionSubtitle }: ProjectsProps) {
   const allProjects = projects.length > 0 ? projects : [];
   const displayProjects = limit ? allProjects.slice(0, limit) : allProjects;
   const hasMore = limit ? allProjects.length > limit : false;
@@ -44,9 +48,9 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6"
           >
             <Folder size={14} />
-            Portfolio Showcase
+            {sectionLabel || 'Portfolio Showcase'}
           </motion.div>
-          
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -54,9 +58,10 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6"
           >
-            Featured <span className="text-gradient">Projects</span>
+            {sectionTitle || 'Featured'}{' '}
+            <span className="text-gradient">{sectionTitleAccent || 'Projects'}</span>
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -64,7 +69,7 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
             transition={{ delay: 0.2 }}
             className="text-lg text-slate-500 font-medium"
           >
-            Production-grade applications built with modern technologies
+            {sectionSubtitle || 'Production-grade applications built with modern technologies'}
           </motion.p>
         </div>
 

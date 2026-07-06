@@ -110,6 +110,7 @@ export default function ProjectEditPage() {
     liveUrl: '', githubUrl: '', pdfUrl: '',
     techStack: '', tags: '',
     featured: false, published: true, isActive: true, order: 0,
+    projectType: 'work' as 'work' | 'personal',
   });
   const [cs, setCs] = useState(emptyCs());
 
@@ -132,6 +133,7 @@ export default function ProjectEditPage() {
           techStack: (p.techStack ?? []).join(', '), tags: (p.tags ?? []).join(', '),
           featured: !!p.featured, published: p.published !== false,
           isActive: p.isActive !== false, order: p.order ?? 0,
+          projectType: (p.projectType === 'personal' ? 'personal' : 'work') as 'work' | 'personal',
         });
         setCs(csFromProject(p));
       } finally { setLoading(false); }
@@ -154,6 +156,7 @@ export default function ProjectEditPage() {
         techStack: f.techStack.split(',').map(s => s.trim()).filter(Boolean),
         tags: f.tags.split(',').map(s => s.trim()).filter(Boolean),
         featured: f.featured, published: f.published, isActive: f.isActive, order: f.order,
+        projectType: f.projectType,
         caseStudy: csToPayload(cs),
       };
       if (isNew) { await createProject(payload); }
@@ -345,6 +348,19 @@ export default function ProjectEditPage() {
 
           {/* ── 6. Visibility ── */}
           <Section id="visibility" label="Visibility & Settings" icon={<Settings2 size={18} />} ref={el => { sectionRefs.current.visibility = el; }}>
+            {/* Project type */}
+            <div className="mb-4">
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Project Type</label>
+              <div className="flex gap-3">
+                {(['work', 'personal'] as const).map(type => (
+                  <button key={type} type="button"
+                    onClick={() => setF(p => ({ ...p, projectType: type }))}
+                    className={`flex-1 py-2.5 rounded-xl text-sm font-bold transition-all border ${f.projectType === type ? 'bg-[#7c3aed] text-white border-[#7c3aed]' : 'bg-transparent text-slate-500 border-slate-300 dark:border-slate-700 hover:border-[#7c3aed]'}`}>
+                    {type === 'work' ? 'Professional Work' : 'Personal / Side Project'}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <ToggleCard
                 label="Published" desc="Visible on public site"

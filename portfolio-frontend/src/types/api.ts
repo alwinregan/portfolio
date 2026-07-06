@@ -34,6 +34,7 @@ export interface Project {
   techStack: string[];
   tags?: string[];
   body?: string;
+  projectType?: 'work' | 'personal';
   featured?: boolean;
   isFeatured?: boolean;
   published?: boolean;

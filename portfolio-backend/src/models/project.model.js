@@ -18,6 +18,7 @@ const projectSchema = new mongoose.Schema({
   githubUrl: { type: String },
   pdfUrl: { type: String },
   caseStudy: { type: Object },
+  projectType: { type: String, enum: ['work', 'personal'], default: 'work' },
   featured: { type: Boolean, default: false },
   isFeatured: { type: Boolean, default: false },
   published: { type: Boolean, default: true },

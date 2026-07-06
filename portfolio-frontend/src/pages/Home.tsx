@@ -80,45 +80,52 @@ export default function HomePage() {
           />
         );
 
-      case 'about':
+      case 'about': {
+        const showAvatar = settings?.featureToggles?.showAboutAvatar !== false;
         return (
           <section key="about" id="about" className="py-20 md:py-32 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
             <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
               <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(0 0 0) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
             </div>
             <div className="container mx-auto px-6 relative z-10">
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center max-w-7xl mx-auto">
-                {/* avatar */}
-                <div className="lg:col-span-2">
-                  <div className="relative">
-                    <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 to-transparent rounded-3xl blur-2xl" />
-                    <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-800 shadow-2xl group">
-                      {profile?.avatarUrl ? (
-                        <img
-                          src={profile.avatarUrl.startsWith('/') ? `${apiBase}${profile.avatarUrl}` : profile.avatarUrl}
-                          alt={profile.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center" style={{ background: 'rgba(var(--color-primary), 0.06)' }}>
-                          <span className="text-9xl font-bold" style={{ color: 'rgba(var(--color-primary), 0.2)' }}>{profile?.name?.charAt(0)}</span>
-                        </div>
-                      )}
+              <div className={`grid grid-cols-1 ${showAvatar ? 'lg:grid-cols-5' : ''} gap-12 items-center max-w-7xl mx-auto`}>
+                {/* avatar — conditionally rendered */}
+                {showAvatar && (
+                  <div className="lg:col-span-2">
+                    <div className="relative">
+                      <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 to-transparent rounded-3xl blur-2xl" />
+                      <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-800 shadow-2xl group">
+                        {profile?.avatarUrl ? (
+                          <img
+                            src={profile.avatarUrl.startsWith('/') ? `${apiBase}${profile.avatarUrl}` : profile.avatarUrl}
+                            alt={profile.name}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center" style={{ background: 'rgba(var(--color-primary), 0.06)' }}>
+                            <span className="text-9xl font-bold" style={{ color: 'rgba(var(--color-primary), 0.2)' }}>{profile?.name?.charAt(0)}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* content */}
-                <div className="lg:col-span-3 space-y-8">
+                <div className={`${showAvatar ? 'lg:col-span-3' : 'max-w-3xl mx-auto w-full'} space-y-8`}>
                   <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-                      Professional Bio
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-5">
+                      Professional Background
                     </div>
-                    <h3 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-                      Building the Future,{' '}
-                      <span className="text-gradient">One Line at a Time</span>
+                    <h3 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-2 leading-tight">
+                      {profile?.name && <span className="text-gradient">{profile.name}</span>}
                     </h3>
-                    <div className="w-20 h-1 bg-primary rounded-full mb-8" />
+                    {(t(profile?.role) || t(profile?.heroSuffix)) && (
+                      <p className="text-lg font-semibold text-slate-500 dark:text-slate-400 mb-5">
+                        {t(profile?.role) || t(profile?.heroSuffix)}
+                      </p>
+                    )}
+                    <div className="w-16 h-0.5 bg-primary rounded-full" />
                   </div>
 
                   <div className="text-lg leading-relaxed space-y-5">
@@ -126,22 +133,6 @@ export default function HomePage() {
                       <p key={i} className="text-slate-700 dark:text-slate-300 leading-[1.8]">{para}</p>
                     )) || <p className="text-slate-700 dark:text-slate-300">Full-stack engineer building high-performance digital products.</p>}
                   </div>
-
-                  {/* Philosophy Quote */}
-                  <motion.blockquote
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="pl-4 py-0.5"
-                    style={{ borderLeft: '2px solid rgba(124,58,237,0.5)' }}
-                  >
-                    <p className="text-base italic text-slate-600 dark:text-slate-400 leading-relaxed">
-                      "Make it work. Make it right. Make it fast."
-                    </p>
-                    <cite className="not-italic text-[10px] uppercase tracking-widest font-semibold text-slate-400 mt-1 block">
-                      — Kent Beck
-                    </cite>
-                  </motion.blockquote>
 
                   {/* stats — neutral numbers, no color noise */}
                   {settings?.featureToggles?.showAboutStats !== false && (
@@ -189,6 +180,7 @@ export default function HomePage() {
             </div>
           </section>
         );
+      }
 
       case 'projects':
         return <Projects key="projects" projects={projects || []} showStats={settings?.featureToggles?.showProjectsStats !== false} limit={3}

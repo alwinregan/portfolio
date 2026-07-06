@@ -48,6 +48,16 @@ export default function ProjectsAdminPage() {
     } finally { setToggling(null); }
   };
 
+  const toggleType = async (p: any) => {
+    if (toggling) return;
+    const next = p.projectType === 'personal' ? 'work' : 'personal';
+    setToggling(`${p._id}-projectType`);
+    try {
+      await updateProject(p._id, { projectType: next });
+      setProjects(prev => prev.map(x => x._id === p._id ? { ...x, projectType: next } : x));
+    } finally { setToggling(null); }
+  };
+
   /* ── drag handlers ── */
   const onDragStart = (e: React.DragEvent, id: string) => {
     dragId.current = id;
@@ -329,6 +339,13 @@ export default function ProjectsAdminPage() {
                             inactiveColor="bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700"
                             loading={toggling === `${project._id}-featured`}
                             onClick={() => toggle(project, 'featured')} />
+                          <QuickToggle active={project.projectType === 'personal'}
+                            label={project.projectType === 'personal' ? 'Personal' : 'Work'}
+                            icon={project.projectType === 'personal' ? <Activity size={12} /> : <FolderOpen size={12} />}
+                            activeColor="bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 border-violet-200"
+                            inactiveColor="bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 border-sky-200"
+                            loading={toggling === `${project._id}-projectType`}
+                            onClick={() => toggleType(project)} />
                         </div>
 
                         {/* actions */}

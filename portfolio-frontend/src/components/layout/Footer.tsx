@@ -1,5 +1,5 @@
 
-import { Code2 } from 'lucide-react';
+import { ArrowUp, Code2 } from 'lucide-react';
 import { useSettings } from '@/context/SettingsContext';
 
 interface FooterProps {
@@ -9,6 +9,8 @@ interface FooterProps {
 export default function Footer({ profileName }: FooterProps) {
   const { profileName: ctxName, profileEmail, profileGithub, profileLinkedin } = useSettings();
   const name = profileName || ctxName || 'Alwin Regan P';
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const socials = [
     profileGithub && {
@@ -60,6 +62,14 @@ export default function Footer({ profileName }: FooterProps) {
           )}
         </div>
 
+        <div className="mt-6 flex justify-center">
+          <button onClick={scrollToTop}
+            className="group flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+            style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
+            Back to Top
+            <ArrowUp size={13} className="group-hover:-translate-y-1 transition-transform" />
+          </button>
+        </div>
       </div>
     </footer>
   );

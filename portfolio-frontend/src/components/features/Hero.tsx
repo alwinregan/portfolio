@@ -83,7 +83,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6"
+                className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-6"
               >
                 {t(profile?.heroPrefix) || "Hi, I'm"}{' '}
                 <span className="text-gradient">{profile?.name || "Alwin Regan"}</span>

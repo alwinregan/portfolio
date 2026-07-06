@@ -44,13 +44,29 @@ function splitVerb(text: string): { verb: string; body: string } {
   return { verb: words[0], body: words.slice(1).join(' ') };
 }
 
+function parseDate(s: string): Date {
+  const t = s.trim();
+  const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  // YYYY-MM-DD or YYYY-MM
+  if (/^\d{4}-\d{2}/.test(t)) {
+    const [y, m, d] = t.split('-').map(Number);
+    return new Date(y, m - 1, d || 1);
+  }
+  // "Jan 2022" or "January 2022"
+  const m1 = t.match(/^([a-zA-Z]+)\s+(\d{4})$/);
+  if (m1) {
+    const mi = MONTHS.indexOf(m1[1].toLowerCase().slice(0, 3));
+    if (mi !== -1) return new Date(Number(m1[2]), mi, 1);
+  }
+  // "2022" year only
+  if (/^\d{4}$/.test(t)) return new Date(Number(t), 0, 1);
+  const d = new Date(t);
+  return isNaN(d.getTime()) ? new Date() : d;
+}
+
 function calculateTenure(startDate: string, endDate?: string, isCurrent?: boolean): string {
-  const parse = (s: string) => {
-    const d = new Date(s.trim());
-    return isNaN(d.getTime()) ? new Date() : d;
-  };
-  const start = parse(startDate);
-  const end = (isCurrent || !endDate) ? new Date() : parse(endDate);
+  const start = parseDate(startDate);
+  const end = (isCurrent || !endDate) ? new Date() : parseDate(endDate);
   let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
   if (months < 0) months = 0;
   const yrs = Math.floor(months / 12);

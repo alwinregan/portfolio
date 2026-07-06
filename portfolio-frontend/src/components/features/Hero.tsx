@@ -71,7 +71,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
               transition={{ delay: 0.2 }}
             >
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
-                style={{ background: 'rgba(var(--color-primary),0.08)', border: '1px solid rgba(var(--color-primary),0.2)', color: 'rgb(var(--color-primary))' }}>
+                style={{ background: 'rgba(var(--color-primary) / 0.08)', border: '1px solid rgba(var(--color-primary) / 0.2)', color: 'rgb(var(--color-primary))' }}>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Building battle-tested software
               </span>
@@ -210,7 +210,7 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
               {/* Terminal */}
               <div className="relative">
                 <div className="rounded-2xl overflow-hidden shadow-2xl"
-                  style={{ border: '1px solid rgba(var(--color-primary), 0.25)', boxShadow: '0 0 60px rgba(var(--color-primary), 0.12), 0 25px 50px -12px rgba(0,0,0,0.5)', background: '#0d0d10' }}>
+                  style={{ border: '1px solid rgba(var(--color-primary) / 0.25)', boxShadow: '0 0 60px rgba(var(--color-primary) / 0.12), 0 25px 50px -12px rgba(0,0,0,0.5)', background: '#0d0d10' }}>
                   {/* Title bar */}
                   <div className="flex items-center gap-2 px-4 py-3" style={{ background: '#161618', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />

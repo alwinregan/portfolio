@@ -39,8 +39,8 @@
   );
 
   /* Ghost / outline buttons — clearly visible on white */
-  --ghost-bg:     rgba(var(--color-primary), 0.06);
-  --ghost-border: rgba(var(--color-primary), 0.25);
+  --ghost-bg:     rgba(var(--color-primary) / 0.06);
+  --ghost-border: rgba(var(--color-primary) / 0.25);
 }
 
 .dark {
@@ -78,9 +78,9 @@
 html {
   background:
     radial-gradient(ellipse 180% 100% at -15% -20%,
-      rgba(var(--color-primary), var(--glow-p-l)) 0%, transparent 58%),
+      rgba(var(--color-primary) / var(--glow-p-l)) 0%, transparent 58%),
     radial-gradient(ellipse 120% 90%  at 115%  112%,
-      rgba(var(--color-accent),  var(--glow-a-l))  0%, transparent 58%),
+      rgba(var(--color-accent) / var(--glow-a-l))  0%, transparent 58%),
     var(--page-bg);
   background-attachment: fixed;
 }
@@ -89,11 +89,11 @@ html {
 .dark {
   background:
     radial-gradient(ellipse 180% 100% at -15% -20%,
-      rgba(var(--color-primary), var(--glow-p-d)) 0%, transparent 58%),
+      rgba(var(--color-primary) / var(--glow-p-d)) 0%, transparent 58%),
     radial-gradient(ellipse 120% 90%  at 115%  112%,
-      rgba(var(--color-accent),  var(--glow-a-d))  0%, transparent 58%),
+      rgba(var(--color-accent) / var(--glow-a-d))  0%, transparent 58%),
     radial-gradient(ellipse  80%  60% at  50%   50%,
-      rgba(var(--color-brand),  calc(var(--glow-a-d) * 0.5)) 0%, transparent 65%),
+      rgba(var(--color-brand) / calc(var(--glow-a-d) * 0.5)) 0%, transparent 65%),
     var(--page-bg);
   background-attachment: fixed;
 }
@@ -108,7 +108,7 @@ body {
 }
 
 ::selection {
-  background: rgba(var(--color-primary), 0.15);
+  background: rgba(var(--color-primary) / 0.15);
   color: rgb(var(--color-primary));
 }
 
@@ -137,11 +137,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Light mode — lift with primary-tinted shadow */
 .premium-card:hover {
-  border-color: rgba(var(--color-primary), 0.45);
+  border-color: rgba(var(--color-primary) / 0.45);
   box-shadow:
     0 2px 4px  rgba(15, 23, 42, 0.06),
     0 8px 24px rgba(15, 23, 42, 0.08),
-    0 24px 64px rgba(var(--color-primary), 0.12);
+    0 24px 64px rgba(var(--color-primary) / 0.12);
   transform: translateY(-2px);
 }
 
@@ -151,7 +151,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .dark .premium-card:hover {
   transform: none;
-  box-shadow: 0 8px 40px rgba(var(--color-primary), 0.18), 0 0 0 1px rgba(var(--color-primary), 0.15);
+  box-shadow: 0 8px 40px rgba(var(--color-primary) / 0.18), 0 0 0 1px rgba(var(--color-primary) / 0.15);
 }
 
 /* Section divider — thin primary-tinted top edge inside card for visual interest */

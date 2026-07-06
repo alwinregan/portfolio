@@ -36,7 +36,7 @@ export default function SkillsShowcase({ initialSkills }: SkillsProps) {
   );
 
   return (
-    <section id="skills" className="py-20 md:py-32 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
+    <section id="skills" className="py-20 md:py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
 
@@ -115,7 +115,7 @@ export default function SkillsShowcase({ initialSkills }: SkillsProps) {
                         </span>
 
                         {/* Bar */}
-                        <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(var(--color-primary), 0.1)' }}>
+                        <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(var(--color-primary) / 0.1)' }}>
                           <motion.div
                             initial={{ width: 0 }}
                             whileInView={{ width: `${skill.level}%` }}
@@ -145,27 +145,6 @@ export default function SkillsShowcase({ initialSkills }: SkillsProps) {
               );
             })}
           </div>
-
-          {/* Footer summary — plain numbers, no colored boxes */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-20 pt-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
-            style={{ borderTop: '2px solid var(--card-border)' }}
-          >
-            {[
-              { value: `${displaySkills.length}`, label: 'Total Skills' },
-              { value: `${displaySkills.filter(s => s.level >= 90).length}`, label: 'Expert Level' },
-              { value: `${orderedCategories.length}`, label: 'Domains' },
-              { value: displaySkills.length ? `${Math.round(displaySkills.reduce((a, s) => a + s.level, 0) / displaySkills.length)}%` : '—', label: 'Avg Proficiency' },
-            ].map(({ value, label }) => (
-              <div key={label}>
-                <div className="text-4xl font-black mb-2 text-slate-900 dark:text-white">{value}</div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-[0.14em]">{label}</div>
-              </div>
-            ))}
-          </motion.div>
 
         </div>
       </div>

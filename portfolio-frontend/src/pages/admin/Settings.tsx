@@ -80,6 +80,17 @@ export default function SettingsAdminPage() {
   });
   const [savingStats, setSavingStats] = useState(false);
 
+  // Projects section titles/subtitles (editable)
+  const [projectsText, setProjectsText] = useState({
+    workTitle: 'Client &',
+    workTitleAccent: 'Production Projects',
+    workSubtitle: 'End-to-end systems built for real users, real scale, real business outcomes',
+    personalTitle: 'AI &',
+    personalTitleAccent: 'Side Projects',
+    personalSubtitle: 'Tools, experiments and open-source work built out of curiosity and conviction',
+  });
+  const [savingProjectsText, setSavingProjectsText] = useState(false);
+
   // Export / Import
   const importAllRef = useRef<HTMLInputElement>(null);
   const [exportingAll, setExportingAll] = useState(false);
@@ -102,6 +113,9 @@ export default function SettingsAdminPage() {
 
       const savedStats = data.metadata?.aboutStats;
       if (savedStats) setAboutStats(prev => ({ ...prev, ...savedStats }));
+
+      const savedProjectsText = data.metadata?.projectsText;
+      if (savedProjectsText) setProjectsText(prev => ({ ...prev, ...savedProjectsText }));
 
       const savedSections: any[] = data.metadata?.pageLayout?.sections ?? [];
       const savedMap = Object.fromEntries(savedSections.map((s: any) => [s.id, s]));
@@ -152,6 +166,17 @@ export default function SettingsAdminPage() {
       showToast('Stats saved!');
     } catch (err) { console.error('Save stats error:', err); showToast('Failed to save stats.'); }
     finally { setSavingStats(false); }
+  };
+
+  const handleSaveProjectsText = async () => {
+    setSavingProjectsText(true);
+    try {
+      const updated = { ...settingsData, metadata: { ...(settingsData?.metadata || {}), projectsText } };
+      await updateSettings(updated);
+      setSettingsData(updated);
+      showToast('Projects section text saved!');
+    } catch (err) { console.error('Save projects text error:', err); showToast('Failed to save projects text.'); }
+    finally { setSavingProjectsText(false); }
   };
 
   /* ── theme ── */
@@ -560,6 +585,70 @@ export default function SettingsAdminPage() {
             <button type="button" onClick={handleSaveStats} disabled={savingStats}
               className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl text-sm hover:bg-primary-dark transition-all disabled:opacity-60 shadow-lg shadow-primary/25">
               <Save size={15} /> {savingStats ? 'Saving…' : 'Save Stats'}
+            </button>
+          </Card>
+
+          {/* ── Projects Section Text ── */}
+          <Card title="Projects Section Text" subtitle="Titles and subtitles shown above your project lists" icon={<Edit3 size={20} />}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+              <div className="p-4 rounded-xl border-2 border-primary/20 bg-primary/4 space-y-3">
+                <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: 'rgb(var(--color-primary))' }}>
+                  Client / Production Projects
+                </div>
+                <InputField
+                  label="Title"
+                  name="workTitle"
+                  value={projectsText.workTitle}
+                  onChange={e => setProjectsText(p => ({ ...p, workTitle: e.target.value }))}
+                  placeholder="Client &"
+                />
+                <InputField
+                  label="Title Accent"
+                  name="workTitleAccent"
+                  value={projectsText.workTitleAccent}
+                  onChange={e => setProjectsText(p => ({ ...p, workTitleAccent: e.target.value }))}
+                  placeholder="Production Projects"
+                />
+                <TextareaField
+                  label="Subtitle"
+                  name="workSubtitle"
+                  value={projectsText.workSubtitle}
+                  onChange={e => setProjectsText(p => ({ ...p, workSubtitle: e.target.value }))}
+                  placeholder="End-to-end systems built for real users, real scale, real business outcomes"
+                  rows={2}
+                />
+              </div>
+              <div className="p-4 rounded-xl border-2 border-primary/20 bg-primary/4 space-y-3">
+                <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: 'rgb(var(--color-primary))' }}>
+                  AI / Side Projects
+                </div>
+                <InputField
+                  label="Title"
+                  name="personalTitle"
+                  value={projectsText.personalTitle}
+                  onChange={e => setProjectsText(p => ({ ...p, personalTitle: e.target.value }))}
+                  placeholder="AI &"
+                />
+                <InputField
+                  label="Title Accent"
+                  name="personalTitleAccent"
+                  value={projectsText.personalTitleAccent}
+                  onChange={e => setProjectsText(p => ({ ...p, personalTitleAccent: e.target.value }))}
+                  placeholder="Side Projects"
+                />
+                <TextareaField
+                  label="Subtitle"
+                  name="personalSubtitle"
+                  value={projectsText.personalSubtitle}
+                  onChange={e => setProjectsText(p => ({ ...p, personalSubtitle: e.target.value }))}
+                  placeholder="Tools, experiments and open-source work built out of curiosity and conviction"
+                  rows={2}
+                />
+              </div>
+            </div>
+            <button type="button" onClick={handleSaveProjectsText} disabled={savingProjectsText}
+              className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl text-sm hover:bg-primary-dark transition-all disabled:opacity-60 shadow-lg shadow-primary/25">
+              <Save size={15} /> {savingProjectsText ? 'Saving…' : 'Save Projects Text'}
             </button>
           </Card>
 

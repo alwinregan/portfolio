@@ -31,7 +31,7 @@ export default function Footer({ profileName }: FooterProps) {
     <footer className="relative overflow-hidden">
       {/* top glow line */}
       <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: 'linear-gradient(to right, transparent, rgba(var(--color-primary),0.4), rgba(var(--color-accent),0.25), transparent)' }} />
+        style={{ background: 'linear-gradient(to right, transparent, rgba(var(--color-primary) / 0.4), rgba(var(--color-accent) / 0.25), transparent)' }} />
 
       <div className="container mx-auto px-6 relative z-10 py-10">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">

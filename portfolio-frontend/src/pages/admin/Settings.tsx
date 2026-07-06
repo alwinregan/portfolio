@@ -780,6 +780,7 @@ export default function SettingsAdminPage() {
                 { key: 'showCertifications',label: 'Certifications',     desc: 'Display certifications' },
                 { key: 'showContactForm',   label: 'Contact Form',       desc: 'Display contact form' },
                 { key: 'enableBlog',        label: 'Blog',               desc: 'Enable blog feature' },
+                { key: 'showAboutAvatar',   label: 'About Photo',        desc: 'Show profile photo in About section' },
                 { key: 'showAboutStats',    label: 'About Stats',        desc: 'Show stat numbers in About section' },
                 { key: 'showProjectsStats', label: 'Projects Stats',     desc: 'Show stats footer in Projects section' },
               ].map(({ key, label, desc }) => (

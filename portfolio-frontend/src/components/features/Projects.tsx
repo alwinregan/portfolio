@@ -17,18 +17,23 @@ interface ProjectsProps {
   showStats?: boolean;
   limit?: number;
   statVisibility?: StatVisibility;
+  sectionLabel?: string;
+  sectionTitle?: string;
+  sectionTitleAccent?: string;
+  sectionSubtitle?: string;
+  sectionId?: string;
 }
 
 const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 
-export default function Projects({ projects, showStats = true, limit, statVisibility }: ProjectsProps) {
+export default function Projects({ projects, showStats = true, limit, statVisibility, sectionLabel, sectionTitle, sectionTitleAccent, sectionSubtitle, sectionId = 'projects' }: ProjectsProps) {
   const allProjects = projects.length > 0 ? projects : [];
   const displayProjects = limit ? allProjects.slice(0, limit) : allProjects;
   const hasMore = limit ? allProjects.length > limit : false;
   const sv = statVisibility ?? { count: true, tech: true, years: true, clients: true };
 
   return (
-    <section id="projects" className="py-20 md:py-32 relative overflow-hidden">
+    <section id={sectionId} className="py-20 md:py-32 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
         <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '48px 48px' }} />
@@ -44,9 +49,9 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6"
           >
             <Folder size={14} />
-            Portfolio Showcase
+            {sectionLabel || 'Portfolio Showcase'}
           </motion.div>
-          
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -54,9 +59,10 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6"
           >
-            Featured <span className="text-gradient">Projects</span>
+            {sectionTitle || 'Featured'}{' '}
+            <span className="text-gradient">{sectionTitleAccent || 'Projects'}</span>
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -64,7 +70,7 @@ export default function Projects({ projects, showStats = true, limit, statVisibi
             transition={{ delay: 0.2 }}
             className="text-lg text-slate-500 font-medium"
           >
-            Production-grade applications built with modern technologies
+            {sectionSubtitle || 'Production-grade applications built with modern technologies'}
           </motion.p>
         </div>
 

@@ -64,6 +64,9 @@ interface Settings {
 interface SettingsContextType {
   settings: Settings | null;
   profileName: string;
+  profileEmail: string;
+  profileGithub: string;
+  profileLinkedin: string;
   lang: string;
   setLang: (l: string) => void;
   t: (localized: any) => string;
@@ -76,6 +79,9 @@ const SettingsContext = createContext<SettingsContextType | null>(null);
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [settings, setSettings] = useState<Settings | null>(null);
   const [profileName, setProfileName] = useState('');
+  const [profileEmail, setProfileEmail] = useState('');
+  const [profileGithub, setProfileGithub] = useState('');
+  const [profileLinkedin, setProfileLinkedin] = useState('');
   const [lang, setLang] = useState('en');
   const [theme, setTheme] = useState<ThemeColors>(DEFAULT_THEME);
 
@@ -84,6 +90,9 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       const [settingsData, profileData] = await Promise.all([getSettings(), getProfile()]);
       setSettings(settingsData);
       setProfileName(profileData.name || '');
+      setProfileEmail(profileData.email || '');
+      setProfileGithub(profileData.socialLinks?.github || '');
+      setProfileLinkedin(profileData.socialLinks?.linkedin || '');
       if (settingsData.defaultLanguage) setLang(settingsData.defaultLanguage);
 
       const savedTheme = settingsData.metadata?.theme;
@@ -107,8 +116,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <SettingsContext.Provider value={{
-      settings, profileName, lang, setLang, t,
-      theme, refreshSettings: loadSettings,
+      settings, profileName, profileEmail, profileGithub, profileLinkedin,
+      lang, setLang, t, theme, refreshSettings: loadSettings,
     }}>
       {children}
     </SettingsContext.Provider>

@@ -48,7 +48,7 @@ export default function ProjectDetailPage() {
   if (!project) return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-4">
       <p className="text-2xl font-bold">Project not found</p>
-      <Link to="/projects" className="text-primary hover:underline flex items-center gap-2">
+      <Link to="/" className="text-primary hover:underline flex items-center gap-2">
         <ArrowLeft size={16} /> Back
       </Link>
     </div>
@@ -93,7 +93,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
           style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px)', backgroundSize: '60px 60px' }} />
 
         <motion.div style={{ opacity: heroOpacity }} className="absolute top-8 left-8 md:left-16 z-20">
-          <Link to="/projects" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm font-medium group">
+          <Link to="/" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm font-medium group">
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> All Projects
           </Link>
         </motion.div>
@@ -182,7 +182,7 @@ function CaseStudyPage({ project, cs, heroRef, heroScale, heroOpacity }: any) {
       {/* ── FOOTER NAV ───────────────────────────────────────── */}
       <div className="border-t" style={{ borderColor: 'var(--card-border)' }}>
         <div className="max-w-5xl mx-auto px-8 md:px-16 py-8 flex items-center justify-between">
-          <Link to="/projects" className="inline-flex items-center gap-2 text-muted hover:text-primary transition-colors font-medium text-sm group">
+          <Link to="/" className="inline-flex items-center gap-2 text-muted hover:text-primary transition-colors font-medium text-sm group">
             <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" /> All Projects
           </Link>
           {project.liveUrl && (
@@ -419,7 +419,7 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.42) 70%, rgba(0,0,0,0.20) 100%)' }} />
         </motion.div>
         <motion.div style={{ opacity: heroOpacity }} className="absolute top-8 left-8 md:left-16 z-20">
-          <Link to="/projects" className="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm font-medium group transition-colors">
+          <Link to="/" className="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm font-medium group transition-colors">
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> All Projects
           </Link>
         </motion.div>
@@ -496,7 +496,7 @@ function StandardPage({ project, title, description, heroRef, heroScale, heroOpa
           </FadeUp>
         )}
         <div className="flex items-center justify-between pt-8 border-t" style={{ borderColor: 'var(--card-border)' }}>
-          <Link to="/projects" className="inline-flex items-center gap-2 text-muted hover:text-primary text-sm font-medium transition-colors group">
+          <Link to="/" className="inline-flex items-center gap-2 text-muted hover:text-primary text-sm font-medium transition-colors group">
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> All Projects
           </Link>
           {project.liveUrl && (

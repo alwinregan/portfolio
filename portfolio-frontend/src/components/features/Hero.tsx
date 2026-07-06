@@ -64,7 +64,19 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            {/* Badge */}
+            {/* Battle-tested badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
+                style={{ background: 'rgba(var(--color-primary),0.08)', border: '1px solid rgba(var(--color-primary),0.2)', color: 'rgb(var(--color-primary))' }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Building battle-tested software
+              </span>
+            </motion.div>
+
             {/* Main Headline */}
             <div>
               <motion.h1 
@@ -116,24 +128,6 @@ export default function Hero({ profile, projectCount = 0, skillCount = 0, yearsV
             >
               {t(profile?.summary) || "I engineer scalable web architectures with 6+ years of technical excellence."}
             </motion.p>
-
-            {/* Philosophy Quote */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.78 }}
-              className="flex items-start gap-3"
-            >
-              <div className="shrink-0 w-0.5 h-10 rounded-full mt-0.5" style={{ background: '#7c3aed' }} />
-              <div>
-                <p className="text-sm italic text-slate-500 dark:text-slate-400">
-                  "Make it work. Make it right. Make it fast."
-                </p>
-                <span className="text-[10px] uppercase tracking-widest font-semibold text-slate-400 mt-0.5 block">
-                  — Kent Beck
-                </span>
-              </div>
-            </motion.div>
 
             {/* CTA Buttons */}
             <motion.div

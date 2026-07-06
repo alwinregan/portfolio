@@ -24,6 +24,7 @@ interface Project {
   tags?: string[];
   githubUrl?: string;
   liveUrl?: string;
+  projectType?: 'work' | 'personal';
 }
 
 function t(val: Record<string, string> | string | undefined) {
@@ -43,8 +44,8 @@ export default function ProjectsPage() {
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
-  const featuredProjects = projects.filter(p => p.featured);
-  const otherProjects = projects.filter(p => !p.featured);
+  const workProjects = projects.filter(p => p.projectType !== 'personal');
+  const personalProjects = projects.filter(p => p.projectType === 'personal');
   const totalTech = new Set(projects.flatMap(p => p.techStack || [])).size;
 
   if (loading) {
@@ -89,8 +90,8 @@ export default function ProjectsPage() {
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-wrap gap-10">
               {[
-                { value: String(projects.length), label: 'Total Projects' },
-                { value: String(featuredProjects.length), label: 'Featured' },
+                { value: String(workProjects.length), label: 'Work Projects' },
+                { value: String(personalProjects.length), label: 'Personal Projects' },
                 { value: `${totalTech}+`, label: 'Technologies' },
               ].map(({ value, label }) => (
                 <div key={label}>
@@ -105,29 +106,8 @@ export default function ProjectsPage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-20 space-y-16 md:space-y-24">
 
-        {/* ── Featured ── */}
-        {featuredProjects.length > 0 && (
-          <section>
-            <div className="flex items-center gap-3 mb-10">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: 'rgba(245,158,11,0.10)', border: '1px solid rgba(245,158,11,0.28)' }}>
-                <Star size={17} style={{ color: '#f59e0b' }} />
-              </div>
-              <div>
-                <h2 className="text-2xl font-black tracking-tight">Featured Work</h2>
-                <p className="text-sm text-slate-400 font-medium">{featuredProjects.length} highlighted project{featuredProjects.length !== 1 ? 's' : ''}</p>
-              </div>
-            </div>
-            <div className="space-y-8">
-              {featuredProjects.map((p, i) => (
-                <FeaturedCard key={p._id} project={p} index={i} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── All Projects ── */}
-        {otherProjects.length > 0 && (
+        {/* ── Professional / Client Work ── */}
+        {workProjects.length > 0 && (
           <section>
             <div className="flex items-center gap-3 mb-10">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -135,12 +115,33 @@ export default function ProjectsPage() {
                 <Layers size={17} style={{ color: '#7c3aed' }} />
               </div>
               <div>
-                <h2 className="text-2xl font-black tracking-tight">All Projects</h2>
-                <p className="text-sm text-slate-400 font-medium">{otherProjects.length} project{otherProjects.length !== 1 ? 's' : ''}</p>
+                <h2 className="text-2xl font-black tracking-tight">Professional Work</h2>
+                <p className="text-sm text-slate-400 font-medium">Client &amp; production systems — {workProjects.length} project{workProjects.length !== 1 ? 's' : ''}</p>
+              </div>
+            </div>
+            <div className="space-y-8">
+              {workProjects.map((p, i) => (
+                <FeaturedCard key={p._id} project={p} index={i} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── Personal / AI & Side Projects ── */}
+        {personalProjects.length > 0 && (
+          <section>
+            <div className="flex items-center gap-3 mb-10">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+                style={{ background: 'rgba(245,158,11,0.10)', border: '1px solid rgba(245,158,11,0.28)' }}>
+                <Star size={17} style={{ color: '#f59e0b' }} />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black tracking-tight">AI &amp; Personal Projects</h2>
+                <p className="text-sm text-slate-400 font-medium">Built out of curiosity — {personalProjects.length} project{personalProjects.length !== 1 ? 's' : ''}</p>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {otherProjects.map((p, i) => (
+              {personalProjects.map((p, i) => (
                 <ProjectCard key={p._id} project={p} index={i} />
               ))}
             </div>

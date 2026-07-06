@@ -11,6 +11,8 @@ const app = express();
 // CORS — explicit origin list + preflight handling
 const corsOptions = {
   origin: [
+    'https://alwinregan.com',
+    'https://www.alwinregan.com',
     'https://portfolio.rupeecollect.in',
     'http://localhost:3000',
     'http://localhost:5173',

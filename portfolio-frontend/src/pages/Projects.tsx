@@ -7,7 +7,7 @@ import { getProjects } from '@/lib/api';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
-const apiBase = (import.meta.env.VITE_API_URL || '/api').replace('/api', '');
+const apiBase = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 
 interface Project {
   _id: string;

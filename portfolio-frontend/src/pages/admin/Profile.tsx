@@ -273,7 +273,7 @@ export default function ProfileAdminPage() {
                 {formData.avatarUrl && (
                   <div className="relative w-24 h-24 rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-800">
                     <img 
-                      src={formData.avatarUrl?.startsWith('/') ? `${(import.meta.env.VITE_API_URL || '/api').replace('/api', '')}${formData.avatarUrl}` : formData.avatarUrl} 
+                      src={formData.avatarUrl?.startsWith('/') ? `${(import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '')}${formData.avatarUrl}` : formData.avatarUrl} 
                       alt="Avatar" 
                       className="w-full h-full object-cover"
                     />
@@ -321,7 +321,7 @@ export default function ProfileAdminPage() {
                   <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl">
                     <FileText size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                     <a
-                      href={formData.resumeUrl.startsWith('/') ? `${(import.meta.env.VITE_API_URL || '/api').replace('/api', '')}${formData.resumeUrl}` : formData.resumeUrl}
+                      href={formData.resumeUrl.startsWith('/') ? `${(import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '')}${formData.resumeUrl}` : formData.resumeUrl}
                       target="_blank" rel="noopener noreferrer"
                       className="flex-1 text-sm font-medium text-emerald-700 dark:text-emerald-400 truncate hover:underline"
                     >

@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 const tv = (v: any) => (typeof v === 'object' && v !== null ? v.en ?? '' : v ?? '');
-const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace('/api', '');
+const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
 const imgSrc = (u: string) => !u ? '' : u.startsWith('/') ? `${API_BASE}${u}` : u;
 
 export default function ProjectsAdminPage() {

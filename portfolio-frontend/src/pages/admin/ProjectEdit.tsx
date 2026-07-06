@@ -189,7 +189,7 @@ export default function ProjectEditPage() {
     sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace('/api', '');
+  const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '');
   const imgSrc = (u: string) => u.startsWith('/') ? `${API_BASE}${u}` : u;
 
   if (loading) return (

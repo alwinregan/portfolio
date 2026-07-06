@@ -209,7 +209,7 @@ export default function HomePage() {
         return <Certifications key="certifications" certifications={certifications || []} />;
 
       case 'contact':
-        return <ContactForm key="contact" profileEmail={profile?.email} />;
+        return <ContactForm key="contact" />;
 
       default:
         if (s.id.startsWith('custom_')) {

@@ -102,8 +102,8 @@ export default function HomePage() {
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center" style={{ background: 'rgba(var(--color-primary), 0.06)' }}>
-                            <span className="text-9xl font-bold" style={{ color: 'rgba(var(--color-primary), 0.2)' }}>{profile?.name?.charAt(0)}</span>
+                          <div className="w-full h-full flex items-center justify-center" style={{ background: 'rgba(var(--color-primary) / 0.06)' }}>
+                            <span className="text-9xl font-bold" style={{ color: 'rgba(var(--color-primary) / 0.2)' }}>{profile?.name?.charAt(0)}</span>
                           </div>
                         )}
                       </div>
@@ -192,23 +192,24 @@ export default function HomePage() {
         const showStats = settings?.featureToggles?.showProjectsStats !== false;
         const workProjects = (projects || []).filter((p: any) => p.projectType !== 'personal');
         const personalProjects = (projects || []).filter((p: any) => p.projectType === 'personal');
+        const pt = settings?.metadata?.projectsText || {};
         return (
           <>
             {workProjects.length > 0 && (
               <Projects key="work-projects" projects={workProjects} showStats={showStats}
                 sectionId="projects"
                 sectionLabel="Professional Work"
-                sectionTitle="Client &" sectionTitleAccent="Production Projects"
-                sectionSubtitle="End-to-end systems built for real users, real scale, real business outcomes"
-                statVisibility={sv} />
+                sectionTitle={pt.workTitle || 'Client &'} sectionTitleAccent={pt.workTitleAccent || 'Production Projects'}
+                sectionSubtitle={pt.workSubtitle || 'End-to-end systems built for real users, real scale, real business outcomes'}
+                statVisibility={sv} altBg={false} />
             )}
             {personalProjects.length > 0 && (
               <Projects key="personal-projects" projects={personalProjects} showStats={false}
                 sectionId="personal-projects"
                 sectionLabel="Personal Interests"
-                sectionTitle="AI &" sectionTitleAccent="Side Projects"
-                sectionSubtitle="Tools, experiments and open-source work built out of curiosity and conviction"
-                statVisibility={sv} />
+                sectionTitle={pt.personalTitle || 'AI &'} sectionTitleAccent={pt.personalTitleAccent || 'Side Projects'}
+                sectionSubtitle={pt.personalSubtitle || 'Tools, experiments and open-source work built out of curiosity and conviction'}
+                statVisibility={sv} altBg={true} />
             )}
             {workProjects.length === 0 && personalProjects.length === 0 && (
               <Projects key="projects" projects={[]} showStats={showStats} sectionId="projects" statVisibility={sv} />

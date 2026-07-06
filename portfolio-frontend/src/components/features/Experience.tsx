@@ -93,7 +93,7 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
     });
 
   return (
-    <section id="experience" className="py-20 md:py-32 relative overflow-hidden">
+    <section id="experience" className="py-20 md:py-32 relative overflow-hidden" style={{ background: 'var(--section-alt-bg)' }}>
       <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03] pointer-events-none">
         <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(135deg, currentColor 1px, transparent 1px), linear-gradient(225deg, currentColor 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
       </div>
@@ -126,7 +126,7 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
             {/* Vertical line */}
             <div style={{
               position: 'absolute', top: 0, bottom: 0, left: '15px', width: '2px', borderRadius: '9999px',
-              background: 'linear-gradient(to bottom, rgb(var(--color-primary)) 0%, rgba(var(--color-primary),0.4) 60%, rgba(var(--color-primary),0.08) 100%)',
+              background: 'linear-gradient(to bottom, rgb(var(--color-primary)) 0%, rgba(var(--color-primary) / 0.4) 60%, rgba(var(--color-primary) / 0.08) 100%)',
             }} />
 
             <div className="space-y-0">
@@ -149,14 +149,14 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
                       <div style={{
                         position: 'absolute', left: '-42px', top: '24px',
                         width: '18px', height: '18px', borderRadius: '50%', zIndex: 2,
-                        background: exp.isCurrent ? 'rgb(var(--color-primary))' : 'rgba(var(--color-primary),0.35)',
+                        background: exp.isCurrent ? 'rgb(var(--color-primary))' : 'rgba(var(--color-primary) / 0.35)',
                         boxShadow: exp.isCurrent
-                          ? '0 0 0 5px rgba(var(--color-primary),0.15), 0 0 16px rgba(var(--color-primary),0.4)'
-                          : '0 0 0 4px rgba(var(--color-primary),0.10)',
+                          ? '0 0 0 5px rgba(var(--color-primary) / 0.15), 0 0 16px rgba(var(--color-primary) / 0.4)'
+                          : '0 0 0 4px rgba(var(--color-primary) / 0.10)',
                       }}>
                         <div style={{ position: 'absolute', inset: '4px', borderRadius: '50%', background: exp.isCurrent ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)' }} />
                         {exp.isCurrent && (
-                          <div className="animate-ping" style={{ position: 'absolute', inset: '-4px', borderRadius: '50%', background: 'rgba(var(--color-primary),0.2)' }} />
+                          <div className="animate-ping" style={{ position: 'absolute', inset: '-4px', borderRadius: '50%', background: 'rgba(var(--color-primary) / 0.2)' }} />
                         )}
                       </div>
 
@@ -205,7 +205,7 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
                               )}
                               {/* Tenure badge */}
                               <span className="flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-bold"
-                                style={{ background: 'rgba(var(--color-primary),0.08)', color: 'rgb(var(--color-primary))' }}>
+                                style={{ background: 'rgba(var(--color-primary) / 0.08)', color: 'rgb(var(--color-primary))' }}>
                                 {tenure}
                               </span>
                             </div>
@@ -218,8 +218,8 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
                                 <span key={i}
                                   className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wide"
                                   style={{
-                                    background: 'rgba(var(--color-primary),0.07)',
-                                    border: '1px solid rgba(var(--color-primary),0.18)',
+                                    background: 'rgba(var(--color-primary) / 0.07)',
+                                    border: '1px solid rgba(var(--color-primary) / 0.18)',
                                     color: 'rgb(var(--color-primary))',
                                   }}>
                                   {chip}
@@ -238,7 +238,7 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
                                 {exp.highlights.map((h, i) => (
                                   <div key={i}
                                     className="flex gap-3 items-start p-4 rounded-xl"
-                                    style={{ background: 'rgba(var(--color-primary),0.04)', border: '1px solid rgba(var(--color-primary),0.10)' }}>
+                                    style={{ background: 'rgba(var(--color-primary) / 0.04)', border: '1px solid rgba(var(--color-primary) / 0.10)' }}>
                                     <div className="mt-[6px] shrink-0 w-1.5 h-1.5 rounded-full"
                                       style={{ background: 'rgb(var(--color-primary))' }} />
                                     <p className="text-sm font-medium text-slate-700 dark:text-slate-200 leading-snug">
@@ -292,7 +292,7 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
                                               return (
                                                 <div key={i} className="flex gap-3 items-start">
                                                   <div className="w-0.5 shrink-0 mt-[7px] rounded-full self-stretch"
-                                                    style={{ background: 'rgba(var(--color-primary),0.3)', minHeight: '6px' }} />
+                                                    style={{ background: 'rgba(var(--color-primary) / 0.3)', minHeight: '6px' }} />
                                                   <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                                                     <span className="font-bold text-slate-900 dark:text-white">{verb}</span>{' '}{body}
                                                   </p>
@@ -333,8 +333,8 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
                         <div className="h-px flex-1 opacity-40 shrink" style={{ background: 'rgb(var(--color-primary))' }} />
                         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shrink-0"
                           style={{
-                            background: 'rgba(var(--color-primary),0.08)',
-                            border: '1px solid rgba(var(--color-primary),0.25)',
+                            background: 'rgba(var(--color-primary) / 0.08)',
+                            border: '1px solid rgba(var(--color-primary) / 0.25)',
                             color: 'rgb(var(--color-primary))',
                           }}>
                           <TrendingUp size={12} className="shrink-0" />
@@ -349,23 +349,6 @@ export default function ExperienceTimeline({ experience, yearsValue = '5+' }: Ex
               })}
             </div>
           </div>
-
-          {/* Summary */}
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="mt-20 pt-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
-            style={{ borderTop: '2px solid var(--card-border)' }}>
-            {[
-              { value: `${sortedExp.length}`,                                              label: 'Positions' },
-              { value: `${new Set(sortedExp.map(e => e.company)).size}`,                   label: 'Companies' },
-              { value: `${new Set(sortedExp.flatMap(e => e.technologies)).size}+`,         label: 'Technologies' },
-              { value: yearsValue,                                                          label: 'Years' },
-            ].map(({ value, label }) => (
-              <div key={label}>
-                <div className="text-4xl font-black mb-2 text-slate-900 dark:text-white">{value}</div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-[0.14em]">{label}</div>
-              </div>
-            ))}
-          </motion.div>
 
         </div>
       </div>
